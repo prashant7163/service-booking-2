@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-doctor-result",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "result_id": "preflight-current",
+  "outcome": "pass",
+  "redacted": true,
+  "recorded_at": "2026-09-11T13:15:01.291746Z",
+  "snapshot_digest": "ef8cd61eeb6e26ee07cde2bd8931328b180f266fefba6aee6a293185a25d7055",
+  "checks": [
+    {
+      "check_id": "configuration",
+      "outcome": "pass",
+      "owner": "project-owner",
+      "scope": "configuration",
+      "summary": "studio.yaml is valid."
+    },
+    {
+      "check_id": "runtime-pin",
+      "outcome": "pass",
+      "owner": "project-owner",
+      "scope": "project-runtime",
+      "summary": "Project-local runtime matches its verified wheel and exact lock closure."
+    },
+    {
+      "check_id": "control-plane-integrity",
+      "outcome": "pass",
+      "owner": "orchestrator-tech-lead",
+      "scope": "control-plane-state",
+      "summary": "Journal identity, hash chain, and active artifact digests validate."
+    },
+    {
+      "check_id": "control-plane-projection",
+      "outcome": "pass",
+      "owner": "orchestrator-tech-lead",
+      "scope": "derived-state",
+      "summary": "Derived projection matches the authoritative journal sequence."
+    },
+    {
+      "check_id": "external-value-references",
+      "outcome": "not_applicable",
+      "owner": "project-owner",
+      "scope": "provider-access",
+      "summary": "No external value references are required by Studio doctor."
+    }
+  ],
+  "captured_at": "2026-09-11T13:18:53Z"
+}

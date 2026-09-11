@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-role-skill-independence",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "decision": "applicable",
+  "covered_role_ids": [
+    "orchestrator-tech-lead",
+    "architect",
+    "ux-ui-designer",
+    "backend-engineer",
+    "frontend-engineer",
+    "code-reviewer",
+    "build-manager",
+    "quality-engineer",
+    "independent-auditor"
+  ],
+  "canonical_inputs": [
+    {
+      "locator": "shared/roles/catalog.yaml",
+      "file_sha256": "a3c55baaf7d9bb16ecbfd2f4c53857f3d51cba612cca477020eb9bbb35432be9"
+    },
+    {
+      "locator": "shared/roles/capabilities.yaml",
+      "file_sha256": "80409194edd1a6e39c4b2f2c60f3d76fd22c4e76708fa30d69985b960cc3aabd"
+    },
+    {
+      "locator": "shared/skills/catalog.yaml",
+      "file_sha256": "938ff5a8c849e0ed3759f341b42a0c1f4dc6fb4e83bbe60495dc5d132bc0aefc"
+    }
+  ],
+  "independence_rules": [
+    {
+      "role_id": "code-reviewer",
+      "independent_from": [
+        "architect",
+        "ux-ui-designer",
+        "backend-engineer",
+        "frontend-engineer",
+        "orchestrator-tech-lead"
+      ],
+      "runtime_enforcement": "read-only sandbox and cannot-review-own-work boundary"
+    },
+    {
+      "role_id": "independent-auditor",
+      "independent_from": [
+        "code-reviewer",
+        "architect",
+        "ux-ui-designer",
+        "backend-engineer",
+        "frontend-engineer",
+        "orchestrator-tech-lead"
+      ],
+      "runtime_enforcement": "read-only sandbox, cannot-audit-own-work, cannot-dispatch-remediation, and report-only-to-orchestrator boundaries"
+    },
+    {
+      "role_id": "build-manager",
+      "independent_from": [
+        "architect",
+        "ux-ui-designer",
+        "backend-engineer",
+        "frontend-engineer",
+        "orchestrator-tech-lead"
+      ],
+      "runtime_enforcement": "cannot-remediate-before-assignment boundary"
+    },
+    {
+      "role_id": "quality-engineer",
+      "independent_from": [
+        "architect",
+        "ux-ui-designer",
+        "backend-engineer",
+        "frontend-engineer",
+        "orchestrator-tech-lead"
+      ],
+      "runtime_enforcement": "separate role identity and cannot-declare-user-approval boundary"
+    }
+  ],
+  "skill_profiles": [
+    "orchestrator-core",
+    "architect-core",
+    "ux-core",
+    "implementer-core",
+    "frontend-core",
+    "reviewer-core",
+    "build-core",
+    "quality-core",
+    "auditor-core"
+  ],
+  "conformance_observation": {
+    "governance_assets": "pass",
+    "approval_isolation": "pass",
+    "context_redaction": "pass",
+    "overall": "not_passed",
+    "overall_note": "The supplementary conformance command failed only its clean-state scenario because this initialized project has generated Studio runtime stores; doctor remains passing."
+  },
+  "draft_envelope_review": {
+    "count": 9,
+    "matrix_locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-review-matrix.md",
+    "matrix_file_sha256": "f137e7bff553a11b14cb06ba3becacea399a91c14ed27e80b8896557cc55a284",
+    "state": "owner-approved-subjects-pending-separate-activation",
+    "approval_record_count": 9
+  },
+  "blocker": "Nine separate local approvals now bind the exact pending envelope subjects while preserving role and independence boundaries. Activation, approved successor envelopes, workspaces, and dispatch remain separately unauthorized.",
+  "validated_at": "2026-09-11T16:40:29Z"
+}

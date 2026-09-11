@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-work-packages",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "source_plan_sha256": "2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073",
+  "integration_reference": {
+    "artifact_id": "foundation-integration-contracts",
+    "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+    "schema_version": "1.0.0",
+    "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+  },
+  "work_packages": [
+    {
+      "work_package_id": "service-booking-2-register-github-tracking",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "owned_locators": [
+        "docs/project/tracking/github-links.json",
+        "docs/project/tracking/sync-retry.json",
+        "scripts/github/sync-work-items.sh",
+        "scripts/github/sync-work-items.test.sh"
+      ],
+      "dependency_work_package_ids": [],
+      "sequence": 1,
+      "deliverable": "Register and verify redacted first-milestone GitHub counterparts while preserving local authority and retry evidence.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-define-architecture",
+      "owner_instance_id": "service-booking-2-architect",
+      "owned_locators": [
+        "docs/architecture/phase-one.md",
+        "docs/architecture/openapi/service-booking-two.yaml",
+        "docs/privacy/swiss-storage-boundary.md"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-register-github-tracking"
+      ],
+      "sequence": 2,
+      "deliverable": "Define the accepted first-milestone API, data, security, privacy, simulated-adapter, and non-deploying release boundaries.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-design-interactions",
+      "owner_instance_id": "service-booking-2-ux",
+      "owned_locators": [
+        "docs/ux/phase-one-flows.md"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-register-github-tracking",
+        "service-booking-2-define-architecture"
+      ],
+      "sequence": 3,
+      "deliverable": "Specify responsive English/German anonymous, customer, provider, verified, unverified, success, and failure journeys with accessible states.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-build-backend-foundation",
+      "owner_instance_id": "service-booking-2-backend",
+      "owned_locators": [
+        "backend",
+        "compose.yaml"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-register-github-tracking",
+        "service-booking-2-define-architecture"
+      ],
+      "sequence": 3,
+      "deliverable": "Build the Spring Boot and PostgreSQL/Flyway foundation, authentication and session boundaries, replaceable simulated account adapters, and backend integration tests.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-build-frontend-shell",
+      "owner_instance_id": "service-booking-2-frontend",
+      "owned_locators": [
+        "frontend"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-define-architecture",
+        "service-booking-2-design-interactions",
+        "service-booking-2-build-backend-foundation"
+      ],
+      "sequence": 4,
+      "deliverable": "Build the React application shell, role-bound authentication views, device-local English/German selection, and frontend tests against accepted contracts.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-code-review",
+      "owner_instance_id": "service-booking-2-code-reviewer",
+      "owned_locators": [
+        "docs/project/reviews/service-booking-2-foundation-code-review.json"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-register-github-tracking",
+        "service-booking-2-define-architecture",
+        "service-booking-2-design-interactions",
+        "service-booking-2-build-backend-foundation",
+        "service-booking-2-build-frontend-shell"
+      ],
+      "sequence": 5,
+      "deliverable": "Independently review foundation contracts, security, implementation, and developer-owned tests against one exact candidate without editing it.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-build",
+      "owner_instance_id": "service-booking-2-build-manager",
+      "owned_locators": [
+        "docs/project/reviews/service-booking-2-foundation-build-status.json"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-foundation-code-review"
+      ],
+      "sequence": 6,
+      "deliverable": "Verify the code-reviewed exact candidate builds from locked inputs and starts with local PostgreSQL without modifying the candidate.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-quality",
+      "owner_instance_id": "service-booking-2-quality-engineer",
+      "owned_locators": [
+        "docs/project/reviews/service-booking-2-foundation-quality-report.json"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-foundation-build"
+      ],
+      "sequence": 7,
+      "deliverable": "Verify authentication, language, storage, boundary, responsive, and failure-path acceptance scope on the exact build-verified candidate.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-audit",
+      "owner_instance_id": "service-booking-2-independent-auditor",
+      "owned_locators": [
+        "docs/project/reviews/service-booking-2-foundation-independent-audit.json"
+      ],
+      "dependency_work_package_ids": [
+        "service-booking-2-foundation-quality"
+      ],
+      "sequence": 8,
+      "deliverable": "Independently audit the exact-snapshot foundation evidence chain and report findings only to the Orchestrator.",
+      "integration_references": [
+        {
+          "artifact_id": "foundation-integration-contracts",
+          "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+          "schema_version": "1.0.0",
+          "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+        }
+      ]
+    }
+  ],
+  "scope_limit": "These packages cover only service-booking-2-foundation. They do not schedule, submit, or authorize work from milestones 2 through 5.",
+  "validated_at": "2026-09-11T13:18:53Z"
+}

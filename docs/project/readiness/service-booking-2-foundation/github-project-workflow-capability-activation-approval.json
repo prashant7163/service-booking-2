@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0.0",
+  "approval_id": "apr-service-booking-2-github-project-workflow-activation-001",
+  "subject_type": "external_capability",
+  "subject_id": "github-project-workflow",
+  "subject_digest": "fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4",
+  "decision": "approved",
+  "decided_by": "application-owner",
+  "decided_at": "2026-09-11T16:12:49Z",
+  "comment": "Application owner explicitly authorized creation of a separate active successor for the already registered quarantined github-project-workflow capability and one atomic Studio trust transition using the successor and this approval file. This approval does not authorize any GitHub mutation, scope expansion, evidence or readiness submission, task or worktree creation, Git mutation, or implementation work.",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "subject_locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-draft.json",
+  "transition": {
+    "from_status": "quarantined",
+    "to_status": "active",
+    "registered_predecessor_artifact_sha256": "ca43ab9cedcb626efff881c0f857972a3e097d6fd5a4bde69594d65f4aa856b1",
+    "successor_locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-active.json",
+    "command": "studioctl trust apply with both --file and --approval-file",
+    "maximum_transition_count": 1
+  },
+  "bindings": {
+    "repository": {
+      "url": "https://github.com/prashant7163/service-booking-2.git",
+      "scope": "only-repository"
+    },
+    "allowed_operations": [
+      "repository metadata read",
+      "Git contents read and write",
+      "issues read and write",
+      "milestones read and write"
+    ],
+    "excluded_operations": [
+      "organization-wide access",
+      "repository administration changes",
+      "secrets access or management",
+      "deployments",
+      "packages",
+      "GitHub Actions management",
+      "pull-request management",
+      "access to every repository other than prashant7163/service-booking-2"
+    ]
+  },
+  "authorization_scope": {
+    "authorized": [
+      "create-active-successor-capability-artifact",
+      "studioctl-trust-apply-active"
+    ],
+    "not_authorized": [
+      "mutate-github",
+      "expand-capability-scope",
+      "submit-supporting-evidence",
+      "submit-readiness",
+      "mutate-git",
+      "create-branches-or-worktrees",
+      "create-tasks-or-agents",
+      "create-commits-or-pushes",
+      "modify-application-code"
+    ]
+  }
+}

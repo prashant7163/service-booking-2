@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-integration-contracts",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "contracts": [
+    {
+      "interface_id": "local-github-tracking",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "producer_work_package_id": "service-booking-2-register-github-tracking",
+      "consumers": [
+        "all first-milestone work packages",
+        "application-owner"
+      ],
+      "contract": "Local task and milestone IDs remain authoritative; redacted GitHub URLs are counterparts only. Failed synchronization preserves local state and produces an actionable retry marker.",
+      "example": "service-booking-2-build-backend-foundation maps to one issue under service-booking-2-foundation; closing that issue cannot complete the local task."
+    },
+    {
+      "interface_id": "architecture-boundary-contract",
+      "owner_instance_id": "service-booking-2-architect",
+      "producer_work_package_id": "service-booking-2-define-architecture",
+      "consumers": [
+        "service-booking-2-design-interactions",
+        "service-booking-2-build-backend-foundation",
+        "service-booking-2-build-frontend-shell"
+      ],
+      "contract": "The versioned OpenAPI document and architecture boundary record define account roles, simulated adapters, same-origin session and CSRF behavior, data ownership, Swiss-storage nonclaim, and error shapes before dependent implementation starts.",
+      "example": "POST /api/auth/provider/register creates only a provider identity; publication remains unavailable until simulated verification succeeds."
+    },
+    {
+      "interface_id": "responsive-bilingual-flow-contract",
+      "owner_instance_id": "service-booking-2-ux",
+      "producer_work_package_id": "service-booking-2-design-interactions",
+      "consumers": [
+        "service-booking-2-build-frontend-shell",
+        "service-booking-2-foundation-quality"
+      ],
+      "contract": "The flow record defines anonymous, customer, provider, verified and unverified states; English/German selection and device-local persistence; labels, keyboard operation, validation states, and 390px/1280px behavior.",
+      "example": "Unsupported browser language selects English; the visible language switch changes UI copy and persists only on the current device."
+    },
+    {
+      "interface_id": "backend-auth-session-contract",
+      "owner_instance_id": "service-booking-2-backend",
+      "producer_work_package_id": "service-booking-2-build-backend-foundation",
+      "consumers": [
+        "service-booking-2-build-frontend-shell",
+        "service-booking-2-foundation-code-review",
+        "service-booking-2-foundation-quality"
+      ],
+      "contract": "The Spring Boot API implements the accepted OpenAPI surface with PostgreSQL/Flyway state, non-reversible password hashes, same-origin secure HTTP-only sessions, CSRF enforcement, role separation, and replaceable verification/reset adapters.",
+      "example": "An anonymous cart mutation returns the declared unauthenticated error; an unverified customer reserve attempt returns the declared verification-required error."
+    },
+    {
+      "interface_id": "frontend-api-language-contract",
+      "owner_instance_id": "service-booking-2-frontend",
+      "producer_work_package_id": "service-booking-2-build-frontend-shell",
+      "consumers": [
+        "service-booking-2-foundation-code-review",
+        "service-booking-2-foundation-build",
+        "service-booking-2-foundation-quality"
+      ],
+      "contract": "The React shell consumes only the accepted OpenAPI and flow contracts, sends CSRF-protected same-origin requests, exposes role-bound navigation, and uses English/German resource keys without translating provider-authored content.",
+      "example": "A provider account never sees customer cart actions, and switching to German changes interface copy without rewriting provider-authored text."
+    },
+    {
+      "interface_id": "exact-candidate-gate-chain",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "producer_work_package_id": "service-booking-2-register-github-tracking",
+      "consumers": [
+        "service-booking-2-foundation-code-review",
+        "service-booking-2-foundation-build",
+        "service-booking-2-foundation-quality",
+        "service-booking-2-foundation-audit",
+        "application-owner"
+      ],
+      "contract": "Code Review, Build Verification, Quality Review, and Independent Audit run in that order against one exact candidate. Any candidate change repeats affected gates; the human milestone decision remains separate and final.",
+      "example": "A correction after Code Review creates a new candidate digest, invalidating later gate evidence for the previous candidate."
+    }
+  ],
+  "validated_at": "2026-09-11T13:18:53Z"
+}

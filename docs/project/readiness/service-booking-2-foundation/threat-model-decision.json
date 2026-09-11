@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-threat-decision",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "decision": "applicable",
+  "basis": {
+    "specification_field": "#/threat_model",
+    "threat_model_required": true,
+    "accepted_specification_sha256": "04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29"
+  },
+  "in_scope_trust_boundaries": [
+    "Browser to API",
+    "API to PostgreSQL",
+    "Role and owner boundaries",
+    "Simulated verification and reset adapters",
+    "Authoritative local Studio state to GitHub tracking"
+  ],
+  "control_ids": [
+    "authenticated-ownership-enforcement",
+    "nonreversible-password-storage",
+    "session-csrf-enforcement",
+    "role-separation-enforcement",
+    "simulated-adapter-isolation",
+    "local-authority-reconciliation",
+    "least-privilege-github-access"
+  ],
+  "required_architect_output": "The architecture work package must convert the approved specification's draft threat analysis into explicit API, data, session, CSRF, adapter, GitHub, and Swiss-storage boundaries before dependent implementation is eligible to start.",
+  "residual_risk_handling": [
+    "No production security or privacy certification is claimed.",
+    "No Swiss hosted deployment target is implied or approved.",
+    "Remote tracking never becomes lifecycle authority.",
+    "Later-milestone redemption, inventory, CI, and release threats are not authorized by this first-milestone record."
+  ],
+  "validated_at": "2026-09-11T13:18:53Z"
+}

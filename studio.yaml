@@ -1,0 +1,8 @@
+schema_version: 1.0.0
+project_id: service-booking-2
+selected_runtime: codex
+project_name: service-booking-2
+policy_profile_id: default
+evidence_retention:
+  quality_engineering_reports:
+    max_complete_cycles: 10

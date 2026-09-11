@@ -1,0 +1,253 @@
+{
+  "schema_version": "1.0.0",
+  "validation_id": "service-booking-2-foundation-readiness-validation-001",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "validated_at": "2026-09-11T16:54:47Z",
+  "result": "valid_revision_required_draft",
+  "readiness_identity": {
+    "readiness_id": "service-booking-2-foundation-readiness-draft-001",
+    "locator": "docs/project/readiness/service-booking-2-foundation/milestone-readiness-draft.json",
+    "canonical_sha256": "387541159810c30007dc2e9353c5acc9016d89f95e4655cfe111b2587289b4d9",
+    "outcome": "revision_required"
+  },
+  "contract_validation": {
+    "validator": "agentic_studio.contracts.MilestoneReadiness.model_validate",
+    "outcome": "pass",
+    "note": "The draft satisfies the project-local MilestoneReadiness contract as a revision_required record. It is intentionally not a passing readiness record."
+  },
+  "checks": [
+    {
+      "check_id": "authoritative-run-state",
+      "outcome": "pass",
+      "evidence": "studioctl status reported service-booking-2-benchmark at readiness_pending, journal sequence 7, zero task states, and github-project-workflow active."
+    },
+    {
+      "check_id": "accepted-specification-reference",
+      "outcome": "pass",
+      "evidence": "Artifact ID, source locator, and canonical SHA-256 exactly match the latest accepted specification in Studio."
+    },
+    {
+      "check_id": "accepted-plan-reference",
+      "outcome": "pass",
+      "evidence": "Artifact ID, source locator, and canonical SHA-256 exactly match the latest accepted plan in Studio."
+    },
+    {
+      "check_id": "source-snapshot-integrity",
+      "outcome": "pass",
+      "evidence": "Both immutable artifact snapshot files hash to their Studio-recorded canonical digests. Editable source-file byte digests were not substituted for accepted artifact digests."
+    },
+    {
+      "check_id": "supporting-evidence-contracts",
+      "outcome": "pass",
+      "evidence": "All 13 JSON evidence inputs parse as GenericSupportingEvidence and pass the runtime's sensitive-key rejection rule."
+    },
+    {
+      "check_id": "supporting-evidence-reference-digests",
+      "outcome": "pass",
+      "evidence": "Every readiness evidence locator exists and every referenced SHA-256 equals the runtime canonical artifact digest of that file."
+    },
+    {
+      "check_id": "doctor-result",
+      "outcome": "pass",
+      "evidence": "studioctl doctor passed all applicable checks; the persisted evidence is a redacted projection of result preflight-current."
+    },
+    {
+      "check_id": "first-milestone-scope",
+      "outcome": "pass",
+      "evidence": "All five task work-package IDs and four assurance work-package IDs resolve to the accepted service-booking-2-foundation milestone; no later-milestone task ID is present."
+    },
+    {
+      "check_id": "acceptance-criteria",
+      "outcome": "pass",
+      "evidence": "The 17 unique criterion IDs referenced by the first milestone all resolve in the accepted specification snapshot."
+    },
+    {
+      "check_id": "work-package-dependencies",
+      "outcome": "pass",
+      "evidence": "All dependencies resolve, no package depends on itself, there are no cycles or duplicates, and every dependency has a lower sequence."
+    },
+    {
+      "check_id": "work-package-locators",
+      "outcome": "pass",
+      "evidence": "All owned locators are unique safe repository-relative paths, with no equal or ancestor/descendant overlap across packages."
+    },
+    {
+      "check_id": "interface-bindings",
+      "outcome": "pass",
+      "evidence": "All five interface IDs are unique; every owner equals the responsible work-package owner; every integration reference is present on its package."
+    },
+    {
+      "check_id": "role-skill-policy",
+      "outcome": "pass_owner_approval_recorded",
+      "evidence": "Canonical role/capability/skill assets and generated runtime roles define the intended separation. Nine separate local owner approvals bind the exact pending AgentInstance subjects while leaving every envelope unchanged and non-active."
+    },
+    {
+      "check_id": "benchmark-governance-exception",
+      "outcome": "owner_authorized_not_yet_exercised",
+      "evidence": "Exception service-booking-2-benchmark-agent-instance-registration-exception permits only this local non-production benchmark to embed the nine exact approval-linked envelopes in final readiness without unsupported per-instance Studio events. It is non-precedential, preserves permissions and GitHub scope, creates no task or implementation authority, and has not been exercised because the Git baseline prerequisite fails."
+    },
+    {
+      "check_id": "trusted-github-capability",
+      "outcome": "pass",
+      "evidence": "Credential-backed read-only checks verified GitHub CLI account prashant7163, macOS keyring storage, HTTPS, the exact private repository, ADMIN permission with push access, and empty issue, milestone, and Git ref listings. Activation approval apr-service-booking-2-github-project-workflow-activation-001 binds the registered quarantined predecessor digest fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4; Studio records the exact-scope successor digest 350927a500c2decc98165ec02d99c8e6b9b8749508b03e94f84666f88381e9eb as active at sequence 7."
+    },
+    {
+      "check_id": "external-capability-contract",
+      "outcome": "pass_active",
+      "evidence": "The active github-project-workflow successor validates as ExternalCapability, retains the quarantined predecessor's exact repository scope, operation allowlist, minimum permissions, roles, endpoints, and exclusions, and carries an approval reference bound to activation approval digest 7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99. The predecessor and earlier approval remain unchanged."
+    },
+    {
+      "check_id": "instance-bindings",
+      "outcome": "local_approvals_valid_activation_not_performed",
+      "evidence": "Nine separate Approval records validate canonically and bind the exact owner-approved subject IDs and approval-subject digests. All envelope byte digests are unchanged; lifecycle remains pending, approval fields remain null, and approved_instances remains empty because no successor-envelope or activation was authorized."
+    },
+    {
+      "check_id": "instance-approval-studio-registration",
+      "outcome": "covered_by_owner_authorized_benchmark_exception",
+      "evidence": "CLI inspection found no approval-only AgentInstance command. The owner-authorized benchmark exception allows only the nine exact approval-linked envelopes to be embedded in final readiness; no unsupported Studio command or runtime modification was used."
+    },
+    {
+      "check_id": "workspace-isolation",
+      "outcome": "blocked_unborn_main",
+      "evidence": "The repository is initialized on unborn branch main, but git rev-parse --verify HEAD fails with Needed a single revision. Planned task and assurance worktrees cannot share a clean committed baseline until an initial main commit is explicitly authorized; orphan worktrees would create unrelated histories and are not acceptable."
+    },
+    {
+      "check_id": "evidence-registration",
+      "outcome": "not_performed",
+      "evidence": "All evidence submit commands are drafted but were not run, as required by the stop boundary."
+    },
+    {
+      "check_id": "readiness-submission",
+      "outcome": "not_performed",
+      "evidence": "The readiness submit command and idempotency key are drafted but were not run."
+    }
+  ],
+  "supplementary_observation": {
+    "command": "./studioctl conformance",
+    "result": "policy_denied",
+    "interpretation": "All governance, runtime, lifecycle, approval-isolation, redaction, recovery, prompt-quality, contract, and operator-guide scenarios passed. Only clean-state failed because the initialized project contains generated Studio runtime stores. This is recorded but is not treated as a substitute for doctor or as a passing readiness claim."
+  },
+  "evidence_canonical_digests": [
+    {"artifact_id": "foundation-accepted-bindings", "sha256": "6a4f7692f1650f4c64f9cfd2a1780d2b688f5b0ebf8382fd3eea373305b60761"},
+    {"artifact_id": "foundation-effective-standards", "sha256": "d2d9fb05b177a1bf863e0423ada615800875020181c2dde6bac88a1e7a465073"},
+    {"artifact_id": "foundation-role-skill-independence", "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"},
+    {"artifact_id": "foundation-trusted-capability", "sha256": "9a3566483c1ac894cae684c9b6eb742b5ef5f3e82b9793a147de6e4289bb0899"},
+    {"artifact_id": "foundation-threat-decision", "sha256": "8703430c7a1289bb75e8ef6bcb037baeba496d72623d8069bb68e2f053bdc635"},
+    {"artifact_id": "foundation-doctor-result", "sha256": "690b7a0dcefdb880c549b11e325ca67a644c9e9a9645b51323463437f82bfb93"},
+    {"artifact_id": "foundation-integration-contracts", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+    {"artifact_id": "foundation-integration-test-plan", "sha256": "7fe964eb0088d2cd50d0ab1cd59d0b26d9e74e0596d558fa89d42921f8516b9c"},
+    {"artifact_id": "foundation-rolling-progress-plan", "sha256": "7f956eedbe8ed1f2ea7663d3e71f60792b5a7f95bd4b394644544dbdbfeba35c"},
+    {"artifact_id": "foundation-work-packages", "sha256": "631a5a8ec93d2b9f0f6953e88cf611ffa6a12b74dd8009d728f8712487de801a"},
+    {"artifact_id": "foundation-interface-decisions", "sha256": "3cf10defdd897de720453a9eef9994f9e85640be43cce0c7b9ec41587321770b"},
+    {"artifact_id": "foundation-instance-binding-assessment", "sha256": "114adc2e723bf5f7838da25349ab87a84de59ed90d2bb90627f61f28f7b143fe"},
+    {"artifact_id": "foundation-prerequisite-validation", "sha256": "7c15fd261bd40cfa9c414d1e495d098999b504924ca025c225cdd64135bc5c45"}
+  ],
+  "blockers": [
+    "The benchmark exception covers the missing AgentInstance interface, but main is unborn; an explicitly authorized initial commit containing the approved baseline is required before planned task and assurance worktrees can be created.",
+    "Evidence is intentionally unregistered pending application-owner direction."
+  ],
+  "safe_resume": {
+    "owner_role": "orchestrator-tech-lead",
+    "state": "the local benchmark exception is owner-authorized but not exercised; nine approvals remain exact; main is unborn; no worktrees or tasks exist; revised readiness remains revision_required and unsubmitted",
+    "next_action": "Obtain explicit authorization for one initial commit on main containing the approved repository baseline. After that commit, create only the nine planned isolated worktrees and continue readiness validation. Evidence and readiness submission remain later boundaries.",
+    "execution_authorized": false
+  },
+  "github_capability_validation": {
+    "scope": "read-only verification of the exact approved GitHub repository and governed activation of the repository-scoped capability",
+    "validated_at": "2026-09-11T16:14:33Z",
+    "connection": {
+      "github_cli_version": "2.100.0",
+      "authenticated_account": "prashant7163",
+      "authentication_storage": "macOS keyring",
+      "git_protocol": "https",
+      "repository": "prashant7163/service-booking-2",
+      "repository_url": "https://github.com/prashant7163/service-booking-2.git",
+      "visibility": "private",
+      "viewer_permission": "ADMIN",
+      "reported_push_access": true,
+      "issue_count": 0,
+      "milestone_count": 0,
+      "advertised_git_ref_count": 0
+    },
+    "fine_grained_scope_attestation": {
+      "source": "application-owner-provided verified fact",
+      "repository_restriction": "service-booking-2 only",
+      "metadata": "read-only",
+      "contents": "read and write",
+      "issues": "read and write"
+    },
+    "external_capability": {
+      "capability_id": "github-project-workflow",
+      "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-active.json",
+      "canonical_sha256": "350927a500c2decc98165ec02d99c8e6b9b8749508b03e94f84666f88381e9eb",
+      "status": "active",
+      "approval_reference": "7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99",
+      "approval_state": "owner-approved-active-transition",
+      "registration_state": "active"
+    },
+    "owner_approval": {
+      "approval_id": "apr-service-booking-2-github-project-workflow-activation-001",
+      "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-activation-approval.json",
+      "subject_digest": "fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4",
+      "canonical_artifact_sha256": "7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99",
+      "decision": "approved"
+    },
+    "sandbox_interpretation": "A sandbox-only gh authentication failure cannot access the macOS keyring and is not treated as an authentication failure; credential-backed checks must use explicitly approved keyring and network access.",
+    "material_handling": "No credential value was requested, copied, hashed, or persisted.",
+    "github_mutation_performed": false,
+    "studio_trust_apply_performed": true,
+    "studio_transition": {
+      "idempotency_key": "trust-github-project-workflow-active-350927a500c2",
+      "approval_event_sequence": 6,
+      "capability_event_sequence": 7,
+      "resulting_capability_state": "active"
+    }
+  },
+  "supplemental_validation": {
+    "scope": "local Git-repository initialization only",
+    "validated_at": "2026-09-11T13:38:33Z",
+    "precondition": {
+      "command": "git rev-parse --show-toplevel",
+      "exit_code": 128,
+      "result": "fatal: not a git repository (or any of the parent directories): .git"
+    },
+    "initialization": {
+      "commands": [
+        "git init -b main .",
+        "git remote add origin https://github.com/prashant7163/service-booking-2.git"
+      ],
+      "result": "pass"
+    },
+    "verification": {
+      "repository_root": "/Users/pacific/Playground/AgentHarness/service-booking-2",
+      "active_branch": "main",
+      "branch_state": "unborn",
+      "origin_url": "https://github.com/prashant7163/service-booking-2.git",
+      "ls_remote_exit_code": 0,
+      "ls_remote_advertised_ref_count": 0,
+      "working_tree_status": [
+        "## No commits yet on main",
+        "?? .codex/",
+        "?? .gitignore",
+        "?? .studio/",
+        "?? AGENTS.md",
+        "?? README.md",
+        "?? codex-runtime.yaml",
+        "?? docs/",
+        "?? shared/",
+        "?? studio-codex.uv.lock",
+        "?? studio.yaml",
+        "?? studioctl",
+        "?? studioctl.cmd"
+      ]
+    },
+    "resolved_blocker": "The project root is not a Git repository.",
+    "remaining_workspace_blockers": [
+      "Accepted task worktrees do not exist.",
+      "Exact assurance-role workspace allocations are not approved."
+    ],
+    "studio_submission_performed": false
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_type": "approved_specification_validation",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "artifact": "docs/discovery/project-specification.json",
+  "file_sha256": "615b01c206349032d0a66c49436088c977b7f06e30d6dda7b0969175261d9555",
+  "canonical_approval_subject_digest": "227a4f029b576930530c4c5b388d2836963d9f7356913b5faf5f9dcc180c4c9b",
+  "validated_at": "2026-09-11T11:41:27Z",
+  "registered_artifact": {
+    "kind": "specification",
+    "sha256": "04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29",
+    "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29.json",
+    "source_locator": "docs/discovery/project-specification.json",
+    "subject_id": "service-booking-2",
+    "journal_event_sequence": 3
+  },
+  "requirements": 24,
+  "functional_requirements": 16,
+  "non_functional_requirements": 8,
+  "acceptance_criteria": 72,
+  "decision_registry_entries": 184,
+  "contract_sha256": {
+    "shared/contracts/project-spec.schema.json": "ef4847e77c1613eb2e006164f064428a413a39b8e8ee85e20a6ec5df3406ae06",
+    "shared/contracts/threat-model.schema.json": "aed03b5c51c6174bb4eb7a6dc1f1f6f2b1f3b29e4c605f65e2ba119b0f6150fa"
+  },
+  "preserved_sections": [
+    "problem_statement",
+    "desired_outcome",
+    "personas",
+    "primary_journeys",
+    "goals",
+    "success_criteria",
+    "non_goals",
+    "scope_included",
+    "scope_excluded",
+    "functional_requirements",
+    "non_functional_requirements",
+    "chosen_stack",
+    "ux_flow_references",
+    "responsive_behavior",
+    "design_system_direction",
+    "external_systems",
+    "data_classifications",
+    "assumptions",
+    "constraints",
+    "risks",
+    "dependencies",
+    "threat_model_required",
+    "threat_model_reference",
+    "standards_profile_ids",
+    "open_questions",
+    "traceability",
+    "state_rules",
+    "deferred_items",
+    "implementation_defaults",
+    "threat_model"
+  ],
+  "source_copy_integrity": "pass",
+  "canonical_validation": "pass",
+  "traceability_validation": "pass",
+  "metadata_isolation": "pass",
+  "result": "pass",
+  "specification_status": "approved",
+  "approval": {
+    "approval_id": "apr-service-booking-2-spec-001",
+    "decision": "approved",
+    "decided_by": "application-owner",
+    "decided_at": "2026-09-11T11:39:17Z",
+    "subject_id": "service-booking-2",
+    "subject_digest": "227a4f029b576930530c4c5b388d2836963d9f7356913b5faf5f9dcc180c4c9b"
+  },
+  "validator_environment": ".studio/runtime/bin/python",
+  "validators": [
+    "agentic_studio.contracts.project_spec.ProjectSpecification.model_validate",
+    "agentic_studio.contracts.operations.ThreatModel.model_validate"
+  ],
+  "contract": "shared/contracts/project-spec.schema.json",
+  "embedded_threat_model_contract": "shared/contracts/threat-model.schema.json",
+  "mechanism": "Current project-local canonical Pydantic models, including ProjectSpecification.validate_traceability_and_approval, plus independent embedded ThreatModel validation. Exported shared schemas match model-generated schemas after excluding only $id/$schema document metadata. No separate JSON Schema engine is installed.",
+  "source_evidence_manifest": "docs/discovery/source/service-booking-1/source-evidence.json",
+  "source_evidence_manifest_sha256": "9498ab5e3ad0a1099e8ea052bfe0bd1523453bf68d3737424fb58bb559ae1c49",
+  "validator_source_sha256": {
+    ".studio/runtime/lib/python3.12/site-packages/agentic_studio/contracts/project_spec.py": "6f52181adbf9fa53a0a6c475e72e09fff62b272286d1d526fc1a773cc0f7a877",
+    ".studio/runtime/lib/python3.12/site-packages/agentic_studio/contracts/operations.py": "60ecdecb87c47996696eb16a600b9549874a3b86e561182da54534f579f411c8"
+  },
+  "review_artifact_sha256": {
+    "docs/discovery/project-specification-draft.md": "ad03a9a626e116d5a3810d72f73354bcfa99a3a68d9bd037052caf6cae35df03",
+    "docs/discovery/service-booking-1-reuse-assessment.md": "2b49d702861944f5d2e7d6b5eee8358cfc96c611ae80ee57f131b9742f44908b"
+  },
+  "additional_checks": [
+    "All four preserved source files match immutable manifest hashes.",
+    "All requirements, acceptance criteria, personas, journeys, scope, stack, risks, defaults, deferrals, threat model and traceability match source values exactly.",
+    "Requirement IDs, acceptance-criterion IDs and traceability ownership/coverage pass canonical uniqueness and mapping rules.",
+    "All decision references exist and no current requirement references a superseded or retired decision.",
+    "Decision IDs are unique; all 184 registry slots and every entry except identity-specific D22 are unchanged.",
+    "Requirement/traceability decision and source mappings agree exactly.",
+    "Current identity project_id and slug are service-booking-2; status is approved and the new approval binds the exact canonical digest.",
+    "Source approval ID/digest/timestamp and source repository URL are absent; the current Service Booking Two approval is independently recorded.",
+    "The registered Studio snapshot independently passes canonical ProjectSpecification and embedded ThreatModel validation.",
+    "No blocking phase-one product questions were introduced; historical unanswered details remain explicitly deferred."
+  ],
+  "delta": {
+    "material_product_changes": false,
+    "requirement_changes": 0,
+    "acceptance_criterion_changes": 0,
+    "identity_metadata_updated": true,
+    "source_approval_removed": true,
+    "current_approval_recorded": true,
+    "source_repository_assignment_retired": true,
+    "repository_endpoint": "intentionally unassigned",
+    "contract_changes_required": false
+  },
+  "observed_starting_state": {
+    "phase": "discovery",
+    "artifacts": [],
+    "source_revision_before_drafting": "5bae728e49c3fdc7308a78ac20d3fdbb851c9459acf6a7b7f22f722d906c1ae6",
+    "notice": "Starting state observed before creating these draft files; not an exact snapshot identity for their completed contents."
+  },
+  "safe_resume": {
+    "owner_role": "orchestrator-tech-lead",
+    "state": "approved specification recorded",
+    "next_action": "Stop before planning or implementation; await a separate owner instruction before creating a milestone plan.",
+    "approval_required": false,
+    "approval_recorded": true,
+    "lifecycle_transition_performed": true,
+    "studio_phase": "specification_approved",
+    "planning_started": false,
+    "implementation_authorized": false
+  },
+  "limits": [
+    "Specification/traceability validation only; not application test evidence.",
+    "No source-project approval, lifecycle state, plan, readiness or migration authority transferred.",
+    "Only the explicitly approved specification was submitted; no milestone plan, readiness artifact, task, code, GitHub record, commit, push, import or implementation was created.",
+    "The validation report does not hash itself; its final file SHA-256 is supplied to the Orchestrator for durable handoff."
+  ]
+}

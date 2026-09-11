@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-trusted-capability",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "decision": "applicable",
+  "required_external_capability_id": "github-project-workflow",
+  "repository_url": "https://github.com/prashant7163/service-booking-2.git",
+  "required_operations": [
+    "repository metadata read",
+    "Git contents read and write",
+    "issues read and write",
+    "milestones read and write"
+  ],
+  "minimum_access": [
+    "Metadata read-only",
+    "Contents read and write",
+    "Issues read and write, including milestones"
+  ],
+  "prohibited_access": [
+    "organization-wide access",
+    "repository administration changes",
+    "secrets access or management",
+    "deployments",
+    "packages",
+    "GitHub Actions management",
+    "pull-request management",
+    "every repository other than prashant7163/service-booking-2"
+  ],
+  "observations": {
+    "studio_capability_state_count": 1,
+    "github_cli": {
+      "path": "/opt/homebrew/bin/gh",
+      "version": "2.100.0",
+      "binary_sha256": "1179745d43ea43dff3fa1f0e34bfb204e8f99232204f106c71ca8c2e0f6cb41a"
+    },
+    "authenticated_account": "prashant7163",
+    "authentication_storage": "macOS keyring",
+    "git_protocol": "https",
+    "repository": {
+      "name_with_owner": "prashant7163/service-booking-2",
+      "url": "https://github.com/prashant7163/service-booking-2",
+      "visibility": "private",
+      "viewer_permission": "ADMIN",
+      "reported_push_access": true
+    },
+    "read_only_checks": {
+      "identity": "pass",
+      "repository_metadata": "pass",
+      "repository_permissions": "pass",
+      "issues": "pass-empty",
+      "milestones": "pass-empty",
+      "git_ref_advertisement": "pass-empty"
+    },
+    "sandbox_note": "Credential-backed checks require explicitly approved macOS-keyring and network access; a sandbox-only authentication failure is not evidence that the keyring-backed connection is invalid."
+  },
+  "fine_grained_scope_attestation": {
+    "source": "application-owner-provided verified fact",
+    "repository_restriction": "prashant7163/service-booking-2 only",
+    "metadata": "read-only",
+    "contents": "read and write",
+    "issues": "read and write"
+  },
+  "material_handling": "No credential value was requested, copied, hashed, or persisted in repository or Studio state. Authentication remains in the macOS keyring.",
+  "registered_quarantined_predecessor": {
+    "capability_id": "github-project-workflow",
+    "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-draft.json",
+    "canonical_sha256": "fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4",
+    "status": "quarantined",
+    "approval_state": "owner-approved",
+    "registration_state": "registered-quarantined"
+  },
+  "owner_approval": {
+    "approval_id": "apr-service-booking-2-github-project-workflow-001",
+    "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-approval.json",
+    "subject_digest": "fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4",
+    "canonical_artifact_sha256": "41db542bbd1ffd88075f1d032b2b076be4c5a012857ab9a8d9ac143bc8775f85",
+    "decision": "approved"
+  },
+  "active_external_capability": {
+    "capability_id": "github-project-workflow",
+    "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-active.json",
+    "canonical_sha256": "350927a500c2decc98165ec02d99c8e6b9b8749508b03e94f84666f88381e9eb",
+    "status": "active",
+    "approval_reference_sha256": "7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99",
+    "registration_state": "active"
+  },
+  "activation_approval": {
+    "approval_id": "apr-service-booking-2-github-project-workflow-activation-001",
+    "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-activation-approval.json",
+    "subject_digest": "fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4",
+    "canonical_artifact_sha256": "7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99",
+    "decision": "approved"
+  },
+  "studio_transition": {
+    "idempotency_key": "trust-github-project-workflow-active-350927a500c2",
+    "approval_event_sequence": 6,
+    "capability_event_sequence": 7,
+    "resulting_status": "active"
+  },
+  "assessment": "connection_verified_capability_active",
+  "resolved_blocker": "GitHub CLI authentication, exact-repository access, digest-bound activation approval, and governed activation of github-project-workflow are verified.",
+  "remaining_blocker": null,
+  "validated_at": "2026-09-11T16:14:33Z"
+}

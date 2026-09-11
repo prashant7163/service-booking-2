@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-interface-decisions",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "integration_reference": {
+    "artifact_id": "foundation-integration-contracts",
+    "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+    "schema_version": "1.0.0",
+    "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+  },
+  "interface_decisions": [
+    {
+      "interface_id": "local-github-tracking",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "work_package_id": "service-booking-2-register-github-tracking",
+      "decision": "Local Studio state is authoritative; GitHub receives redacted first-milestone counterparts and retry state only.",
+      "example": "A closed GitHub issue does not complete the corresponding Studio task."
+    },
+    {
+      "interface_id": "architecture-boundary-contract",
+      "owner_instance_id": "service-booking-2-architect",
+      "work_package_id": "service-booking-2-define-architecture",
+      "decision": "OpenAPI plus architecture/privacy records freeze account, session, CSRF, simulated-adapter, data, and Swiss-storage boundaries before implementation.",
+      "example": "Provider publication is denied until simulated verification succeeds."
+    },
+    {
+      "interface_id": "responsive-bilingual-flow-contract",
+      "owner_instance_id": "service-booking-2-ux",
+      "work_package_id": "service-booking-2-design-interactions",
+      "decision": "The flow document is the frontend source for role states, language behavior, labels, keyboard behavior, validation errors, and 390px/1280px layouts.",
+      "example": "Unsupported browser preference selects English and a visible switch persists only locally."
+    },
+    {
+      "interface_id": "backend-auth-session-contract",
+      "owner_instance_id": "service-booking-2-backend",
+      "work_package_id": "service-booking-2-build-backend-foundation",
+      "decision": "The backend owns persisted identities, password hashes, session/CSRF enforcement, role checks, and simulated verification/reset interfaces behind the accepted OpenAPI surface.",
+      "example": "An unverified customer reserve attempt returns the declared verification-required response."
+    },
+    {
+      "interface_id": "frontend-api-language-contract",
+      "owner_instance_id": "service-booking-2-frontend",
+      "work_package_id": "service-booking-2-build-frontend-shell",
+      "decision": "The frontend consumes the accepted OpenAPI and flow contracts, owns UI resource keys and device-local language selection, and never translates provider-authored content.",
+      "example": "German UI copy can surround provider-authored English content without rewriting it."
+    }
+  ],
+  "validated_at": "2026-09-11T13:18:53Z"
+}

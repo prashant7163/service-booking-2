@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_type": "immutable_source_copy_manifest",
+  "source_project_id": "service-booking-1",
+  "source_repository": "https://github.com/prashant7163/service-booking-1.git",
+  "source_git_revision": "f975142cb086fefb4a6fe3be8cb4a618a3f0d062",
+  "verified_at": "2026-09-11T11:22:17Z",
+  "classification": "immutable source evidence only",
+  "lifecycle_artifact": false,
+  "notice": "These preserved copies are evidence for Service Booking Two discovery reuse. They are not Service Booking Two lifecycle artifacts and must not be submitted or treated as approvals, plans, readiness records, or migration manifests.",
+  "files": [
+    {
+      "original_relative_path": "docs/discovery/phase-one-review.md",
+      "copied_relative_path": "docs/discovery/source/service-booking-1/phase-one-review.md",
+      "sha256": "7ee07958d8b9045231495096a6147345e35aee4cc98d8c3b6ae9b8d79d420424"
+    },
+    {
+      "original_relative_path": "docs/discovery/project-specification-draft.md",
+      "copied_relative_path": "docs/discovery/source/service-booking-1/project-specification-draft.md",
+      "sha256": "5325c11584fa5797bb267699e377e3c5bfe41f9901fb70a9e61765a456290be2"
+    },
+    {
+      "original_relative_path": "docs/discovery/project-specification.json",
+      "copied_relative_path": "docs/discovery/source/service-booking-1/project-specification.json",
+      "sha256": "49464b8bc24216de31a1d3ea2c6251051f5311d306aa5eba5e30f4dce7006356"
+    },
+    {
+      "original_relative_path": "docs/discovery/specification-validation.json",
+      "copied_relative_path": "docs/discovery/source/service-booking-1/specification-validation.json",
+      "sha256": "6ac18b952b266c28ae7b6c78ee8b24e4d371c18d3e3628fb63f25ea11a0a8f1f"
+    }
+  ]
+}

@@ -1,0 +1,3222 @@
+{
+  "schema_version": "1.0.0",
+  "identity": {
+    "project_id": "service-booking-1",
+    "name": "Service Booking Marketplace — Phase One",
+    "slug": "service-booking-1",
+    "owner": "Application owner (project requester)",
+    "created_at": "2026-09-10T00:00:00Z"
+  },
+  "status": "approved",
+  "approval": {
+    "schema_version": "1.0.0",
+    "approval_id": "apr-service-booking-1-spec-001",
+    "subject_type": "project_specification",
+    "subject_id": "service-booking-1",
+    "subject_digest": "637f0e2082e73bd106a246d7bf47034943b41724db78fb828ccd028aa638e202",
+    "decision": "approved",
+    "decided_by": "application-owner",
+    "decided_at": "2026-09-10T21:09:25Z",
+    "comment": "Application owner explicitly approved the exact specification digest for implementation planning."
+  },
+  "problem_statement": "Customers need to discover and book services online through a dedicated portal; solo providers need to publish shop-based offerings and fixed-time bookable inventory.",
+  "desired_outcome": "A basic Switzerland-focused marketplace for tutor/lesson and beauty/wellness services: public discovery, verified-account cart reservations, simulated-payment confirmation, order history, provider redemption, and limited administration.",
+  "personas": [
+    {
+      "persona_id": "visitor",
+      "name": "Visitor",
+      "needs": [
+        "Browse/search publicly and inspect offering/shop information before signing in."
+      ]
+    },
+    {
+      "persona_id": "customer",
+      "name": "Customer",
+      "needs": [
+        "Reserve one or more units, purchase selected items from multiple providers, view codes and booking outcomes."
+      ]
+    },
+    {
+      "persona_id": "provider",
+      "name": "Solo service provider",
+      "needs": [
+        "Manage one shop, publish offerings and nonoverlapping slots, see own bookings, validate redemption."
+      ]
+    },
+    {
+      "persona_id": "administrator",
+      "name": "Marketplace administrator",
+      "needs": [
+        "Suspend providers, release cart reservations, and apply the accepted booking-status override."
+      ]
+    }
+  ],
+  "primary_journeys": [
+    {
+      "journey_id": "discover-purchase",
+      "persona_id": "customer",
+      "outcome": "One confirmed marketplace order and reserved inventory converted to purchased allocation.",
+      "steps": [
+        "Browse/search published services without sign-in.",
+        "Sign in with a verified customer account and view slot times.",
+        "Add units to the persistent cart; select items for purchase.",
+        "Accept current total and run simulated payment; failure retains the cart.",
+        "On success view order prices, codes, and fulfillment status."
+      ]
+    },
+    {
+      "journey_id": "publish-deliver",
+      "persona_id": "provider",
+      "outcome": "A shop-based offering is booked and its booking redeemed.",
+      "steps": [
+        "Register/verify provider account and create one shop with postal address.",
+        "Publish an offering and explicit nonoverlapping slots with capacity and one service unit price.",
+        "View own booking lines and customer contact details.",
+        "Select a booking and enter its code; all covered units become Delivered."
+      ]
+    },
+    {
+      "journey_id": "expiry-completion",
+      "persona_id": "customer",
+      "outcome": "Unredeemed lines expire and a fully resolved order becomes Completed.",
+      "steps": [
+        "View awaiting-fulfillment order.",
+        "Unredeemed slot reaches its scheduled end and becomes Expired.",
+        "Once all lines are Delivered or Expired, view Completed order."
+      ]
+    },
+    {
+      "journey_id": "admin-intervention",
+      "persona_id": "administrator",
+      "outcome": "Accepted moderation and reservation controls operate without cancelling purchased bookings.",
+      "steps": [
+        "Suspend provider: block sign-in, remove listings and affected cart quantities, preserve purchases.",
+        "Release selected abandoned-cart reservation and remove its cart quantity.",
+        "Change an Expired booking to Delivered through the distinct administrator override."
+      ]
+    }
+  ],
+  "goals": [
+    {
+      "goal_id": "goal-basic-marketplace",
+      "statement": "Demonstrate the accepted publish-discover-purchase-deliver workflow with synthetic data and simulated external capabilities."
+    }
+  ],
+  "success_criteria": [
+    {
+      "criterion_id": "success-journeys",
+      "statement": "Main journeys are demonstrable for each role.",
+      "measurement": "All four defined primary journeys pass their linked backend/browser scenarios."
+    },
+    {
+      "criterion_id": "success-consistency",
+      "statement": "Cart, price, payment and booking state remain consistent.",
+      "measurement": "All 72 acceptance criteria pass or have explicit evidence; no negative inventory, duplicate checkout or cross-owner mutation in the stated tests."
+    },
+    {
+      "criterion_id": "success-workflow",
+      "statement": "Implementation progress and validated releases are traceable from local state to GitHub.",
+      "measurement": "All implementation milestones/work items have mapped counterparts, all defined synchronization checkpoints are evidenced, and PR/main CI plus reproducible release-artifact scenarios pass."
+    }
+  ],
+  "non_goals": [
+    "Home services, customer-location and remote delivery; provider organizations and staff.",
+    "Provider-approval bookings, customer/provider cancellation, rescheduling, and ordinary post-expiry code redemption.",
+    "All refund functionality, messaging, self-service account deletion, data-export UI, and usage analytics.",
+    "Automatic cart expiry/countdowns/extensions, recurring slot schedules, and shop ownership transfer.",
+    "Public shop pages, public slot-time display, saved searches, personalization, SEO features, grammatical stemming, date/location filters.",
+    "Administrator category editing and a separate direct service-hiding capability; suspension still removes provider listings.",
+    "Real email/payment/notification integrations and real-money processing.",
+    "Environment rollout during this phase-one CI/CD scope."
+  ],
+  "scope_included": [
+    "Solo-provider shop/service/slot management in Switzerland.",
+    "Public full-text discovery; English/German responsive UI; CHF pricing.",
+    "Persistent verified-customer cart reservations, selected-item checkout, simulated payment, and immutable purchased-price history.",
+    "Code redemption, end-time expiry, Completed aggregate status, notifications, and accepted administration.",
+    "Post-approval GitHub milestone/issue tracking synchronized from authoritative local Studio state.",
+    "GitHub Actions PR/main validation and versioned reproducible release/container artifacts after successful validation."
+  ],
+  "scope_excluded": [
+    "Home services, customer-location and remote delivery; provider organizations and staff.",
+    "Provider-approval bookings, customer/provider cancellation, rescheduling, and ordinary post-expiry code redemption.",
+    "All refund functionality, messaging, self-service account deletion, data-export UI, and usage analytics.",
+    "Automatic cart expiry/countdowns/extensions, recurring slot schedules, and shop ownership transfer.",
+    "Public shop pages, public slot-time display, saved searches, personalization, SEO features, grammatical stemming, date/location filters.",
+    "Administrator category editing and a separate direct service-hiding capability; suspension still removes provider listings.",
+    "Real email/payment/notification integrations and real-money processing.",
+    "Actual environment deployment and unapproved registry publication; no deployment target has been approved."
+  ],
+  "functional_requirements": [
+    {
+      "requirement_id": "fr-access",
+      "statement": "Provide separate customer, solo-provider, and administrator access using local email/password accounts.",
+      "decision_ids": [
+        "D09",
+        "D42",
+        "D80",
+        "D150",
+        "D151",
+        "D181"
+      ],
+      "source_references": [
+        "S2",
+        "S29",
+        "S57.13",
+        "S57.83",
+        "S57.84",
+        "S62 item 5"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-access-1",
+          "statement": "An anonymous visitor can browse/search but cannot create or modify a cart; an unverified customer cannot reserve inventory."
+        },
+        {
+          "criterion_id": "ac-fr-access-2",
+          "statement": "A provider can register without administrator approval but must complete simulated email verification before publishing."
+        },
+        {
+          "criterion_id": "ac-fr-access-3",
+          "statement": "A single account cannot act as both customer and solo provider; no self-service account deletion is exposed."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-shop",
+      "statement": "Each solo provider owns one shop and publishes services without administrator approval.",
+      "decision_ids": [
+        "D45",
+        "D46",
+        "D47",
+        "D48",
+        "D49",
+        "D79",
+        "D109",
+        "D110",
+        "D111",
+        "D112",
+        "D113",
+        "D114",
+        "D115",
+        "D120",
+        "D50"
+      ],
+      "source_references": [
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S57.12",
+        "S57.42",
+        "S57.43",
+        "S57.44",
+        "S57.45",
+        "S57.46",
+        "S57.47",
+        "S57.48",
+        "S57.53"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-shop-1",
+          "statement": "A provider located anywhere in Switzerland can create exactly one shop, add images, and publish tutor/lesson or beauty/wellness services after supplying a postal address."
+        },
+        {
+          "criterion_id": "ac-fr-shop-2",
+          "statement": "Published service information shows the shop address; duplicate shop names are allowed; no public shop-page or ownership-transfer flow exists."
+        },
+        {
+          "criterion_id": "ac-fr-shop-3",
+          "statement": "All services are in-person at the provider shop; home services, remote delivery, organizations, and staff features are absent."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-slots",
+      "statement": "Create fixed-time slot SKUs with explicit start/end, capacity, drafts, and nonrecurring bulk entry.",
+      "decision_ids": [
+        "D12",
+        "D14",
+        "D20",
+        "D66",
+        "D67",
+        "D68",
+        "D69",
+        "D70",
+        "D71",
+        "D72",
+        "D73",
+        "D74",
+        "D75",
+        "D76",
+        "D77",
+        "D78"
+      ],
+      "source_references": [
+        "S4",
+        "S6",
+        "S9",
+        "S55",
+        "S56",
+        "S57.1",
+        "S57.2",
+        "S57.3",
+        "S57.4",
+        "S57.5",
+        "S57.6",
+        "S57.7",
+        "S57.8",
+        "S57.9",
+        "S57.10",
+        "S57.11"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-slots-1",
+          "statement": "A provider can save a draft and create at least two nonrecurring slots in one operation; each has explicit start/end and integer capacity."
+        },
+        {
+          "criterion_id": "ac-fr-slots-2",
+          "statement": "Publishing overlapping slots for the same provider fails; one slot starting exactly at another’s end is accepted; zero-available-inventory publication fails."
+        },
+        {
+          "criterion_id": "ac-fr-slots-3",
+          "statement": "Once any units are reserved or purchased, start/end edits fail. A capacity change below reserved plus purchased units fails."
+        },
+        {
+          "criterion_id": "ac-fr-slots-4",
+          "statement": "One unit entitles one person to the service; attendee names are not required; purchase after the slot starts is rejected."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-discovery",
+      "statement": "Expose public full-text service discovery and the accepted filters and visibility rules.",
+      "decision_ids": [
+        "D43",
+        "D44",
+        "D54",
+        "D55",
+        "D121",
+        "D122",
+        "D123",
+        "D124",
+        "D130",
+        "D131",
+        "D132",
+        "D133",
+        "D134",
+        "D135",
+        "D136",
+        "D137",
+        "D138",
+        "D139",
+        "D167",
+        "D168"
+      ],
+      "source_references": [
+        "S30",
+        "S31, S32",
+        "S42",
+        "S43",
+        "S57.54",
+        "S57.55",
+        "S57.56",
+        "S57.57",
+        "S57.63",
+        "S57.64",
+        "S57.65",
+        "S57.66",
+        "S57.67",
+        "S57.68",
+        "S57.69",
+        "S57.70",
+        "S57.71",
+        "S57.72",
+        "S60.4",
+        "S60.5"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-discovery-1",
+          "statement": "Queries can match offering name/description, category name/description, or shop name; empty queries list published services including exhausted offerings."
+        },
+        {
+          "criterion_id": "ac-fr-discovery-2",
+          "statement": "Public service information shows summed available inventory over future slots but hides slot times; signed-in customers can view slot times to select bookings."
+        },
+        {
+          "criterion_id": "ac-fr-discovery-3",
+          "statement": "Results are paginated, default to relevance, filter by category and price range, and sort by price. No date/location filters, saved searches, personalization, or SEO feature is exposed."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-search-match",
+      "statement": "Support the agreed text matching behavior without grammatical stemming.",
+      "decision_ids": [
+        "D125",
+        "D126",
+        "D127",
+        "D128",
+        "D129",
+        "D177"
+      ],
+      "source_references": [
+        "S57.58",
+        "S57.59",
+        "S57.60",
+        "S57.61",
+        "S57.62",
+        "S61.8"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-search-match-1",
+          "statement": "Equivalent case and accent/umlaut query variants match the same fixture; a misspelled query matches a close offering fixture."
+        },
+        {
+          "criterion_id": "ac-fr-search-match-2",
+          "statement": "A quoted phrase must match contiguously and does not use typo tolerance; grammatical word-variant matching is not a requirement."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-cart",
+      "statement": "Maintain one authenticated customer cart across sessions/devices, reserving quantities immediately.",
+      "decision_ids": [
+        "D15",
+        "D25",
+        "D29",
+        "D37",
+        "D81",
+        "D82",
+        "D83",
+        "D84",
+        "D85",
+        "D86",
+        "D169"
+      ],
+      "source_references": [
+        "S7",
+        "S13",
+        "S17",
+        "S24",
+        "S57.14",
+        "S57.15",
+        "S57.16",
+        "S57.17",
+        "S57.18",
+        "S57.19",
+        "S60.6"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-cart-1",
+          "statement": "Adding q available units reduces availability by q without creating a paid booking; increasing/decreasing quantity updates the reservation by the corresponding delta."
+        },
+        {
+          "criterion_id": "ac-fr-cart-2",
+          "statement": "The same account sees the same cart after sign-out, session expiry, another device, and payment failure. Waiting alone does not remove cart items or release reservations."
+        },
+        {
+          "criterion_id": "ac-fr-cart-3",
+          "statement": "Customers can purchase selected items and retain other items/reservations; explicit removal releases the removed cart quantity."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-checkout",
+      "statement": "Complete selected checkout as one marketplace order only after successful simulated payment.",
+      "decision_ids": [
+        "D26",
+        "D38",
+        "D39",
+        "D40",
+        "D41",
+        "D87",
+        "D90",
+        "D91"
+      ],
+      "source_references": [
+        "S14",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S57.20",
+        "S57.23",
+        "S57.24"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-checkout-1",
+          "statement": "Successful simulated payment creates/confirms one marketplace order containing all selected items, removes those quantities from the cart, and transfers their inventory allocation without restoring availability."
+        },
+        {
+          "criterion_id": "ac-fr-checkout-2",
+          "statement": "If any selected item cannot be purchased, no selected booking is confirmed; failure preserves cart items/reservations for retry."
+        },
+        {
+          "criterion_id": "ac-fr-checkout-3",
+          "statement": "A visible simulated-payment failure control produces an error and retry path; failed attempts are absent from customer order history."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-prices",
+      "statement": "Use one current CHF unit price per offering for all its slots, with simple quantity totals.",
+      "decision_ids": [
+        "D54",
+        "D55",
+        "D56",
+        "D57",
+        "D58",
+        "D88",
+        "D89",
+        "D146",
+        "D147",
+        "D148",
+        "D149",
+        "D163"
+      ],
+      "source_references": [
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S57.21",
+        "S57.22",
+        "S57.79",
+        "S57.80",
+        "S57.81",
+        "S57.82",
+        "S59"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-prices-1",
+          "statement": "For prices CHF 20.00 and CHF 30.00 with quantities 2 and 1, the cart total is CHF 70.00; no fee, discount, or additional tax is added."
+        },
+        {
+          "criterion_id": "ac-fr-prices-2",
+          "statement": "Changing an offering price reprices its reserved cart quantities; the customer accepts a changed total before starting payment."
+        },
+        {
+          "criterion_id": "ac-fr-prices-3",
+          "statement": "The accepted amount at payment-attempt start stays fixed during that attempt despite later provider edits; successfully ordered unit prices/totals remain unchanged in history."
+        },
+        {
+          "criterion_id": "ac-fr-prices-4",
+          "statement": "Provider prices are positive, final tax-inclusive amounts with at most two decimal places; all displayed monetary amounts include CHF."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-order-history",
+      "statement": "Show the marketplace order and its individual booking-line fulfillment outcomes.",
+      "decision_ids": [
+        "D16",
+        "D17",
+        "D24",
+        "D27",
+        "D58",
+        "D62",
+        "D63",
+        "D99",
+        "D100",
+        "D101",
+        "D102"
+      ],
+      "source_references": [
+        "S8, S2",
+        "S8",
+        "S12",
+        "S15, refined by S51",
+        "S46",
+        "S51",
+        "S52",
+        "S57.32",
+        "S57.33",
+        "S57.34",
+        "S57.35"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-order-history-1",
+          "statement": "After purchase, customer history shows ordered quantities/prices, awaiting fulfillment, and per-line outcomes; providers see only their own order lines with customer name/email."
+        },
+        {
+          "criterion_id": "ac-fr-order-history-2",
+          "statement": "An order remains awaiting fulfillment while any line is unresolved, and becomes Completed when every line is Delivered or Expired, including a mixed or all-Expired order."
+        },
+        {
+          "criterion_id": "ac-fr-order-history-3",
+          "statement": "Expired lines do not create a failed or partially completed aggregate state."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-redemption",
+      "statement": "Use one four-digit code per purchased slot SKU to deliver all covered units together.",
+      "decision_ids": [
+        "D18",
+        "D19",
+        "D21",
+        "D23",
+        "D92",
+        "D93",
+        "D94",
+        "D95",
+        "D96",
+        "D97",
+        "D98",
+        "D164"
+      ],
+      "source_references": [
+        "S8",
+        "S9",
+        "S11",
+        "S57.25",
+        "S57.26",
+        "S57.27",
+        "S57.28",
+        "S57.29",
+        "S57.30",
+        "S57.31",
+        "S60.1"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-redemption-1",
+          "statement": "Two units of the same purchased slot share one code; different purchased slot SKUs receive different codes. Codes appear beside their line and in simulated confirmation email."
+        },
+        {
+          "criterion_id": "ac-fr-redemption-2",
+          "statement": "The provider selects their booking and enters the code. A valid code immediately marks all covered units Delivered together, even before slot start."
+        },
+        {
+          "criterion_id": "ac-fr-redemption-3",
+          "statement": "Incorrect codes do not deliver the line; a redeemed code cannot deliver twice. No temporary per-booking attempt block or every-attempt audit-history product feature is introduced."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-expiry",
+      "statement": "Expire unredeemed lines at slot end without enabling ordinary post-expiry redemption.",
+      "decision_ids": [
+        "D61",
+        "D64",
+        "D65",
+        "D103"
+      ],
+      "source_references": [
+        "S50",
+        "S53",
+        "S54",
+        "S57.36"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-expiry-1",
+          "statement": "At the scheduled end, an unredeemed line becomes Expired; the same code then fails provider redemption."
+        },
+        {
+          "criterion_id": "ac-fr-expiry-2",
+          "statement": "A Delivered line does not become Expired. Expiry does not refund the booking or reintroduce cart-expiry timers."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-provider-lifecycle",
+      "statement": "Permit unpublication while preserving purchased bookings and removing affected cart items.",
+      "decision_ids": [
+        "D116",
+        "D166"
+      ],
+      "source_references": [
+        "S57.49",
+        "S60.3"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-provider-lifecycle-1",
+          "statement": "Unpublishing a service with cart reservations removes that service’s quantities from all affected carts and releases those reservations."
+        },
+        {
+          "criterion_id": "ac-fr-provider-lifecycle-2",
+          "statement": "Unpublication leaves purchased bookings valid and redeemable under their existing expiry rules; it does not cancel or delete them."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-admin",
+      "statement": "Provide the accepted limited administrator actions.",
+      "decision_ids": [
+        "D106",
+        "D107",
+        "D117",
+        "D118",
+        "D119",
+        "D165",
+        "D169",
+        "D171",
+        "D172",
+        "D173",
+        "D179"
+      ],
+      "source_references": [
+        "S57.39",
+        "S57.40",
+        "S57.50",
+        "S57.51",
+        "S57.52",
+        "S60.2",
+        "S60.6",
+        "S61.2",
+        "S61.3",
+        "S61.4",
+        "S62 item 1"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-admin-1",
+          "statement": "An administrator can suspend a provider: provider sign-in is blocked, services leave discovery, and affected cart quantities/reservations are removed/released; purchased bookings remain valid."
+        },
+        {
+          "criterion_id": "ac-fr-admin-2",
+          "statement": "An administrator can release a chosen abandoned-cart reservation, removing the matching cart quantity."
+        },
+        {
+          "criterion_id": "ac-fr-admin-3",
+          "statement": "An administrator can change an Expired booking to Delivered without redeeming or reactivating its code; an ordinary provider cannot perform this override."
+        },
+        {
+          "criterion_id": "ac-fr-admin-4",
+          "statement": "No separate administrator service-hiding tool or category-editing screens exist."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-language",
+      "statement": "Support English/German interface selection and provider-authored multilingual content.",
+      "decision_ids": [
+        "D51",
+        "D52",
+        "D53",
+        "D140",
+        "D141",
+        "D142",
+        "D143",
+        "D144",
+        "D145",
+        "D174",
+        "D175",
+        "D176"
+      ],
+      "source_references": [
+        "S39",
+        "S40",
+        "S41",
+        "S57.73",
+        "S57.74",
+        "S57.75",
+        "S57.76",
+        "S57.77",
+        "S57.78",
+        "S61.5",
+        "S61.6",
+        "S61.7"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-language-1",
+          "statement": "A supported English/German browser preference selects that interface; otherwise English is used. A visible switch persists only on the current device."
+        },
+        {
+          "criterion_id": "ac-fr-language-2",
+          "statement": "Providers may submit content in either language, optionally supply both versions, and use different languages across fields; bilingual content is not mandatory."
+        },
+        {
+          "criterion_id": "ac-fr-language-3",
+          "statement": "Submitted-language labels are shown. No automatic translation or automatic manual-version selection based on interface language occurs."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-simulations",
+      "statement": "Keep verification, password reset, payments, and notifications simulated behind replaceable interfaces.",
+      "decision_ids": [
+        "D10",
+        "D16",
+        "D93",
+        "D150",
+        "D151",
+        "D152",
+        "D153",
+        "D154",
+        "D155",
+        "D162",
+        "D180",
+        "D156",
+        "D157"
+      ],
+      "source_references": [
+        "S2, partially superseded by S58 and S62",
+        "S8, S2",
+        "S57.26",
+        "S57.83",
+        "S57.84",
+        "S57.85",
+        "S57.86",
+        "S57.87",
+        "S57.88",
+        "S58",
+        "S62 items 2–4"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-simulations-1",
+          "statement": "Verification/reset, payment outcome, and notification behavior can be exercised without live external delivery or a real monetary transaction."
+        },
+        {
+          "criterion_id": "ac-fr-simulations-2",
+          "statement": "Provider purchase, customer redemption, customer expiry, and confirmation notifications are emitted to the simulated delivery boundary."
+        },
+        {
+          "criterion_id": "ac-fr-simulations-3",
+          "statement": "There is no user-facing simulated-email inbox, customer-provider messaging, or refund functionality."
+        }
+      ]
+    },
+    {
+      "requirement_id": "fr-exclusions",
+      "statement": "Do not expose retired or explicitly excluded phase-one workflows.",
+      "decision_ids": [
+        "D49",
+        "D59",
+        "D60",
+        "D103",
+        "D119",
+        "D120",
+        "D136",
+        "D137",
+        "D138",
+        "D139",
+        "D159",
+        "D161",
+        "D180",
+        "D181"
+      ],
+      "source_references": [
+        "S37",
+        "S47, S48",
+        "S49",
+        "S57.36",
+        "S57.52",
+        "S57.53",
+        "S57.69",
+        "S57.70",
+        "S57.71",
+        "S57.72",
+        "S57.92",
+        "S57.94",
+        "S62 items 2–4",
+        "S62 item 5"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-fr-exclusions-1",
+          "statement": "Customer/provider booking cancellation, confirmed-booking rescheduling, refunds, self-service account deletion, data-export UI, and usage analytics have no phase-one controls or active public mutation endpoints."
+        },
+        {
+          "criterion_id": "ac-fr-exclusions-2",
+          "statement": "Provider organizations/staff, home services, recurring schedules, ownership transfer, messaging, automatic cart expiry, and timer extensions are absent."
+        }
+      ]
+    }
+  ],
+  "non_functional_requirements": [
+    {
+      "requirement_id": "nfr-boundaries",
+      "statement": "Enforce authentication, role ownership, and secret-handling boundaries.",
+      "decision_ids": [
+        "D09",
+        "D42",
+        "D100",
+        "D150",
+        "D151",
+        "D160"
+      ],
+      "source_references": [
+        "S2",
+        "S29",
+        "S57.33",
+        "S57.83",
+        "S57.84",
+        "S57.93"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-boundaries-1",
+          "statement": "Unauthorized and cross-account cart, booking, publication, and administrator mutations are rejected in backend tests."
+        },
+        {
+          "criterion_id": "ac-nfr-boundaries-2",
+          "statement": "Passwords, reset/verification tokens, and usable redemption codes are not placed in public responses or application logs; stored passwords are non-reversible password hashes."
+        },
+        {
+          "criterion_id": "ac-nfr-boundaries-3",
+          "statement": "Redemption is restricted to the owning provider’s selected booking or the distinct administrator override action."
+        }
+      ],
+      "category": "security"
+    },
+    {
+      "requirement_id": "nfr-inventory",
+      "statement": "Keep committed inventory and payment outcomes consistent under retries and competing requests.",
+      "decision_ids": [
+        "D14",
+        "D28",
+        "D29",
+        "D38",
+        "D73",
+        "D87"
+      ],
+      "source_references": [
+        "S6",
+        "S16",
+        "S17",
+        "S25",
+        "S57.6",
+        "S57.20"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-inventory-1",
+          "statement": "Concurrent requests for the final unit yield at most one successful reservation; remaining inventory never becomes negative."
+        },
+        {
+          "criterion_id": "ac-nfr-inventory-2",
+          "statement": "Replaying successful checkout does not create duplicate orders or consume inventory twice; no subset of selected lines is confirmed on failed checkout."
+        },
+        {
+          "criterion_id": "ac-nfr-inventory-3",
+          "statement": "Price-attempt snapshots and original order prices pass backend tests covering concurrent provider price changes."
+        }
+      ],
+      "category": "reliability"
+    },
+    {
+      "requirement_id": "nfr-mobile",
+      "statement": "Make every customer/provider workflow usable on mobile and desktop widths.",
+      "decision_ids": [
+        "D158"
+      ],
+      "source_references": [
+        "S57.91"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-mobile-1",
+          "statement": "Playwright completes public discovery, customer checkout, and provider booking/redemption at 390px and 1280px viewport widths without horizontal page overflow or inaccessible primary controls."
+        },
+        {
+          "criterion_id": "ac-nfr-mobile-2",
+          "statement": "Forms have associated labels; primary actions are keyboard operable and validation errors identify the affected input."
+        }
+      ],
+      "category": "accessibility"
+    },
+    {
+      "requirement_id": "nfr-tests",
+      "statement": "Verify the main phase-one journeys with backend and Playwright tests.",
+      "decision_ids": [
+        "D02",
+        "D03",
+        "D04",
+        "D05"
+      ],
+      "source_references": [
+        "S2"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-tests-1",
+          "statement": "Backend tests cover reservation/release, all-selected checkout, payment failure, price snapshots, redemption, expiry, ownership, and administrator actions."
+        },
+        {
+          "criterion_id": "ac-nfr-tests-2",
+          "statement": "Playwright covers provider publish, public search, verified customer cart/payment/order history, provider redeem, and administrator suspension/override flows."
+        },
+        {
+          "criterion_id": "ac-nfr-tests-3",
+          "statement": "No passing-test or completion claim is made without exact-candidate test evidence."
+        }
+      ],
+      "category": "maintainability"
+    },
+    {
+      "requirement_id": "nfr-storage",
+      "statement": "Respect the owner’s Swiss-storage requirement and baseline data handling.",
+      "decision_ids": [
+        "D160"
+      ],
+      "source_references": [
+        "S57.93"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-storage-1",
+          "statement": "Any deployment configuration used for application data identifies Switzerland as the storage location; non-Swiss hosted storage is not introduced."
+        },
+        {
+          "criterion_id": "ac-nfr-storage-2",
+          "statement": "Local demonstration uses synthetic data; production retention, backup-region confirmation, and legal obligations require review before real-user deployment."
+        }
+      ],
+      "category": "privacy"
+    },
+    {
+      "requirement_id": "nfr-github-tracking",
+      "statement": "Maintain GitHub milestone/issue counterparts while local Studio artifacts and state remain authoritative.",
+      "category": "operability",
+      "decision_ids": [
+        "D182"
+      ],
+      "source_references": [
+        "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-github-tracking-1",
+          "statement": "Each implementation milestone has one linked GitHub milestone; each implementation work item has a linked issue associated with that milestone. Local stable IDs and GitHub URLs cross-reference one another."
+        },
+        {
+          "criterion_id": "ac-nfr-github-tracking-2",
+          "statement": "At approved work registration, work start, block/resume, verification-ready handoff, and recorded human milestone decision, GitHub progress is reconciled from local state with requirement/task IDs and evidence links."
+        },
+        {
+          "criterion_id": "ac-nfr-github-tracking-3",
+          "statement": "A GitHub edit or issue closure never substitutes for local validation or approval. A simulated synchronization failure leaves the local record intact and records an actionable retry marker."
+        },
+        {
+          "criterion_id": "ac-nfr-github-tracking-4",
+          "statement": "GitHub milestone/issue creation and synchronization begin only as post-specification-approval implementation work; no credentials or sensitive evidence are copied into issues."
+        }
+      ]
+    },
+    {
+      "requirement_id": "nfr-github-ci",
+      "statement": "Use GitHub Actions to keep frontend, backend and browser-supported scope build-ready on pull requests and main changes.",
+      "category": "maintainability",
+      "decision_ids": [
+        "D183"
+      ],
+      "source_references": [
+        "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-github-ci-1",
+          "statement": "GitHub Actions triggers on pull requests and pushes to main. A clean runner installs dependencies reproducibly and builds the React frontend and Spring Boot backend."
+        },
+        {
+          "criterion_id": "ac-nfr-github-ci-2",
+          "statement": "The pipeline runs frontend checks/tests, backend tests with PostgreSQL where needed, and Playwright acceptance tests against the built application; any failed required check marks validation failed."
+        },
+        {
+          "criterion_id": "ac-nfr-github-ci-3",
+          "statement": "CI captures test reports and relevant failure diagnostics tied to source revision and run identity. A deliberately failing backend or Playwright test prevents the release-producing stage."
+        },
+        {
+          "criterion_id": "ac-nfr-github-ci-4",
+          "statement": "CI uses pinned/reproducible dependency inputs and least-privilege permissions. Pull-request validation does not require publishing credentials; secrets are not emitted in reports."
+        }
+      ]
+    },
+    {
+      "requirement_id": "nfr-release-artifacts",
+      "statement": "Produce versioned reproducible release archives and container-image artifacts only after successful CI, without deploying an environment.",
+      "category": "maintainability",
+      "decision_ids": [
+        "D184"
+      ],
+      "source_references": [
+        "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "ac-nfr-release-artifacts-1",
+          "statement": "For a validated main revision, the release stage produces frontend/backend release archives and runnable container-image artifacts with immutable source-revision versions, checksums/digests, and links to the successful validation run."
+        },
+        {
+          "criterion_id": "ac-nfr-release-artifacts-2",
+          "statement": "A rebuild of the same revision with the same locked inputs reproduces application payload checksums; timestamp/provenance metadata is normalized or separately documented for reproducibility verification."
+        },
+        {
+          "criterion_id": "ac-nfr-release-artifacts-3",
+          "statement": "An artifact manifest records source revision, toolchain/dependency inputs, image digests and build/test evidence. Failed or unvalidated revisions cannot enter the successful release artifact path."
+        },
+        {
+          "criterion_id": "ac-nfr-release-artifacts-4",
+          "statement": "The pipeline performs no environment deployment. Registry publication, hosting credentials, rollout, and deployment destinations remain deferred until an exact target is approved."
+        }
+      ]
+    }
+  ],
+  "chosen_stack": {
+    "components": [
+      "React web frontend",
+      "Java Spring Boot API",
+      "PostgreSQL in Docker",
+      "Backend tests",
+      "Playwright browser tests"
+    ],
+    "alternatives": [],
+    "rationale": "Owner-selected stack D02–D05; no alternative stack is proposed."
+  },
+  "ux_flow_references": [
+    "#/primary_journeys"
+  ],
+  "responsive_behavior": "All customer/provider workflows support mobile-sized screens and desktop screens (D158); exact branding/browser matrix is deferred.",
+  "design_system_direction": "Simple responsive forms, lists and status labels with an English/German language switch.",
+  "external_systems": [
+    {
+      "system_id": "github-project-workflow",
+      "name": "GitHub repository tracking and Actions",
+      "purpose": "Milestone/issue progress counterparts and CI/release artifact production after specification approval.",
+      "data_classifications": [
+        "Repository source and non-sensitive work metadata",
+        "Build/test evidence and artifact manifests"
+      ]
+    }
+  ],
+  "data_classifications": [
+    "Public: published service/category/shop information and shop postal addresses.",
+    "Personal: account email/name, bookings and customer-provider contact visibility.",
+    "Secret: passwords, verification/reset credentials, redemption codes and session credentials.",
+    "Simulated transaction records: purchased prices, quantities, payment outcomes; no real payment-card data."
+  ],
+  "assumptions": [
+    "default-owner: Application owner (project requester). Schema requires an owner label; no personal name is inferred.",
+    "default-success: Demonstrate the accepted main journeys, workflow behavior, and 72 acceptance criteria with synthetic data. Schema requires measurable success criteria; no unprovided commercial KPI is invented.",
+    "default-design: Simple responsive forms, lists and status labels with an English/German language switch.. Conservative presentation direction for the required specification field; visual branding and detailed layouts are deferred.",
+    "default-threat: true. Authentication, personal information, four-digit credentials, and administrator mutations materially cross trust boundaries; draft threat analysis is embedded.",
+    "default-sync-checkpoints: Synchronize after approved work registration, work start, block/resume, verification-ready handoff, and recorded human milestone decision.",
+    "default-ci-baseline: Pull requests and pushes to main run the same baseline frontend/backend build and tests plus Playwright acceptance scope.",
+    "default-release-identity: Validated main revisions produce immutable commit-addressed versions; artifact checksums and container digests link to the exact source commit and CI run.",
+    "default-release-boundary: Produce downloadable release archives and container-image artifacts; no environment rollout or unapproved external registry publication."
+  ],
+  "constraints": [
+    "All customer-provider messaging and refunds are excluded by later owner corrections.",
+    "No live external delivery or real-money integration; interfaces remain replaceable.",
+    "Application data storage must be in Switzerland for hosted operation; local tests use synthetic data.",
+    "No implementation, lifecycle transition, or approval follows merely from this draft.",
+    "Unanswered elicitation is deferred under the owner's instruction to stop edge-case discovery.",
+    "Local Studio tracker/state remains authoritative; GitHub status is a synchronized counterpart and creates no approval.",
+    "GitHub/workflow mutations are post-specification-approval work; artifact production does not authorize environment deployment."
+  ],
+  "risks": [
+    "Persistent cart reservations can lock abandoned inventory indefinitely; manual administrator release is the accepted remedy, not automatic expiry.",
+    "Four-digit redemption credentials have a small space; scoped ownership and anti-abuse controls are needed without adding the rejected booking-level temporary block.",
+    "Early valid-code redemption can mark Delivered before physical service provision; this is explicitly accepted behavior.",
+    "Suspended providers cannot sign in while purchases remain valid; broader fulfillment exception workflows are deferred.",
+    "Swiss legal/tax/privacy/retention obligations and real-user production readiness have not been established.",
+    "Remote tracking may lag during outages; durable local checkpoints and retry markers preserve authoritative progress.",
+    "Build reproducibility depends on locked inputs/toolchains; external runner drift must not silently change released application payloads."
+  ],
+  "dependencies": [
+    "Owner-selected runtime stack and local PostgreSQL Docker environment.",
+    "Synthetic fixtures for main acceptance journeys.",
+    "Runtime/application security design within accepted authorization boundaries before real-user deployment.",
+    "Post-approval repository Actions capability and appropriate issue/milestone permissions, with credentials kept outside Studio state."
+  ],
+  "threat_model_required": true,
+  "threat_model_reference": "#/threat_model",
+  "standards_profile_ids": [
+    "studio-engineering-baseline"
+  ],
+  "open_questions": [],
+  "traceability": [
+    {
+      "traceability_id": "trace-fr-access",
+      "requirement_id": "fr-access",
+      "acceptance_criterion_ids": [
+        "ac-fr-access-1",
+        "ac-fr-access-2",
+        "ac-fr-access-3"
+      ],
+      "decision_ids": [
+        "D09",
+        "D42",
+        "D80",
+        "D150",
+        "D151",
+        "D181"
+      ],
+      "source_references": [
+        "S2",
+        "S29",
+        "S57.13",
+        "S57.83",
+        "S57.84",
+        "S62 item 5"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-shop",
+      "requirement_id": "fr-shop",
+      "acceptance_criterion_ids": [
+        "ac-fr-shop-1",
+        "ac-fr-shop-2",
+        "ac-fr-shop-3"
+      ],
+      "decision_ids": [
+        "D45",
+        "D46",
+        "D47",
+        "D48",
+        "D49",
+        "D79",
+        "D109",
+        "D110",
+        "D111",
+        "D112",
+        "D113",
+        "D114",
+        "D115",
+        "D120",
+        "D50"
+      ],
+      "source_references": [
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S57.12",
+        "S57.42",
+        "S57.43",
+        "S57.44",
+        "S57.45",
+        "S57.46",
+        "S57.47",
+        "S57.48",
+        "S57.53"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-slots",
+      "requirement_id": "fr-slots",
+      "acceptance_criterion_ids": [
+        "ac-fr-slots-1",
+        "ac-fr-slots-2",
+        "ac-fr-slots-3",
+        "ac-fr-slots-4"
+      ],
+      "decision_ids": [
+        "D12",
+        "D14",
+        "D20",
+        "D66",
+        "D67",
+        "D68",
+        "D69",
+        "D70",
+        "D71",
+        "D72",
+        "D73",
+        "D74",
+        "D75",
+        "D76",
+        "D77",
+        "D78"
+      ],
+      "source_references": [
+        "S4",
+        "S6",
+        "S9",
+        "S55",
+        "S56",
+        "S57.1",
+        "S57.2",
+        "S57.3",
+        "S57.4",
+        "S57.5",
+        "S57.6",
+        "S57.7",
+        "S57.8",
+        "S57.9",
+        "S57.10",
+        "S57.11"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-discovery",
+      "requirement_id": "fr-discovery",
+      "acceptance_criterion_ids": [
+        "ac-fr-discovery-1",
+        "ac-fr-discovery-2",
+        "ac-fr-discovery-3"
+      ],
+      "decision_ids": [
+        "D43",
+        "D44",
+        "D54",
+        "D55",
+        "D121",
+        "D122",
+        "D123",
+        "D124",
+        "D130",
+        "D131",
+        "D132",
+        "D133",
+        "D134",
+        "D135",
+        "D136",
+        "D137",
+        "D138",
+        "D139",
+        "D167",
+        "D168"
+      ],
+      "source_references": [
+        "S30",
+        "S31, S32",
+        "S42",
+        "S43",
+        "S57.54",
+        "S57.55",
+        "S57.56",
+        "S57.57",
+        "S57.63",
+        "S57.64",
+        "S57.65",
+        "S57.66",
+        "S57.67",
+        "S57.68",
+        "S57.69",
+        "S57.70",
+        "S57.71",
+        "S57.72",
+        "S60.4",
+        "S60.5"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-search-match",
+      "requirement_id": "fr-search-match",
+      "acceptance_criterion_ids": [
+        "ac-fr-search-match-1",
+        "ac-fr-search-match-2"
+      ],
+      "decision_ids": [
+        "D125",
+        "D126",
+        "D127",
+        "D128",
+        "D129",
+        "D177"
+      ],
+      "source_references": [
+        "S57.58",
+        "S57.59",
+        "S57.60",
+        "S57.61",
+        "S57.62",
+        "S61.8"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-cart",
+      "requirement_id": "fr-cart",
+      "acceptance_criterion_ids": [
+        "ac-fr-cart-1",
+        "ac-fr-cart-2",
+        "ac-fr-cart-3"
+      ],
+      "decision_ids": [
+        "D15",
+        "D25",
+        "D29",
+        "D37",
+        "D81",
+        "D82",
+        "D83",
+        "D84",
+        "D85",
+        "D86",
+        "D169"
+      ],
+      "source_references": [
+        "S7",
+        "S13",
+        "S17",
+        "S24",
+        "S57.14",
+        "S57.15",
+        "S57.16",
+        "S57.17",
+        "S57.18",
+        "S57.19",
+        "S60.6"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-checkout",
+      "requirement_id": "fr-checkout",
+      "acceptance_criterion_ids": [
+        "ac-fr-checkout-1",
+        "ac-fr-checkout-2",
+        "ac-fr-checkout-3"
+      ],
+      "decision_ids": [
+        "D26",
+        "D38",
+        "D39",
+        "D40",
+        "D41",
+        "D87",
+        "D90",
+        "D91"
+      ],
+      "source_references": [
+        "S14",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S57.20",
+        "S57.23",
+        "S57.24"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-prices",
+      "requirement_id": "fr-prices",
+      "acceptance_criterion_ids": [
+        "ac-fr-prices-1",
+        "ac-fr-prices-2",
+        "ac-fr-prices-3",
+        "ac-fr-prices-4"
+      ],
+      "decision_ids": [
+        "D54",
+        "D55",
+        "D56",
+        "D57",
+        "D58",
+        "D88",
+        "D89",
+        "D146",
+        "D147",
+        "D148",
+        "D149",
+        "D163"
+      ],
+      "source_references": [
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S57.21",
+        "S57.22",
+        "S57.79",
+        "S57.80",
+        "S57.81",
+        "S57.82",
+        "S59"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-order-history",
+      "requirement_id": "fr-order-history",
+      "acceptance_criterion_ids": [
+        "ac-fr-order-history-1",
+        "ac-fr-order-history-2",
+        "ac-fr-order-history-3"
+      ],
+      "decision_ids": [
+        "D16",
+        "D17",
+        "D24",
+        "D27",
+        "D58",
+        "D62",
+        "D63",
+        "D99",
+        "D100",
+        "D101",
+        "D102"
+      ],
+      "source_references": [
+        "S8, S2",
+        "S8",
+        "S12",
+        "S15, refined by S51",
+        "S46",
+        "S51",
+        "S52",
+        "S57.32",
+        "S57.33",
+        "S57.34",
+        "S57.35"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-redemption",
+      "requirement_id": "fr-redemption",
+      "acceptance_criterion_ids": [
+        "ac-fr-redemption-1",
+        "ac-fr-redemption-2",
+        "ac-fr-redemption-3"
+      ],
+      "decision_ids": [
+        "D18",
+        "D19",
+        "D21",
+        "D23",
+        "D92",
+        "D93",
+        "D94",
+        "D95",
+        "D96",
+        "D97",
+        "D98",
+        "D164"
+      ],
+      "source_references": [
+        "S8",
+        "S9",
+        "S11",
+        "S57.25",
+        "S57.26",
+        "S57.27",
+        "S57.28",
+        "S57.29",
+        "S57.30",
+        "S57.31",
+        "S60.1"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-expiry",
+      "requirement_id": "fr-expiry",
+      "acceptance_criterion_ids": [
+        "ac-fr-expiry-1",
+        "ac-fr-expiry-2"
+      ],
+      "decision_ids": [
+        "D61",
+        "D64",
+        "D65",
+        "D103"
+      ],
+      "source_references": [
+        "S50",
+        "S53",
+        "S54",
+        "S57.36"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-provider-lifecycle",
+      "requirement_id": "fr-provider-lifecycle",
+      "acceptance_criterion_ids": [
+        "ac-fr-provider-lifecycle-1",
+        "ac-fr-provider-lifecycle-2"
+      ],
+      "decision_ids": [
+        "D116",
+        "D166"
+      ],
+      "source_references": [
+        "S57.49",
+        "S60.3"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-admin",
+      "requirement_id": "fr-admin",
+      "acceptance_criterion_ids": [
+        "ac-fr-admin-1",
+        "ac-fr-admin-2",
+        "ac-fr-admin-3",
+        "ac-fr-admin-4"
+      ],
+      "decision_ids": [
+        "D106",
+        "D107",
+        "D117",
+        "D118",
+        "D119",
+        "D165",
+        "D169",
+        "D171",
+        "D172",
+        "D173",
+        "D179"
+      ],
+      "source_references": [
+        "S57.39",
+        "S57.40",
+        "S57.50",
+        "S57.51",
+        "S57.52",
+        "S60.2",
+        "S60.6",
+        "S61.2",
+        "S61.3",
+        "S61.4",
+        "S62 item 1"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-language",
+      "requirement_id": "fr-language",
+      "acceptance_criterion_ids": [
+        "ac-fr-language-1",
+        "ac-fr-language-2",
+        "ac-fr-language-3"
+      ],
+      "decision_ids": [
+        "D51",
+        "D52",
+        "D53",
+        "D140",
+        "D141",
+        "D142",
+        "D143",
+        "D144",
+        "D145",
+        "D174",
+        "D175",
+        "D176"
+      ],
+      "source_references": [
+        "S39",
+        "S40",
+        "S41",
+        "S57.73",
+        "S57.74",
+        "S57.75",
+        "S57.76",
+        "S57.77",
+        "S57.78",
+        "S61.5",
+        "S61.6",
+        "S61.7"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-simulations",
+      "requirement_id": "fr-simulations",
+      "acceptance_criterion_ids": [
+        "ac-fr-simulations-1",
+        "ac-fr-simulations-2",
+        "ac-fr-simulations-3"
+      ],
+      "decision_ids": [
+        "D10",
+        "D16",
+        "D93",
+        "D150",
+        "D151",
+        "D152",
+        "D153",
+        "D154",
+        "D155",
+        "D162",
+        "D180",
+        "D156",
+        "D157"
+      ],
+      "source_references": [
+        "S2, partially superseded by S58 and S62",
+        "S8, S2",
+        "S57.26",
+        "S57.83",
+        "S57.84",
+        "S57.85",
+        "S57.86",
+        "S57.87",
+        "S57.88",
+        "S58",
+        "S62 items 2–4"
+      ]
+    },
+    {
+      "traceability_id": "trace-fr-exclusions",
+      "requirement_id": "fr-exclusions",
+      "acceptance_criterion_ids": [
+        "ac-fr-exclusions-1",
+        "ac-fr-exclusions-2"
+      ],
+      "decision_ids": [
+        "D49",
+        "D59",
+        "D60",
+        "D103",
+        "D119",
+        "D120",
+        "D136",
+        "D137",
+        "D138",
+        "D139",
+        "D159",
+        "D161",
+        "D180",
+        "D181"
+      ],
+      "source_references": [
+        "S37",
+        "S47, S48",
+        "S49",
+        "S57.36",
+        "S57.52",
+        "S57.53",
+        "S57.69",
+        "S57.70",
+        "S57.71",
+        "S57.72",
+        "S57.92",
+        "S57.94",
+        "S62 items 2–4",
+        "S62 item 5"
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-boundaries",
+      "requirement_id": "nfr-boundaries",
+      "acceptance_criterion_ids": [
+        "ac-nfr-boundaries-1",
+        "ac-nfr-boundaries-2",
+        "ac-nfr-boundaries-3"
+      ],
+      "decision_ids": [
+        "D09",
+        "D42",
+        "D100",
+        "D150",
+        "D151",
+        "D160"
+      ],
+      "source_references": [
+        "S2",
+        "S29",
+        "S57.33",
+        "S57.83",
+        "S57.84",
+        "S57.93"
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-inventory",
+      "requirement_id": "nfr-inventory",
+      "acceptance_criterion_ids": [
+        "ac-nfr-inventory-1",
+        "ac-nfr-inventory-2",
+        "ac-nfr-inventory-3"
+      ],
+      "decision_ids": [
+        "D14",
+        "D28",
+        "D29",
+        "D38",
+        "D73",
+        "D87"
+      ],
+      "source_references": [
+        "S6",
+        "S16",
+        "S17",
+        "S25",
+        "S57.6",
+        "S57.20"
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-mobile",
+      "requirement_id": "nfr-mobile",
+      "acceptance_criterion_ids": [
+        "ac-nfr-mobile-1",
+        "ac-nfr-mobile-2"
+      ],
+      "decision_ids": [
+        "D158"
+      ],
+      "source_references": [
+        "S57.91"
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-tests",
+      "requirement_id": "nfr-tests",
+      "acceptance_criterion_ids": [
+        "ac-nfr-tests-1",
+        "ac-nfr-tests-2",
+        "ac-nfr-tests-3"
+      ],
+      "decision_ids": [
+        "D02",
+        "D03",
+        "D04",
+        "D05"
+      ],
+      "source_references": [
+        "S2"
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-storage",
+      "requirement_id": "nfr-storage",
+      "acceptance_criterion_ids": [
+        "ac-nfr-storage-1",
+        "ac-nfr-storage-2"
+      ],
+      "decision_ids": [
+        "D160"
+      ],
+      "source_references": [
+        "S57.93"
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-github-tracking",
+      "requirement_id": "nfr-github-tracking",
+      "acceptance_criterion_ids": [
+        "ac-nfr-github-tracking-1",
+        "ac-nfr-github-tracking-2",
+        "ac-nfr-github-tracking-3",
+        "ac-nfr-github-tracking-4"
+      ],
+      "decision_ids": [
+        "D182"
+      ],
+      "source_references": [
+        "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-github-ci",
+      "requirement_id": "nfr-github-ci",
+      "acceptance_criterion_ids": [
+        "ac-nfr-github-ci-1",
+        "ac-nfr-github-ci-2",
+        "ac-nfr-github-ci-3",
+        "ac-nfr-github-ci-4"
+      ],
+      "decision_ids": [
+        "D183"
+      ],
+      "source_references": [
+        "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      ]
+    },
+    {
+      "traceability_id": "trace-nfr-release-artifacts",
+      "requirement_id": "nfr-release-artifacts",
+      "acceptance_criterion_ids": [
+        "ac-nfr-release-artifacts-1",
+        "ac-nfr-release-artifacts-2",
+        "ac-nfr-release-artifacts-3",
+        "ac-nfr-release-artifacts-4"
+      ],
+      "decision_ids": [
+        "D184"
+      ],
+      "source_references": [
+        "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      ]
+    }
+  ],
+  "implementation_defaults": [
+    {
+      "default_id": "default-owner",
+      "field": "identity.owner",
+      "value": "Application owner (project requester)",
+      "basis": "Schema requires an owner label; no personal name is inferred."
+    },
+    {
+      "default_id": "default-success",
+      "field": "success_criteria",
+      "value": "Demonstrate accepted main journeys, workflow behavior, and 72 acceptance criteria with synthetic data.",
+      "basis": "Schema requires measurable success criteria; no unprovided commercial KPI is invented."
+    },
+    {
+      "default_id": "default-design",
+      "field": "design_system_direction",
+      "value": "Simple responsive forms, lists and status labels with an English/German language switch.",
+      "basis": "Conservative presentation direction for the required specification field; visual branding and detailed layouts are deferred."
+    },
+    {
+      "default_id": "default-threat",
+      "field": "threat_model_required",
+      "value": true,
+      "basis": "Authentication, personal information, four-digit credentials, and administrator mutations materially cross trust boundaries; draft threat analysis is embedded."
+    },
+    {
+      "default_id": "default-sync-checkpoints",
+      "field": "nfr-github-tracking",
+      "value": "Synchronize after approved work registration, work start, block/resume, verification-ready handoff, and recorded human milestone decision.",
+      "basis": "Conservative checkpoint definition for owner-requested progress synchronization; GitHub state never confers local approval."
+    },
+    {
+      "default_id": "default-ci-baseline",
+      "field": "nfr-github-ci",
+      "value": "Pull requests and pushes to main run the same baseline frontend/backend build and tests plus Playwright acceptance scope.",
+      "basis": "Conservative trigger/coverage default; narrowly scoped changes may use justified scope selection only with visible evidence."
+    },
+    {
+      "default_id": "default-release-identity",
+      "field": "nfr-release-artifacts",
+      "value": "Validated main revisions produce immutable commit-addressed versions; artifact checksums and container digests link to the exact source commit and CI run.",
+      "basis": "Conservative versioning default; semantic release naming and registry destination are deferred."
+    },
+    {
+      "default_id": "default-release-boundary",
+      "field": "nfr-release-artifacts",
+      "value": "Produce downloadable release archives and container-image artifacts; no environment rollout or unapproved external registry publication.",
+      "basis": "No deployment target or distribution destination is approved; artifact production satisfies the current CD boundary."
+    }
+  ],
+  "deferred_items": [
+    {
+      "area": "unanswered-last-batch",
+      "items": [
+        "Exact slot-start comparison and definition of future for public inventory totals.",
+        "Whether unpublished draft slots may overlap.",
+        "Retry-price acceptance details beyond current cart pricing and per-attempt snapshots.",
+        "Category provisioning mechanics; the two categories remain fixed scope with no administrator editing UI."
+      ],
+      "treatment": "Implementation details deferred, not answered Yes. Preserve accepted cutoff/non-overlap and category rules."
+    },
+    {
+      "area": "presentation",
+      "items": [
+        "Exact required shop/service/profile/image fields and limits beyond accepted names/descriptions/address/images.",
+        "Manual translation selection without automatically following interface language; detailed field-language labels.",
+        "Search tuning, typo thresholds, page size, filter controls, precise simulation-delivery UI, and supported-browser matrix."
+      ],
+      "treatment": "Use minimal presentation necessary to exercise accepted functionality; no additional product capability is required."
+    },
+    {
+      "area": "operations",
+      "items": [
+        "Deployment target, production readiness, operational capacity, retention schedule, legal/tax obligations, backup location, and accessibility target certification.",
+        "No security certification or real-user deployment is claimed by this specification."
+      ],
+      "treatment": "Deferred from the basic local/synthetic demonstration. Swiss storage remains binding for any hosted application data."
+    },
+    {
+      "area": "exception-details",
+      "items": [
+        "Administrative override transitions other than accepted Expired-to-Delivered; safeguards and suspended-provider fulfillment access.",
+        "Expired/started cart-slot cleanup, irreversible record deletion, complex publication edits, and payment/expiry race handling details."
+      ],
+      "treatment": "Do not add new override/cleanup workflows. Preserve accepted nonnegative inventory, authorization, immutability, no automatic cart expiry, and no duplicate checkout."
+    },
+    {
+      "area": "release-deployment",
+      "items": [
+        "Deployment target and rollout strategy",
+        "Registry/distribution destination and publishing credentials",
+        "Semantic release names beyond immutable commit-addressed artifacts"
+      ],
+      "treatment": "Artifact build/validation is in scope; actual deployment and unapproved registry publication are excluded."
+    }
+  ],
+  "decision_provenance": {
+    "historical_artifact": "docs/discovery/project-specification-draft.md",
+    "finalization_source": "Owner instruction relayed by Orchestrator: stop further elicitation and finalize a basic phase-one specification using accepted decisions through D181.",
+    "notes": "Empty open_questions means further elicitation is closed; it does not claim deferred details are answered or the specification approved.",
+    "registry": [
+      {
+        "decision_id": "D01",
+        "status": "accepted",
+        "statement": "Build a service-booking marketplace application.",
+        "sources": "S1"
+      },
+      {
+        "decision_id": "D02",
+        "status": "accepted",
+        "statement": "Use React for the web frontend.",
+        "sources": "S2"
+      },
+      {
+        "decision_id": "D03",
+        "status": "accepted",
+        "statement": "Use Java Spring Boot for the API.",
+        "sources": "S2"
+      },
+      {
+        "decision_id": "D04",
+        "status": "accepted",
+        "statement": "Use PostgreSQL in Docker.",
+        "sources": "S2"
+      },
+      {
+        "decision_id": "D05",
+        "status": "accepted",
+        "statement": "Include backend tests and Playwright browser tests.",
+        "sources": "S2"
+      },
+      {
+        "decision_id": "D06",
+        "status": "superseded",
+        "statement": "Historical category scope: tutor/lesson, beauty/wellness, and home services. The home-service portion is removed for phase one; D49 is the current category decision.",
+        "sources": "S2, partially superseded by S37"
+      },
+      {
+        "decision_id": "D07",
+        "status": "superseded",
+        "statement": "Historical only: support both instant-confirmation and provider-approval bookings. The provider-approval branch is removed from phase one by S26.",
+        "sources": "S2, superseded by S26"
+      },
+      {
+        "decision_id": "D08",
+        "status": "superseded",
+        "statement": "Historical only: support solo providers and provider organizations with staff scheduling. Organizations and staff are excluded from phase one by S34.",
+        "sources": "S2, superseded by S34"
+      },
+      {
+        "decision_id": "D09",
+        "status": "accepted",
+        "statement": "Use local email/password authentication and roles.",
+        "sources": "S2"
+      },
+      {
+        "decision_id": "D10",
+        "status": "partially_superseded",
+        "statement": "Simulate email verification, password reset, notifications, and payments behind clean interfaces. Historical refunds and messaging targets are excluded from phase one by D180/S62 and D162/S58 respectively.",
+        "sources": "S2, partially superseded by S58 and S62",
+        "current_interpretation": "Verification/reset/payment/notifications remain simulated; messaging/refunds are excluded."
+      },
+      {
+        "decision_id": "D11",
+        "status": "accepted",
+        "statement": "The first-release outcome is a dedicated two-sided portal where providers publish service offerings and buying/booking options, and customers discover and book those services online.",
+        "sources": "S3"
+      },
+      {
+        "decision_id": "D12",
+        "status": "accepted",
+        "statement": "The first-release booking option is services published as fixed-time appointment slots.",
+        "sources": "S4"
+      },
+      {
+        "decision_id": "D13",
+        "status": "superseded",
+        "statement": "Historical decision only: first-release capacity is one customer booking per fixed-time appointment slot. This limit is no longer current.",
+        "sources": "S5, superseded by S6"
+      },
+      {
+        "decision_id": "D14",
+        "status": "accepted",
+        "statement": "Providers define an inventory/capacity count for each fixed-time slot in the first release.",
+        "sources": "S6"
+      },
+      {
+        "decision_id": "D15",
+        "status": "accepted",
+        "statement": "A customer may add a quantity of one or more units from a fixed-time slot's available inventory to a shopping cart.",
+        "sources": "S7"
+      },
+      {
+        "decision_id": "D16",
+        "status": "accepted",
+        "statement": "Purchasing two units yields email confirmation for two booked units; email is simulated under D10.",
+        "sources": "S8, S2"
+      },
+      {
+        "decision_id": "D17",
+        "status": "accepted",
+        "statement": "The purchased order appears as pending in customer order history; D24 clarifies its meaning.",
+        "sources": "S8"
+      },
+      {
+        "decision_id": "D18",
+        "status": "accepted",
+        "statement": "A four-digit redemption credential is supplied to the customer, who presents it to the service provider.",
+        "sources": "S8"
+      },
+      {
+        "decision_id": "D19",
+        "status": "accepted",
+        "statement": "The service provider validates the credential when or after providing the purchased service and marks the relevant order/slot delivered.",
+        "sources": "S8"
+      },
+      {
+        "decision_id": "D20",
+        "status": "accepted",
+        "statement": "Each distinct fixed-time slot is a distinct SKU; different slots have different SKUs.",
+        "sources": "S9"
+      },
+      {
+        "decision_id": "D21",
+        "status": "accepted",
+        "statement": "All units purchased for the same timed slot/SKU share one redemption code; units for different slot SKUs receive different codes.",
+        "sources": "S9"
+      },
+      {
+        "decision_id": "D22",
+        "status": "accepted",
+        "statement": "Use `https://github.com/prashant7163/service-booking-1.git` as the project repository.",
+        "sources": "S10"
+      },
+      {
+        "decision_id": "D23",
+        "status": "accepted",
+        "statement": "When a provider validates the shared redemption code for a slot/SKU, all purchased units covered by that code are marked delivered together atomically.",
+        "sources": "S11"
+      },
+      {
+        "decision_id": "D24",
+        "status": "accepted",
+        "statement": "Pending in customer order history means the relevant booking/order is awaiting fulfillment of the purchased service.",
+        "sources": "S12"
+      },
+      {
+        "decision_id": "D25",
+        "status": "accepted",
+        "statement": "One customer cart may contain slot/SKU quantities from multiple service providers in the first release.",
+        "sources": "S13"
+      },
+      {
+        "decision_id": "D26",
+        "status": "accepted",
+        "statement": "Checkout of a cart containing multiple providers creates one customer-visible marketplace order.",
+        "sources": "S14"
+      },
+      {
+        "decision_id": "D27",
+        "status": "refined",
+        "statement": "Original aggregate rule: await fulfillment until all included slots/SKUs are delivered. D62 extends resolution to Delivered or Expired lines; an expired line no longer keeps an otherwise resolved order pending.",
+        "sources": "S15, refined by S51"
+      },
+      {
+        "decision_id": "D28",
+        "status": "accepted",
+        "statement": "A fixed-time slot becomes unavailable for further booking when its remaining inventory reaches zero/is exhausted.",
+        "sources": "S16"
+      },
+      {
+        "decision_id": "D29",
+        "status": "accepted",
+        "statement": "Adding slot units to a shopping cart immediately reserves those units, making them unavailable to other customers.",
+        "sources": "S17"
+      },
+      {
+        "decision_id": "D30",
+        "status": "superseded",
+        "statement": "Historical only: automatic cart-item removal and inventory release after 60 minutes without checkout. No longer applies in phase one.",
+        "sources": "S17, superseded by S24"
+      },
+      {
+        "decision_id": "D31",
+        "status": "superseded",
+        "statement": "Historical interpretation only: checkout starts a separate 60-minute reservation window, with release if purchase is unfinished. This separate checkout hold is no longer current.",
+        "sources": "S18, superseded by S19"
+      },
+      {
+        "decision_id": "D32",
+        "status": "superseded",
+        "statement": "Historical only: the 60-minute cart timer continues into checkout and gains 10 minutes when checkout starts at or after minute 50. No longer applies in phase one.",
+        "sources": "S19, superseded by S24"
+      },
+      {
+        "decision_id": "D33",
+        "status": "superseded",
+        "statement": "Historical only: add 10 minutes to the current deadline, so checkout at minute 55 moves expiry from minute 60 to minute 70. No longer applies in phase one.",
+        "sources": "S20, superseded by S24"
+      },
+      {
+        "decision_id": "D34",
+        "status": "superseded",
+        "statement": "Historical only: allow one qualifying automatic and one optional manual 10-minute extension. No longer applies in phase one.",
+        "sources": "S21, superseded by S24"
+      },
+      {
+        "decision_id": "D35",
+        "status": "superseded",
+        "statement": "Historical only: display the reservation countdown and extension option in the checkout header. No longer applies in phase one.",
+        "sources": "S21, S22, superseded by S24"
+      },
+      {
+        "decision_id": "D36",
+        "status": "superseded",
+        "statement": "Historical only: use one shared timer for the whole cart. No longer applies in phase one.",
+        "sources": "S23, superseded by S24"
+      },
+      {
+        "decision_id": "D37",
+        "status": "accepted",
+        "statement": "In phase one, cart inventory remains reserved until the relevant item/quantity is removed from the cart. There is no automatic reservation expiry, countdown timer, or automatic/manual extension. D29's immediate reservation remains current.",
+        "sources": "S24"
+      },
+      {
+        "decision_id": "D38",
+        "status": "accepted",
+        "statement": "On successful checkout, purchased items/quantities leave the cart and their reserved inventory converts to inventory allocated/consumed by the created marketplace order. Checkout removal does not restore those units to available inventory.",
+        "sources": "S25"
+      },
+      {
+        "decision_id": "D39",
+        "status": "accepted",
+        "statement": "All phase-one bookings use instant confirmation; no provider-approval workflow is included. D40 establishes simulated payment success as a prerequisite for confirmation.",
+        "sources": "S26"
+      },
+      {
+        "decision_id": "D40",
+        "status": "accepted",
+        "statement": "Simulated payment success is required before the marketplace order/bookings are created in or transitioned into the instant-confirmed state. This does not determine whether unconfirmed order records exist before payment.",
+        "sources": "S27"
+      },
+      {
+        "decision_id": "D41",
+        "status": "accepted",
+        "statement": "When simulated payment fails, cart items and their inventory reservations remain intact so the customer can retry.",
+        "sources": "S28"
+      },
+      {
+        "decision_id": "D42",
+        "status": "accepted",
+        "statement": "Only an authenticated customer account may create/use a cart and reserve slot inventory.",
+        "sources": "S29"
+      },
+      {
+        "decision_id": "D43",
+        "status": "accepted",
+        "statement": "Service browsing and search are publicly accessible to unauthenticated visitors. D42 still requires authentication for carts and inventory reservations.",
+        "sources": "S30"
+      },
+      {
+        "decision_id": "D44",
+        "status": "accepted",
+        "statement": "Public full-text search indexes product/service-offering name, product/service description, category name, category description, and shop/provider storefront name. “Product” and “shop” preserve the owner’s wording; D47 establishes one shop per solo provider, while final terminology and whether shop/provider are the same domain entity remain undecided.",
+        "sources": "S31, S32"
+      },
+      {
+        "decision_id": "D45",
+        "status": "accepted",
+        "statement": "In phase one, provider onboarding and service publication are self-service and require no marketplace-administrator approval.",
+        "sources": "S33"
+      },
+      {
+        "decision_id": "D46",
+        "status": "accepted",
+        "statement": "Phase one supports solo service providers only. Provider organizations, staff accounts, staff scheduling, organization membership, and staff-slot assignment are excluded.",
+        "sources": "S34"
+      },
+      {
+        "decision_id": "D47",
+        "status": "accepted",
+        "statement": "In phase one, solo-provider accounts and shops/storefronts have a one-to-one relationship: each solo provider owns/manages exactly one shop.",
+        "sources": "S35"
+      },
+      {
+        "decision_id": "D48",
+        "status": "accepted",
+        "statement": "All phase-one booked services are delivered in person at the solo provider’s single shop/storefront. Customer-location and online/remote delivery modes are excluded.",
+        "sources": "S36"
+      },
+      {
+        "decision_id": "D49",
+        "status": "accepted",
+        "statement": "Phase-one service categories are tutor/lesson and beauty/wellness only. Home services are excluded.",
+        "sources": "S37"
+      },
+      {
+        "decision_id": "D50",
+        "status": "accepted",
+        "statement": "The phase-one marketplace serves Switzerland.",
+        "sources": "S38"
+      },
+      {
+        "decision_id": "D51",
+        "status": "accepted",
+        "statement": "The phase-one user interface supports English and German (Deutsch). Canonical language identifiers: English/en and German/de.",
+        "sources": "S39"
+      },
+      {
+        "decision_id": "D52",
+        "status": "accepted",
+        "statement": "Provider-authored service/shop content may be supplied in either English or German. Bilingual copies are not required in phase one.",
+        "sources": "S40"
+      },
+      {
+        "decision_id": "D53",
+        "status": "accepted",
+        "statement": "Provider-authored service/shop content is displayed in its submitted/original English or German even when the interface language differs. No automatic translation is performed in phase one.",
+        "sources": "S41"
+      },
+      {
+        "decision_id": "D54",
+        "status": "accepted",
+        "statement": "All phase-one displayed prices, cart/order totals, and simulated payments use Swiss francs (CHF) only. Historical refund-currency scope is retired by D180.",
+        "sources": "S42"
+      },
+      {
+        "decision_id": "D55",
+        "status": "accepted",
+        "statement": "Each service offering has one provider-defined per-unit price shared by all its bookable slots/SKUs in phase one. Different service offerings need not share a price.",
+        "sources": "S43"
+      },
+      {
+        "decision_id": "D56",
+        "status": "accepted",
+        "statement": "The cart total equals the sum of each service’s per-unit price multiplied by its booked quantity. No extra fees or discounts apply in phase one.",
+        "sources": "S44"
+      },
+      {
+        "decision_id": "D57",
+        "status": "accepted",
+        "statement": "When a provider changes a service’s price, reserved cart items for that service are repriced to the new current price. Purchased order-history prices are governed separately by D58.",
+        "sources": "S45"
+      },
+      {
+        "decision_id": "D58",
+        "status": "accepted",
+        "statement": "Successfully purchased order history preserves and displays the original ordered unit prices and totals, unaffected by later provider price changes.",
+        "sources": "S46"
+      },
+      {
+        "decision_id": "D59",
+        "status": "accepted",
+        "statement": "Both customer-initiated and provider-initiated cancellation of confirmed bookings are excluded from phase one. S48 expands the original customer-only exclusion in S47.",
+        "sources": "S47, S48"
+      },
+      {
+        "decision_id": "D60",
+        "status": "accepted",
+        "statement": "Rescheduling confirmed bookings is excluded from phase one.",
+        "sources": "S49"
+      },
+      {
+        "decision_id": "D61",
+        "status": "accepted",
+        "statement": "An unredeemed booking/slot line automatically shows Expired when its scheduled slot ends, as clarified by D65.",
+        "sources": "S50"
+      },
+      {
+        "decision_id": "D62",
+        "status": "accepted",
+        "statement": "Once all booking lines are resolved as Delivered or Expired, the marketplace order enters the same normal terminal state used for an all-delivered order. Expired lines do not produce a special failed/partial aggregate state. D63 establishes the displayed label as Completed.",
+        "sources": "S51"
+      },
+      {
+        "decision_id": "D63",
+        "status": "accepted",
+        "statement": "The normal terminal marketplace-order status is labeled Completed, including when every booking line has resolved through any mix of Delivered and Expired.",
+        "sources": "S52"
+      },
+      {
+        "decision_id": "D64",
+        "status": "accepted",
+        "statement": "An Expired booking/slot line cannot later be redeemed; its redemption code is no longer valid for fulfillment.",
+        "sources": "S53"
+      },
+      {
+        "decision_id": "D65",
+        "status": "accepted",
+        "statement": "The scheduled slot end instant is the expiry boundary for an unredeemed booking/slot line.",
+        "sources": "S54"
+      },
+      {
+        "decision_id": "D66",
+        "status": "accepted",
+        "statement": "Every provider-created fixed-time slot requires an explicit start time and end time.",
+        "sources": "S55"
+      },
+      {
+        "decision_id": "D67",
+        "status": "accepted",
+        "statement": "A solo provider’s published slots must not overlap in time in phase one.",
+        "sources": "S56"
+      },
+      {
+        "decision_id": "D162",
+        "status": "accepted",
+        "statement": "All customer-provider messaging is excluded from phase one. This supersedes D10’s messaging target and resolves the interpretations of D156–D157 (batch items 89–90).",
+        "sources": "S58"
+      },
+      {
+        "decision_id": "D163",
+        "status": "accepted",
+        "statement": "The amount accepted when a simulated payment attempt starts remains the amount paid for that attempt despite provider price changes during it. A later retry is a distinct attempt; this decision does not independently fix its pricing or consent behavior.",
+        "sources": "S59"
+      },
+      {
+        "decision_id": "D164",
+        "status": "accepted",
+        "statement": "Entering a valid code before slot start immediately marks the booking Delivered. This explicitly refines D19: the system does not require the scheduled start or proof of prior service provision before this transition.",
+        "sources": "S60.1"
+      },
+      {
+        "decision_id": "D165",
+        "status": "accepted",
+        "statement": "An administrator may change an Expired booking to Delivered without code redemption. D64 still prohibits redemption of an expired code; this is an administrative status change, not code reactivation.",
+        "sources": "S60.2"
+      },
+      {
+        "decision_id": "D166",
+        "status": "accepted",
+        "statement": "Unpublishing a service leaves already-purchased bookings valid and redeemable, subject to their existing redemption/expiry rules. It still removes service items from carts under D116.",
+        "sources": "S60.3"
+      },
+      {
+        "decision_id": "D167",
+        "status": "accepted",
+        "statement": "The public inventory count totals available units across the service’s future slots. The exact time boundary defining future remains open.",
+        "sources": "S60.4"
+      },
+      {
+        "decision_id": "D168",
+        "status": "accepted",
+        "statement": "Signed-in customers see available slot times when selecting a service to book. D121 continues to exclude those times from public service pages.",
+        "sources": "S60.5"
+      },
+      {
+        "decision_id": "D169",
+        "status": "accepted",
+        "statement": "Administrative release of a cart reservation also removes the corresponding quantity from the cart.",
+        "sources": "S60.6"
+      },
+      {
+        "decision_id": "D170",
+        "status": "superseded",
+        "statement": "Deleting a customer account removes its cart and releases its cart reservations; purchased-booking/data retention remains open.",
+        "sources": "S61.1"
+      },
+      {
+        "decision_id": "D171",
+        "status": "accepted",
+        "statement": "Provider suspension blocks that provider from signing in.",
+        "sources": "S61.2"
+      },
+      {
+        "decision_id": "D172",
+        "status": "accepted",
+        "statement": "Provider suspension removes that provider’s services from public discovery; this is a suspension consequence, not the separately excluded direct service-hiding tool.",
+        "sources": "S61.3"
+      },
+      {
+        "decision_id": "D173",
+        "status": "accepted",
+        "statement": "Provider suspension preserves already-purchased bookings as valid; fulfillment while provider sign-in is blocked remains open.",
+        "sources": "S61.4"
+      },
+      {
+        "decision_id": "D174",
+        "status": "accepted",
+        "statement": "English is the default interface language when the browser prefers neither English nor German.",
+        "sources": "S61.5"
+      },
+      {
+        "decision_id": "D175",
+        "status": "accepted",
+        "statement": "Language selection persists on the current device only, not across devices.",
+        "sources": "S61.6"
+      },
+      {
+        "decision_id": "D176",
+        "status": "accepted",
+        "statement": "When manual English/German versions exist, the application must not automatically select a version by matching the interface language. The actual version-selection rule remains unresolved.",
+        "sources": "S61.7"
+      },
+      {
+        "decision_id": "D177",
+        "status": "accepted",
+        "statement": "Quoted search phrases disable typo tolerance within the quoted text.",
+        "sources": "S61.8"
+      },
+      {
+        "decision_id": "D178",
+        "status": "superseded",
+        "statement": "Administrators may refund selected quantities from a booking line. Refund effects on redemption, inventory, and booking/order status remain open.",
+        "sources": "S61.9"
+      },
+      {
+        "decision_id": "D179",
+        "status": "accepted",
+        "statement": "Provider suspension removes that provider’s service quantities from existing carts and releases those reservations. Purchased bookings remain valid under D173.",
+        "sources": "S62 item 1"
+      },
+      {
+        "decision_id": "D180",
+        "status": "accepted",
+        "statement": "All refund functionality is excluded from phase one, including simulated and administrator-issued refunds. Earlier refund features and effect questions are superseded.",
+        "sources": "S62 items 2–4"
+      },
+      {
+        "decision_id": "D181",
+        "status": "accepted",
+        "statement": "Self-service account deletion is excluded from phase one. D108 and D170 are historical/non-current; no legal data-retention conclusions follow.",
+        "sources": "S62 item 5"
+      },
+      {
+        "decision_id": "D68",
+        "status": "accepted",
+        "statement": "Adjacent published slots may touch: one may start exactly when the previous slot ends.",
+        "sources": "S57.1",
+        "owner_answer": "Yes"
+      },
+      {
+        "decision_id": "D69",
+        "status": "accepted",
+        "statement": "Providers may save unpublished draft slots.",
+        "sources": "S57.2",
+        "owner_answer": "Yes"
+      },
+      {
+        "decision_id": "D70",
+        "status": "accepted",
+        "statement": "Recurring-schedule slot creation is excluded.",
+        "sources": "S57.3",
+        "owner_answer": "No"
+      },
+      {
+        "decision_id": "D71",
+        "status": "accepted",
+        "statement": "Providers may create multiple nonrecurring slots in one operation.",
+        "sources": "S57.4",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D72",
+        "status": "accepted",
+        "statement": "Slot start/end times become uneditable once any inventory is reserved or purchased.",
+        "sources": "S57.5",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D73",
+        "status": "accepted",
+        "statement": "Capacity cannot be reduced below reserved plus purchased quantities.",
+        "sources": "S57.6",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D74",
+        "status": "accepted",
+        "statement": "Providers may not publish slots with zero available inventory.",
+        "sources": "S57.7",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D75",
+        "status": "accepted",
+        "statement": "One inventory unit entitles one person to receive the service.",
+        "sources": "S57.8",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D76",
+        "status": "accepted",
+        "statement": "Attendee names are not required for every purchased unit.",
+        "sources": "S57.9",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D77",
+        "status": "accepted",
+        "statement": "Purchases are prohibited after the slot starts; the exact start-instant comparison remains open.",
+        "sources": "S57.10",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D78",
+        "status": "accepted",
+        "statement": "Slot entry/display uses Swiss local time, including daylight-saving changes.",
+        "sources": "S57.11",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D79",
+        "status": "accepted",
+        "statement": "Providers anywhere in Switzerland may register.",
+        "sources": "S57.12",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D80",
+        "status": "accepted",
+        "statement": "An account may not act as both customer and solo provider.",
+        "sources": "S57.13",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D81",
+        "status": "accepted",
+        "statement": "Each customer has exactly one active cart.",
+        "sources": "S57.14",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D82",
+        "status": "accepted",
+        "statement": "Cart items and reservations persist after sign-out or session expiry.",
+        "sources": "S57.15",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D83",
+        "status": "accepted",
+        "statement": "A customer's cart is shared across devices and concurrent sessions.",
+        "sources": "S57.16",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D84",
+        "status": "accepted",
+        "statement": "Customers may change quantities directly in their cart.",
+        "sources": "S57.17",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D85",
+        "status": "accepted",
+        "statement": "Customers may edit their cart after a failed payment before retrying.",
+        "sources": "S57.18",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D86",
+        "status": "accepted",
+        "statement": "Customers may purchase selected cart items while leaving the rest reserved.",
+        "sources": "S57.19",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D87",
+        "status": "accepted",
+        "statement": "Checkout succeeds only when all selected items can be purchased together.",
+        "sources": "S57.20",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D88",
+        "status": "accepted",
+        "statement": "Customers must accept an updated total before payment after a provider changes a cart item's price.",
+        "sources": "S57.21",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D89",
+        "status": "accepted",
+        "statement": "A price change during simulated payment must not stop the attempt and require reconfirmation; D163 subsequently fixes the amount to that accepted when the attempt starts.",
+        "sources": "S57.22",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D90",
+        "status": "accepted",
+        "statement": "Failed payment attempts do not appear in customer order history.",
+        "sources": "S57.23",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D91",
+        "status": "accepted",
+        "statement": "Checkout includes a visible control for simulating payment failure.",
+        "sources": "S57.24",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D92",
+        "status": "accepted",
+        "statement": "Each redemption code appears beside its booking line in order history.",
+        "sources": "S57.25",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D93",
+        "status": "accepted",
+        "statement": "Simulated confirmation emails include redemption codes.",
+        "sources": "S57.26",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D94",
+        "status": "accepted",
+        "statement": "Providers must select a booking before entering its four-digit code.",
+        "sources": "S57.27",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D95",
+        "status": "accepted",
+        "statement": "Redemption is not prohibited solely because the slot has not started; reconciliation with service-delivery validation in D19 remains open.",
+        "sources": "S57.28",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D96",
+        "status": "accepted",
+        "statement": "A successfully redeemed code becomes unusable immediately.",
+        "sources": "S57.29",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D97",
+        "status": "accepted",
+        "statement": "Repeated incorrect codes do not trigger a temporary booking-level attempt block; other safeguards remain undecided.",
+        "sources": "S57.30",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D98",
+        "status": "accepted",
+        "statement": "An audit history of every redemption attempt is not required by the product scope; other audit requirements remain undecided.",
+        "sources": "S57.31",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D99",
+        "status": "accepted",
+        "statement": "Customers see each booking line's Delivered or Expired status alongside the overall order status.",
+        "sources": "S57.32",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D100",
+        "status": "accepted",
+        "statement": "Providers see only their own lines within a multi-provider marketplace order.",
+        "sources": "S57.33",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D101",
+        "status": "accepted",
+        "statement": "Providers see their booking customer's name.",
+        "sources": "S57.34",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D102",
+        "status": "accepted",
+        "statement": "Providers see their booking customer's email address.",
+        "sources": "S57.35",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D103",
+        "status": "accepted",
+        "statement": "Expired bookings do not receive automatic simulated refunds.",
+        "sources": "S57.36",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D104",
+        "status": "superseded",
+        "statement": "Marketplace administrators may issue simulated refunds.",
+        "sources": "S57.37",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D105",
+        "status": "superseded",
+        "statement": "Refunds use the original ordered price; refund granularity and amount rules remain open.",
+        "sources": "S57.38",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D106",
+        "status": "accepted",
+        "statement": "Administrators have a booking-status override capability; allowed transitions remain open.",
+        "sources": "S57.39",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D107",
+        "status": "accepted",
+        "statement": "Administrators may manually release abandoned-cart reservations.",
+        "sources": "S57.40",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D108",
+        "status": "superseded",
+        "statement": "Users may delete their accounts through the application; related data and reservation handling remain open.",
+        "sources": "S57.41",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D109",
+        "status": "accepted",
+        "statement": "A shop requires a postal address before publishing services.",
+        "sources": "S57.42",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D110",
+        "status": "accepted",
+        "statement": "Shop addresses are publicly visible.",
+        "sources": "S57.43",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D111",
+        "status": "accepted",
+        "statement": "Public shop storefront pages are excluded; this does not remove the shop entity or shop-name search.",
+        "sources": "S57.44",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D112",
+        "status": "accepted",
+        "statement": "Shop names need not be unique across the marketplace.",
+        "sources": "S57.45",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D113",
+        "status": "accepted",
+        "statement": "Providers may create their shop before publishing services.",
+        "sources": "S57.46",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D114",
+        "status": "accepted",
+        "statement": "Providers may upload shop images.",
+        "sources": "S57.47",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D115",
+        "status": "accepted",
+        "statement": "Providers may upload service images.",
+        "sources": "S57.48",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D116",
+        "status": "accepted",
+        "statement": "Providers are not blocked from unpublishing a service with reserved inventory or future purchased bookings. Unpublishing removes that service's items from carts; purchased-booking consequences remain unresolved.",
+        "sources": "S57.49",
+        "owner_answer": "NO, unpublishing should remove that item from carts"
+      },
+      {
+        "decision_id": "D117",
+        "status": "accepted",
+        "statement": "Administrators cannot hide published services from public discovery through a dedicated service-hiding capability; suspension consequences remain open.",
+        "sources": "S57.50",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D118",
+        "status": "accepted",
+        "statement": "Administrators may suspend provider accounts.",
+        "sources": "S57.51",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D119",
+        "status": "accepted",
+        "statement": "Administrator tools for editing category names/descriptions are excluded.",
+        "sources": "S57.52",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D120",
+        "status": "accepted",
+        "statement": "Shop ownership transfers between accounts are excluded.",
+        "sources": "S57.53",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D121",
+        "status": "accepted",
+        "statement": "Public service pages do not show available slot times; the authenticated slot-selection journey remains open.",
+        "sources": "S57.54",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D122",
+        "status": "accepted",
+        "statement": "Public service pages show exact remaining inventory; the aggregation/display scope remains open.",
+        "sources": "S57.55",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D123",
+        "status": "accepted",
+        "statement": "Services remain discoverable when all slots are exhausted.",
+        "sources": "S57.56",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D124",
+        "status": "accepted",
+        "statement": "An empty search shows all published services.",
+        "sources": "S57.57",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D125",
+        "status": "accepted",
+        "statement": "Search ignores capitalization.",
+        "sources": "S57.58",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D126",
+        "status": "accepted",
+        "statement": "Search ignores accent and umlaut differences.",
+        "sources": "S57.59",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D127",
+        "status": "accepted",
+        "statement": "Search tolerates spelling mistakes.",
+        "sources": "S57.60",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D128",
+        "status": "accepted",
+        "statement": "Quoted search text requires an exact phrase match.",
+        "sources": "S57.61",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D129",
+        "status": "accepted",
+        "statement": "Grammatical word-variant matching is not required in English or German.",
+        "sources": "S57.62",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D130",
+        "status": "accepted",
+        "statement": "Search results default to relevance ordering.",
+        "sources": "S57.63",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D131",
+        "status": "accepted",
+        "statement": "Search results are paginated; page size remains open.",
+        "sources": "S57.64",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D132",
+        "status": "accepted",
+        "statement": "Visitors may filter by category.",
+        "sources": "S57.65",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D133",
+        "status": "accepted",
+        "statement": "Appointment-date filtering is excluded.",
+        "sources": "S57.66",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D134",
+        "status": "accepted",
+        "statement": "Visitors may filter by price range.",
+        "sources": "S57.67",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D135",
+        "status": "accepted",
+        "statement": "Shop-location filtering is excluded.",
+        "sources": "S57.68",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D136",
+        "status": "accepted",
+        "statement": "Visitors may sort by price.",
+        "sources": "S57.69",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D137",
+        "status": "accepted",
+        "statement": "Saved searches are excluded.",
+        "sources": "S57.70",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D138",
+        "status": "accepted",
+        "statement": "Search results are not personalized using prior customer activity.",
+        "sources": "S57.71",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D139",
+        "status": "accepted",
+        "statement": "Search-engine indexing support for public service pages is excluded; crawl-policy details remain open.",
+        "sources": "S57.72",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D140",
+        "status": "accepted",
+        "statement": "The initial interface language follows the browser preference when it is English or German.",
+        "sources": "S57.73",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D141",
+        "status": "accepted",
+        "statement": "Users have a visible English/German language switch.",
+        "sources": "S57.74",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D142",
+        "status": "accepted",
+        "statement": "A signed-in user's language choice does not persist across devices; local persistence remains open.",
+        "sources": "S57.75",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D143",
+        "status": "accepted",
+        "statement": "Provider content indicates its submitted language.",
+        "sources": "S57.76",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D144",
+        "status": "accepted",
+        "statement": "Providers may optionally supply manual English and German versions.",
+        "sources": "S57.77",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D145",
+        "status": "accepted",
+        "statement": "Text fields within one service offering need not all share one submitted language.",
+        "sources": "S57.78",
+        "owner_answer": "Not Necessarily"
+      },
+      {
+        "decision_id": "D146",
+        "status": "accepted",
+        "statement": "Provider-entered prices are the final tax-inclusive customer price; legal/tax treatment is not inferred.",
+        "sources": "S57.79",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D147",
+        "status": "accepted",
+        "statement": "Entered prices are limited to two decimal places.",
+        "sources": "S57.80",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D148",
+        "status": "accepted",
+        "statement": "Free services priced at CHF 0.00 are excluded.",
+        "sources": "S57.81",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D149",
+        "status": "accepted",
+        "statement": "Every monetary amount displays the explicit CHF code.",
+        "sources": "S57.82",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D150",
+        "status": "accepted",
+        "statement": "Customers must complete simulated email verification before reserving inventory.",
+        "sources": "S57.83",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D151",
+        "status": "accepted",
+        "statement": "Providers must complete simulated email verification before publishing.",
+        "sources": "S57.84",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D152",
+        "status": "accepted",
+        "statement": "An in-app inbox for simulated emails is excluded.",
+        "sources": "S57.85",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D153",
+        "status": "accepted",
+        "statement": "Providers receive a simulated notification for each successful purchase of their service.",
+        "sources": "S57.86",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D154",
+        "status": "accepted",
+        "statement": "Customers receive a simulated notification when a booking is redeemed.",
+        "sources": "S57.87",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D155",
+        "status": "accepted",
+        "statement": "Customers receive a simulated notification when a booking expires.",
+        "sources": "S57.88",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D156",
+        "status": "accepted",
+        "statement": "Historical answer: No to restricting messaging to successful bookings. D162/S58 now resolves scope by excluding all customer-provider messaging; no pre-booking messaging is inferred.",
+        "sources": "S57.89",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D157",
+        "status": "accepted",
+        "statement": "Booking conversations are excluded in phase one. D162/S58 clarifies that all customer-provider messaging is excluded.",
+        "sources": "S57.90",
+        "owner_answer": "NO booking conversations in phase 1"
+      },
+      {
+        "decision_id": "D158",
+        "status": "accepted",
+        "statement": "Every customer and provider workflow supports mobile-sized screens.",
+        "sources": "S57.91",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D159",
+        "status": "accepted",
+        "statement": "User-facing export of account and booking data is excluded from product scope; applicable data-rights obligations remain to be assessed.",
+        "sources": "S57.92",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D160",
+        "status": "accepted",
+        "statement": "Application data must be stored in Switzerland.",
+        "sources": "S57.93",
+        "owner_answer": "YES"
+      },
+      {
+        "decision_id": "D161",
+        "status": "accepted",
+        "statement": "Usage analytics are excluded.",
+        "sources": "S57.94",
+        "owner_answer": "NO"
+      },
+      {
+        "decision_id": "D182",
+        "status": "accepted",
+        "statement": "Use GitHub milestones and issues as traceable implementation-work/progress counterparts; authoritative local Studio tracking remains the source of truth.",
+        "sources": "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      },
+      {
+        "decision_id": "D183",
+        "status": "accepted",
+        "statement": "Implement GitHub Actions CI covering frontend, backend, and Playwright-supported scope for pull requests and main-branch changes.",
+        "sources": "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      },
+      {
+        "decision_id": "D184",
+        "status": "accepted",
+        "statement": "After successful validation, CD produces versioned reproducible release artifacts/container images; actual environment deployment is deferred because no deployment target is approved.",
+        "sources": "S64: Owner direction relayed by Orchestrator: record milestones, issues and progress at repository GitHub milestones/issues alongside authoritative local tracking; create GitHub Actions CI/CD to keep the repository build-ready. Environment deployment is deferred."
+      }
+    ],
+    "artifact_level_decisions": {
+      "D01": "identity, desired_outcome, goals",
+      "D11": "problem_statement, desired_outcome, primary_journeys",
+      "D22": "repository"
+    },
+    "finalization_note": "The final five binary questions posed before stop-elicitation were not answered and are not owner decisions."
+  },
+  "state_rules": {
+    "cart": "Persistent reservation until explicit quantity removal, service unpublication, provider suspension, or administrator release. No timer. Account deletion is excluded.",
+    "checkout": "One selected-item marketplace order after payment success; no partial selected-item success; failed payment retains reservations.",
+    "pricing": "Current cart price; accepted amount snapshotted per attempt; original successful order prices retained.",
+    "booking": "Instant-confirmed/awaiting fulfillment after payment success. Valid code delivers all covered quantities; unredeemed line expires at slot end; no ordinary redemption after expiry.",
+    "order": "Awaiting fulfillment while any line unresolved; Completed once all lines Delivered/Expired.",
+    "admin": "Expired-to-Delivered allowed without code redemption; suspension preserves purchased bookings."
+  },
+  "threat_model": {
+    "schema_version": "1.0.0",
+    "threat_model_id": "phase-one-draft-threat-model",
+    "assets": [
+      "Account credentials",
+      "Customer details",
+      "Inventory reservations",
+      "Purchased bookings",
+      "Redemption codes"
+    ],
+    "actors": [
+      "Visitor",
+      "Customer",
+      "Solo provider",
+      "Administrator"
+    ],
+    "trust_boundaries": [
+      "Browser to API",
+      "API to PostgreSQL",
+      "Role/owner boundaries",
+      "Simulated delivery interfaces",
+      "Authoritative local Studio state to GitHub tracking",
+      "Pull-request code to CI runner",
+      "Validated build to release artifacts"
+    ],
+    "abuse_cases": [
+      "Cross-owner access",
+      "Code guessing/reuse",
+      "Overselling through races",
+      "Duplicate checkout",
+      "Abandoned-cart hoarding",
+      "Administrator misuse",
+      "Untrusted PR accesses publishing credentials",
+      "Remote progress incorrectly treated as approval",
+      "Unvalidated revision produces release artifact"
+    ],
+    "controls": [
+      "Authenticated ownership enforcement",
+      "Non-reversible password hashing and secret redaction",
+      "Booking-scoped code validation and single-use checks",
+      "Atomic inventory/checkout consistency",
+      "Distinct administrator actions",
+      "Manual reservation release",
+      "Local-authority reconciliation and retry markers",
+      "Least-privilege CI and separate publication boundary",
+      "Release eligibility bound to successful exact-revision CI"
+    ],
+    "residual_risks": [
+      "No every-attempt audit-history feature or temporary booking-level attempt block.",
+      "Early redemption is allowed; physical delivery is not verified.",
+      "Production security/retention review remains necessary."
+    ],
+    "owner_roles": [
+      "architect",
+      "backend-engineer",
+      "orchestrator-tech-lead"
+    ],
+    "evidence_references": [],
+    "status": "draft"
+  },
+  "repository": {
+    "url": "https://github.com/prashant7163/service-booking-1.git",
+    "decision_id": "D22",
+    "source": "S10",
+    "milestones_url": "https://github.com/prashant7163/service-booking-1/milestones",
+    "issues_url": "https://github.com/prashant7163/service-booking-1/issues"
+  }
+}

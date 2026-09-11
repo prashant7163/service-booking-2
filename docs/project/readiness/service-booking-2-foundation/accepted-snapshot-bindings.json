@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-accepted-bindings",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "observed_phase": "readiness_pending",
+  "observed_event_sequence": 4,
+  "specification": {
+    "artifact_id": "service-booking-2",
+    "kind": "specification",
+    "source_locator": "docs/discovery/project-specification.json",
+    "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29.json",
+    "sha256": "04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29"
+  },
+  "plan": {
+    "artifact_id": "service-booking-2-phase-one",
+    "kind": "plan",
+    "source_locator": "docs/project/planning/phase-one-milestone-plan.json",
+    "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073.json",
+    "sha256": "2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073"
+  },
+  "scope_assertion": {
+    "included_milestones": [
+      "service-booking-2-foundation"
+    ],
+    "excluded_milestones": [
+      "service-booking-2-publish-discover",
+      "service-booking-2-reserve-purchase",
+      "service-booking-2-fulfill-administer",
+      "service-booking-2-validate-release"
+    ],
+    "later_milestones_authorized": false
+  },
+  "task_state_assertion": {
+    "started_task_count": 0,
+    "active_task_id": null,
+    "active_milestone_id": null
+  },
+  "recorded_at": "2026-09-11T13:18:53Z"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "approval_id": "apr-service-booking-2-build-manager-001",
+  "subject_type": "agent_instance",
+  "subject_id": "service-booking-2-build-manager",
+  "subject_digest": "77d228fa8534f133036db89715bf13952b5aeb2d8de99e45b841c8cbee81b587",
+  "decision": "approved",
+  "decided_by": "application-owner",
+  "decided_at": "2026-09-11T16:37:43Z",
+  "comment": "Application owner explicitly approved the exact pending AgentInstance envelope subject and digest for service-booking-2-build-manager. This decision authorizes recording and validation of this approval only; it does not authorize envelope mutation, activation, workspace or task creation, submission, Git/GitHub mutation, or implementation.",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "subject_locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-build-manager.json",
+  "authorization_scope": {
+    "authorized": ["record-agent-instance-approval", "validate-agent-instance-approval"],
+    "not_authorized": ["modify-approved-agent-instance-envelope", "activate-agent-instance", "create-agent-or-worktree", "create-or-dispatch-task", "submit-supporting-evidence", "submit-readiness", "mutate-git-or-github", "begin-implementation"]
+  }
+}

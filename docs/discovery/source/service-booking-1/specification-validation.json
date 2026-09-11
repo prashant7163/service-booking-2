@@ -1,0 +1,35 @@
+{
+  "artifact": "docs/discovery/project-specification.json",
+  "file_sha256": "49464b8bc24216de31a1d3ea2c6251051f5311d306aa5eba5e30f4dce7006356",
+  "canonical_approval_subject_digest": "637f0e2082e73bd106a246d7bf47034943b41724db78fb828ccd028aa638e202",
+  "validator_environment": "/Users/pacific/Playground/AIDevStudio/.venv/bin/python",
+  "validators": [
+    "agentic_studio.contracts.project_spec.ProjectSpecification.model_validate",
+    "agentic_studio.contracts.operations.ThreatModel.model_validate"
+  ],
+  "contract": "shared/contracts/project-spec.schema.json",
+  "mechanism": "Canonical Studio Pydantic model validation, including validate_traceability_and_approval; JSON Schema engine unavailable in the environment.",
+  "result": "pass",
+  "requirements": 24,
+  "acceptance_criteria": 72,
+  "decision_registry_entries": 184,
+  "additional_checks": [
+    "All decision references exist",
+    "No retired decision is used as a current requirement reference",
+    "Decision IDs are unique",
+    "Requirement/traceability decision mappings agree",
+    "New requirements trace to D182-D184/S64"
+  ],
+  "specification_status": "approved",
+  "approval": {
+    "approval_id": "apr-service-booking-1-spec-001",
+    "decision": "approved",
+    "decided_by": "application-owner",
+    "decided_at": "2026-09-10T21:09:25Z",
+    "subject_digest": "637f0e2082e73bd106a246d7bf47034943b41724db78fb828ccd028aa638e202"
+  },
+  "limits": [
+    "Not application test evidence",
+    "No lifecycle transition performed"
+  ]
+}

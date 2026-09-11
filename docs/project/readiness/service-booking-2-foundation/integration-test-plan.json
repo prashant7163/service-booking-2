@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-integration-test-plan",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "decision": "applicable",
+  "integration_point_ids": [
+    "local-github-tracking",
+    "architecture-boundary-contract",
+    "responsive-bilingual-flow-contract",
+    "backend-auth-session-contract",
+    "frontend-api-language-contract",
+    "postgres-flyway-startup",
+    "simulated-account-adapters",
+    "exact-candidate-gate-chain"
+  ],
+  "test_stages": [
+    {
+      "stage_id": "tracking-contract-tests",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "depends_on": [],
+      "scope": "Exercise local-to-GitHub mapping, redaction, idempotent reconciliation, and retry-marker behavior with a trusted least-privilege connection.",
+      "pass_condition": "First-milestone local IDs map one-to-one to remote counterparts; a simulated sync failure preserves local authority and records a retry marker."
+    },
+    {
+      "stage_id": "backend-foundation-tests",
+      "owner_instance_id": "service-booking-2-backend",
+      "depends_on": [
+        "architecture-boundary-contract"
+      ],
+      "scope": "Run Spring Boot tests against PostgreSQL/Flyway for registration, simulated verification/reset adapters, sign-in/sign-out, session and CSRF protection, password hashing, role separation, anonymous access, unverified customer denial, and cross-account denial.",
+      "pass_condition": "All first-milestone backend acceptance criteria pass against the exact backend candidate, including failure paths and stored/logged value checks."
+    },
+    {
+      "stage_id": "frontend-foundation-tests",
+      "owner_instance_id": "service-booking-2-frontend",
+      "depends_on": [
+        "responsive-bilingual-flow-contract",
+        "backend-auth-session-contract"
+      ],
+      "scope": "Run component and integration tests for role-bound navigation, account flows, English/German browser fallback and visible switching, current-device persistence, submitted-language labels, and absence of prohibited simulated inbox/messaging/refund surfaces.",
+      "pass_condition": "Frontend tests pass at the exact frontend candidate and match the accepted API and flow contracts."
+    },
+    {
+      "stage_id": "foundation-browser-smoke",
+      "owner_instance_id": "service-booking-2-quality-engineer",
+      "depends_on": [
+        "backend-foundation-tests",
+        "frontend-foundation-tests"
+      ],
+      "scope": "Start PostgreSQL, API, and React client; exercise anonymous browsing, separate customer/provider registration, simulated provider verification, sign-in/sign-out, role-bound navigation, language switching, and rejected anonymous/unverified/cross-role mutations at 390px and 1280px.",
+      "pass_condition": "The proposed milestone demonstration succeeds with synthetic data and no horizontal overflow, inaccessible primary control, missing label, or unidentified input error."
+    },
+    {
+      "stage_id": "assurance-chain-validation",
+      "owner_instance_id": "service-booking-2-independent-auditor",
+      "depends_on": [
+        "foundation-browser-smoke"
+      ],
+      "scope": "Trace accepted specification and plan snapshots, exact candidate identity, Code Review, Build Verification, Quality Review, blocker resolution, and final human review boundary.",
+      "pass_condition": "Every claim is digest-bound, every required role is independent, all findings are dispositioned by the Orchestrator, and no later milestone or deployment is authorized."
+    }
+  ],
+  "acceptance_criterion_ids": [
+    "ac-fr-access-1",
+    "ac-fr-access-2",
+    "ac-fr-access-3",
+    "ac-fr-language-1",
+    "ac-fr-language-2",
+    "ac-fr-language-3",
+    "ac-fr-simulations-1",
+    "ac-fr-simulations-3",
+    "ac-nfr-boundaries-1",
+    "ac-nfr-boundaries-2",
+    "ac-nfr-boundaries-3",
+    "ac-nfr-github-tracking-1",
+    "ac-nfr-github-tracking-2",
+    "ac-nfr-github-tracking-3",
+    "ac-nfr-github-tracking-4",
+    "ac-nfr-storage-1",
+    "ac-nfr-storage-2"
+  ],
+  "blocker": "Tracking contract tests cannot be executed until the GitHub capability and least-privilege access are trusted; all execution also waits for passing readiness and approved instance envelopes.",
+  "validated_at": "2026-09-11T13:18:53Z"
+}

@@ -1,0 +1,70 @@
+{
+  "active_run_id": "service-booking-2-benchmark",
+  "last_event_sequence": 7,
+  "runs": {
+    "service-booking-2-benchmark": {
+      "active_attempt_number": null,
+      "active_controls": {},
+      "active_milestone_id": null,
+      "active_session_id": null,
+      "active_task_id": null,
+      "artifacts": [
+        {
+          "kind": "specification",
+          "sha256": "04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29",
+          "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29.json",
+          "source_locator": "docs/discovery/project-specification.json",
+          "subject_id": "service-booking-2"
+        },
+        {
+          "kind": "plan",
+          "sha256": "2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073",
+          "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073.json",
+          "source_locator": "docs/project/planning/phase-one-milestone-plan.json",
+          "subject_id": "service-booking-2-phase-one"
+        },
+        {
+          "kind": "capability",
+          "sha256": "ca43ab9cedcb626efff881c0f857972a3e097d6fd5a4bde69594d65f4aa856b1",
+          "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/ca43ab9cedcb626efff881c0f857972a3e097d6fd5a4bde69594d65f4aa856b1.json",
+          "source_locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-draft.json",
+          "subject_id": "github-project-workflow"
+        },
+        {
+          "kind": "approval",
+          "sha256": "7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99",
+          "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99.json",
+          "source_locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-activation-approval.json",
+          "subject_id": "github-project-workflow"
+        },
+        {
+          "kind": "capability",
+          "sha256": "350927a500c2decc98165ec02d99c8e6b9b8749508b03e94f84666f88381e9eb",
+          "snapshot_locator": ".studio/runs/service-booking-2-benchmark/artifacts/350927a500c2decc98165ec02d99c8e6b9b8749508b03e94f84666f88381e9eb.json",
+          "source_locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-active.json",
+          "subject_id": "github-project-workflow"
+        }
+      ],
+      "blockers": [],
+      "capability_states": {
+        "github-project-workflow": "active"
+      },
+      "current_action": null,
+      "current_source_revision": "5bae728e49c3fdc7308a78ac20d3fdbb851c9459acf6a7b7f22f722d906c1ae6",
+      "import_state": "not_applicable",
+      "incident_states": {},
+      "last_event_sequence": 7,
+      "latest_checkpoint_id": null,
+      "latest_resume_classification": null,
+      "next_action": null,
+      "phase": "readiness_pending",
+      "project_id": "service-booking-2",
+      "provenance": "native",
+      "retry_counters": {},
+      "run_id": "service-booking-2-benchmark",
+      "selected_runtime": "codex",
+      "session_ids": [],
+      "task_states": {}
+    }
+  }
+}

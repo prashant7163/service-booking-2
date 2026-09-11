@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "approval_id": "apr-service-booking-2-github-project-workflow-001",
+  "subject_type": "external_capability",
+  "subject_id": "github-project-workflow",
+  "subject_digest": "fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4",
+  "decision": "approved",
+  "decided_by": "application-owner",
+  "decided_at": "2026-09-11T14:26:54Z",
+  "comment": "Application owner approved the exact quarantined repository-scoped github-project-workflow capability digest for only prashant7163/service-booking-2 and its reviewed operation allowlist and exclusions. This decision authorizes recording and validation only; Studio trust application and all GitHub mutations remain unauthorized.",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "subject_locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-draft.json",
+  "bindings": {
+    "repository": {
+      "url": "https://github.com/prashant7163/service-booking-2.git",
+      "scope": "only-repository"
+    },
+    "allowed_operations": [
+      "repository metadata read",
+      "Git contents read and write",
+      "issues read and write",
+      "milestones read and write"
+    ],
+    "excluded_operations": [
+      "organization-wide access",
+      "repository administration changes",
+      "secrets access or management",
+      "deployments",
+      "packages",
+      "GitHub Actions management",
+      "pull-request management",
+      "access to every repository other than prashant7163/service-booking-2"
+    ]
+  },
+  "authorization_scope": {
+    "authorized": [
+      "record-capability-approval",
+      "revalidate-capability-and-readiness-artifacts"
+    ],
+    "not_authorized": [
+      "studioctl-trust-apply",
+      "submit-supporting-evidence",
+      "submit-readiness",
+      "mutate-github",
+      "mutate-git",
+      "create-branches-or-worktrees",
+      "create-commits-or-pushes",
+      "modify-application-code"
+    ]
+  }
+}

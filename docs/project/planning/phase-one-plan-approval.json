@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "approval_id": "apr-service-booking-2-phase-one-plan-001",
+  "subject_type": "milestone_plan",
+  "subject_id": "service-booking-2-phase-one",
+  "subject_digest": "95cea9f5f85fc7af0d0203071d1961d6068e053eeb8cb5cf9f47fe85c60626f3",
+  "decision": "approved",
+  "decided_by": "application-owner",
+  "decided_at": "2026-09-11T12:39:53Z",
+  "comment": "Application owner explicitly approved the exact Service Booking Two Phase One milestone plan digest, its binding to https://github.com/prashant7163/service-booking-2.git, and the nine proposed agent instances. This decision authorizes recording and validating this approval only.",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "subject_locator": "docs/project/planning/phase-one-milestone-plan.json",
+  "bindings": {
+    "plan": {
+      "plan_id": "service-booking-2-phase-one",
+      "canonical_digest": "95cea9f5f85fc7af0d0203071d1961d6068e053eeb8cb5cf9f47fe85c60626f3",
+      "locator": "docs/project/planning/phase-one-milestone-plan.json"
+    },
+    "repository": {
+      "url": "https://github.com/prashant7163/service-booking-2.git",
+      "status": "approved-execution-target"
+    },
+    "agent_instance_set": {
+      "canonical_sha256": "66963815434866e749ff6e4a5f50b8030fc7e9bd7a77442c5fcd8e48df6139b2",
+      "count": 9,
+      "instances": [
+        {
+          "instance_id": "service-booking-2-orchestrator",
+          "role_id": "orchestrator-tech-lead",
+          "role": "Orchestrator"
+        },
+        {
+          "instance_id": "service-booking-2-architect",
+          "role_id": "architect",
+          "role": "Architect"
+        },
+        {
+          "instance_id": "service-booking-2-ux",
+          "role_id": "ux-ui-designer",
+          "role": "UX/UI Designer"
+        },
+        {
+          "instance_id": "service-booking-2-backend",
+          "role_id": "backend-engineer",
+          "role": "Backend Engineer"
+        },
+        {
+          "instance_id": "service-booking-2-frontend",
+          "role_id": "frontend-engineer",
+          "role": "Frontend Engineer"
+        },
+        {
+          "instance_id": "service-booking-2-code-reviewer",
+          "role_id": "code-reviewer",
+          "role": "Code Reviewer"
+        },
+        {
+          "instance_id": "service-booking-2-build-manager",
+          "role_id": "build-manager",
+          "role": "Build Manager"
+        },
+        {
+          "instance_id": "service-booking-2-quality-engineer",
+          "role_id": "quality-engineer",
+          "role": "Quality Engineer"
+        },
+        {
+          "instance_id": "service-booking-2-independent-auditor",
+          "role_id": "independent-auditor",
+          "role": "Independent Auditor"
+        }
+      ]
+    }
+  },
+  "authorization_scope": {
+    "authorized": [
+      "record-plan-approval",
+      "validate-plan-approval"
+    ],
+    "not_authorized": [
+      "submit-plan-to-studioctl",
+      "initialize-git",
+      "configure-git-remote",
+      "authenticate-to-github",
+      "contact-github",
+      "create-github-milestones-or-issues",
+      "activate-agents",
+      "create-worktrees",
+      "begin-readiness",
+      "begin-implementation",
+      "commit-or-push"
+    ]
+  }
+}

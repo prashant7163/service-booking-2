@@ -1,0 +1,179 @@
+{
+  "schema_version": "1.0.0",
+  "agent_instance_id": "service-booking-2-frontend",
+  "role_template_id": "frontend-engineer",
+  "specialization": {
+    "specialization_id": "foundation-frontend",
+    "parameters": [
+      "react-shell",
+      "role-bound-views",
+      "english-german",
+      "frontend-tests"
+    ]
+  },
+  "scope": "Service Booking Two milestone service-booking-2-foundation only; perform work package service-booking-2-build-frontend-shell after individual approval and governed dispatch.",
+  "deliverable": "Build the React application shell, role-bound authentication views, device-local English/German selection, and frontend tests against accepted contracts.",
+  "ownership_boundary": "Mutation is limited to these assigned locators only: frontend. Material contract changes return to the Orchestrator.",
+  "overlap_check": "Owned locators are disjoint in the validated readiness work-package graph; dependencies are service-booking-2-define-architecture, service-booking-2-design-interactions, service-booking-2-build-backend-foundation. No concurrent mutation outside the listed ownership boundary is permitted.",
+  "context_access_mode": "minimum_necessary",
+  "permissions": {
+    "data_allowlist": [
+      "accepted-specification",
+      "accepted-phase-one-plan",
+      "assigned-work-package",
+      "project-role-policy",
+      "frontend"
+    ],
+    "tool_allowlist": [
+      "repository-read",
+      "owned-locator-write",
+      "studioctl-read",
+      "shell-build-test",
+      "browser-test"
+    ]
+  },
+  "workspace": {
+    "isolation_kind": "git-worktree",
+    "locator": ".worktrees/service-booking-2-build-frontend-shell"
+  },
+  "provider_model": {
+    "provider_allowlist": [
+      "codex"
+    ],
+    "model_allowlist": [
+      "project-runtime-default"
+    ]
+  },
+  "budget": {
+    "max_concurrency": 1,
+    "max_cost_units": 100,
+    "max_duration_minutes": 180
+  },
+  "lease": {
+    "lifetime_minutes": 180,
+    "handoff_condition": "Return the bounded deliverable, verification evidence, blockers, and exact safe-resume state to the Orchestrator before lease expiry.",
+    "cleanup_condition": "No workspace exists at draft time. After approved execution, the Orchestrator verifies handoff and performs any authorized workspace cleanup."
+  },
+  "reason_trigger": "Activate only after the owner approves this exact envelope digest and the Orchestrator dispatches service-booking-2-build-frontend-shell with its dependencies satisfied.",
+  "dependency_references": [
+    {
+      "artifact_id": "service-booking-2",
+      "locator": "docs/discovery/project-specification.json",
+      "schema_version": "1.0.0",
+      "sha256": "04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29"
+    },
+    {
+      "artifact_id": "service-booking-2-phase-one",
+      "locator": "docs/project/planning/phase-one-milestone-plan.json",
+      "schema_version": "1.0.0",
+      "sha256": "2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073"
+    }
+  ],
+  "contract_references": [
+    {
+      "artifact_id": "agent-instance-contract",
+      "locator": "shared/contracts/agent-instance.schema.json",
+      "schema_version": "1.0.0",
+      "sha256": "b7d622e5a5e5932f03fe2944cf47597d1bb8c0c4bfb6354225d9226eb4b72d5a"
+    },
+    {
+      "artifact_id": "stage-one-roles",
+      "locator": "shared/roles/catalog.yaml",
+      "schema_version": "1.0.0",
+      "sha256": "a3c55baaf7d9bb16ecbfd2f4c53857f3d51cba612cca477020eb9bbb35432be9"
+    },
+    {
+      "artifact_id": "stage-one-role-capabilities",
+      "locator": "shared/roles/capabilities.yaml",
+      "schema_version": "1.0.0",
+      "sha256": "80409194edd1a6e39c4b2f2c60f3d76fd22c4e76708fa30d69985b960cc3aabd"
+    },
+    {
+      "artifact_id": "stage-one-skills",
+      "locator": "shared/skills/catalog.yaml",
+      "schema_version": "1.0.0",
+      "sha256": "938ff5a8c849e0ed3759f341b42a0c1f4dc6fb4e83bbe60495dc5d132bc0aefc"
+    },
+    {
+      "artifact_id": "codex-runtime",
+      "locator": "codex-runtime.yaml",
+      "schema_version": "1.0.0",
+      "sha256": "1901939417ee366fe80d6a5091a8157e81655de7dc4ef3beafc762de182045d5"
+    },
+    {
+      "artifact_id": "foundation-integration-contracts",
+      "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json",
+      "schema_version": "1.0.0",
+      "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"
+    }
+  ],
+  "work_package_references": [
+    {
+      "artifact_id": "service-booking-2-build-frontend-shell",
+      "locator": "docs/project/readiness/service-booking-2-foundation/work-packages.json",
+      "schema_version": "1.0.0",
+      "sha256": "631a5a8ec93d2b9f0f6953e88cf611ffa6a12b74dd8009d728f8712487de801a"
+    }
+  ],
+  "minimum_context_pack_reference": {
+    "artifact_id": "service-booking-2-phase-one",
+    "locator": "docs/project/planning/phase-one-milestone-plan.json",
+    "schema_version": "1.0.0",
+    "sha256": "2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073"
+  },
+  "lifecycle": "pending",
+  "approval": null,
+  "replacement_for_instance_id": null,
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "proposal_state": "proposed-unapproved-non-active",
+  "approval_reference": null,
+  "workspace_status": "proposed-not-created",
+  "runtime_profile_id": "codex",
+  "skill_profile_id": "frontend-core",
+  "required_skill_ids": [
+    "context-provenance",
+    "redaction-data-handling",
+    "test-driven-development",
+    "verification-discipline"
+  ],
+  "optional_skill_ids": [
+    "systematic-debugging",
+    "isolated-workspace"
+  ],
+  "prohibited_skill_ids": [
+    "independent-audit-practice"
+  ],
+  "role_authority_ids": [
+    "frontend-implementation"
+  ],
+  "role_boundary_ids": [
+    "approved-work-package-only",
+    "cannot-self-review"
+  ],
+  "required_output_ids": [
+    "task-result"
+  ],
+  "assigned_work_package_ids": [
+    "service-booking-2-build-frontend-shell"
+  ],
+  "external_capability_ids": [],
+  "repository_scope": {
+    "owner": "prashant7163",
+    "name": "service-booking-2",
+    "url": "https://github.com/prashant7163/service-booking-2.git"
+  },
+  "github_access": "none",
+  "independent_from_instance_ids": [
+    "service-booking-2-code-reviewer",
+    "service-booking-2-independent-auditor"
+  ],
+  "explicit_exclusions": [
+    "no execution or resource mutation from this draft alone",
+    "no workspace creation before exact envelope approval",
+    "no evidence or readiness submission",
+    "no role merging or self-approval",
+    "no GitHub capability or GitHub operation"
+  ]
+}

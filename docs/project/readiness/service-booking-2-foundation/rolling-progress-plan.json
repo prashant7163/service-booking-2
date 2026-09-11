@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-rolling-progress-plan",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "decision": "applicable",
+  "authority": "The Studio journal and exact accepted local artifacts remain authoritative; remote tracking is a redacted counterpart and never supplies approval.",
+  "checkpoints": [
+    {
+      "sequence": 1,
+      "trigger": "readiness and supporting evidence accepted",
+      "record": "Record the readiness identity, exact evidence digests, approved instance envelopes, and authorized first-milestone boundary."
+    },
+    {
+      "sequence": 2,
+      "trigger": "each first-milestone task is registered",
+      "record": "Record task ID, work package, owner instance, dependencies, isolated workspace, and local-to-GitHub counterpart or retry marker."
+    },
+    {
+      "sequence": 3,
+      "trigger": "each task starts",
+      "record": "Record claimed/running state, attempt number, lease, exact workspace, and current candidate base."
+    },
+    {
+      "sequence": 4,
+      "trigger": "block or resume",
+      "record": "Record blocker evidence or exact resolution evidence and preserve a safe-resume marker before continuing."
+    },
+    {
+      "sequence": 5,
+      "trigger": "verification-ready handoff",
+      "record": "Record exact candidate digest, changed locators, tests, residual risks, and the ordered assurance chain."
+    },
+    {
+      "sequence": 6,
+      "trigger": "each assurance gate completes",
+      "record": "Record reviewer identity, independence, exact candidate binding, outcome, findings, and Orchestrator-routed remediation."
+    },
+    {
+      "sequence": 7,
+      "trigger": "human milestone decision",
+      "record": "Record only the application's owner's explicit decision bound to the exact milestone-review digest."
+    }
+  ],
+  "reporting_view": [
+    "task state and attempt",
+    "completed acceptance criteria",
+    "current blockers and owners",
+    "candidate and evidence digests",
+    "local-to-GitHub reconciliation state",
+    "next safe action"
+  ],
+  "failure_rule": "A remote synchronization failure never rolls back or overwrites local Studio state; it creates an actionable retry marker and blocks only the remote-dependent action.",
+  "scope_limit": "Only service-booking-2-foundation is tracked by this readiness plan. Later milestone tasks remain planned and unauthorized.",
+  "validated_at": "2026-09-11T13:18:53Z"
+}

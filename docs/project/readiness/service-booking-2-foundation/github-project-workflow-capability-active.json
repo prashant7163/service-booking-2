@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0.0",
+  "capability_id": "github-project-workflow",
+  "capability_type": "github-repository-workflow",
+  "purpose": "Allow the Orchestrator to reconcile Service Booking Two repository metadata, Git contents, issues, and milestones for the approved repository only, subject to separate owner approval and Studio registration.",
+  "source": "GitHub CLI 2.100.0 from https://github.com/cli/cli/releases/tag/v2.100.0, using GitHub HTTPS endpoints and a macOS-keyring-backed authenticated connection.",
+  "version": "2.100.0",
+  "digest": "1179745d43ea43dff3fa1f0e34bfb204e8f99232204f106c71ca8c2e0f6cb41a",
+  "license": "MIT",
+  "minimum_permissions": [
+    "repository metadata read for prashant7163/service-booking-2",
+    "Git contents read and write for prashant7163/service-booking-2",
+    "issues read and write for prashant7163/service-booking-2",
+    "milestones read and write for prashant7163/service-booking-2 through the repository Issues permission"
+  ],
+  "network_endpoints": [
+    "https://api.github.com/repos/prashant7163/service-booking-2",
+    "https://github.com/prashant7163/service-booking-2.git"
+  ],
+  "data_classifications": [
+    "private repository metadata",
+    "private repository Git contents",
+    "private repository issue and milestone metadata"
+  ],
+  "consuming_roles": [
+    "orchestrator-tech-lead"
+  ],
+  "integrity_verification": "GitHub CLI binary /opt/homebrew/bin/gh matched SHA-256 1179745d43ea43dff3fa1f0e34bfb204e8f99232204f106c71ca8c2e0f6cb41a; authenticated read-only checks verified account, repository identity, visibility, permissions, issues, milestones, and Git ref advertisement at 2026-09-11T14:14:37Z.",
+  "approval_reference": {
+    "artifact_id": "github-project-workflow",
+    "locator": "docs/project/readiness/service-booking-2-foundation/github-project-workflow-capability-activation-approval.json",
+    "schema_version": "1.0.0",
+    "sha256": "7309943673323a2fed0a497466a459c731fad04a880cd1b6fdefc6d0bbde3b99"
+  },
+  "status": "active",
+  "rollback": "If later activated, revoke the repository-restricted credential in GitHub and apply a separately approved revoked capability record. Do not change repository settings or any unapproved resource as part of rollback.",
+  "review_trigger": "Re-review on any CLI version or binary digest change, authenticated-account change, credential-storage change, repository owner/name/visibility change, origin change, permission or operation change, access failure, or expansion beyond the one approved repository.",
+  "repository_scope": {
+    "owner": "prashant7163",
+    "name": "service-booking-2",
+    "url": "https://github.com/prashant7163/service-booking-2.git",
+    "visibility": "private",
+    "allowed_repository_count": 1,
+    "all_other_repositories": "excluded"
+  },
+  "allowed_operations": [
+    "repository metadata read",
+    "Git contents read",
+    "Git contents write",
+    "issues read",
+    "issues write",
+    "milestones read",
+    "milestones write"
+  ],
+  "excluded_operations": [
+    "organization-wide access",
+    "repository administration changes",
+    "secrets access or management",
+    "deployments",
+    "packages",
+    "GitHub Actions management",
+    "pull-request management",
+    "access to every repository other than prashant7163/service-booking-2"
+  ],
+  "credential_storage": "macOS keyring",
+  "credential_policy": "Credential material must remain outside the repository and Studio state and must never be read, printed, copied, hashed, persisted, or requested by this workflow.",
+  "authenticated_identity": "prashant7163",
+  "git_protocol": "https",
+  "connection_verification": {
+    "repository_access": "pass",
+    "reported_repository_permission": "ADMIN",
+    "reported_push_access": true,
+    "issue_listing": "pass-empty",
+    "milestone_listing": "pass-empty",
+    "git_ref_advertisement": "pass-empty"
+  },
+  "credential_scope_attestation": {
+    "source": "application-owner-provided verified fact",
+    "repository_restriction": "prashant7163/service-booking-2 only",
+    "metadata": "read-only",
+    "contents": "read and write",
+    "issues": "read and write"
+  },
+  "approval_state": "owner-approved-active-transition",
+  "registration_state": "active"
+}

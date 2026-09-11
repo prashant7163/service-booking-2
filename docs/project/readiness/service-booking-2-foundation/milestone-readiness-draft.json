@@ -1,0 +1,454 @@
+{
+  "schema_version": "1.0.0",
+  "readiness_id": "service-booking-2-foundation-readiness-draft-001",
+  "outcome": "revision_required",
+  "milestone_id": "service-booking-2-foundation",
+  "specification_reference": {
+    "artifact_id": "service-booking-2",
+    "locator": "docs/discovery/project-specification.json",
+    "schema_version": "1.0.0",
+    "sha256": "04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29"
+  },
+  "plan_reference": {
+    "artifact_id": "service-booking-2-phase-one",
+    "locator": "docs/project/planning/phase-one-milestone-plan.json",
+    "schema_version": "1.0.0",
+    "sha256": "2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073"
+  },
+  "effective_standards": {
+    "decision": "applicable",
+    "rationale": "The accepted specification selects studio-engineering-baseline; all five baseline rules apply. One owner-authorized, local, non-production, non-precedential benchmark exception covers only the missing AgentInstance registration interface for the nine exact approval-linked envelopes.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-effective-standards",
+        "locator": "docs/project/readiness/service-booking-2-foundation/effective-standards.json",
+        "schema_version": "1.0.0",
+        "sha256": "d2d9fb05b177a1bf863e0423ada615800875020181c2dde6bac88a1e7a465073"
+      }
+    ],
+    "applicable_standard_ids": [
+      "secrets-redaction",
+      "human-approval",
+      "exact-snapshot-evidence",
+      "meaningful-tests",
+      "least-privilege"
+    ],
+    "exception_ids": [
+      "service-booking-2-benchmark-agent-instance-registration-exception"
+    ]
+  },
+  "role_skill_independence": {
+    "decision": "applicable",
+    "rationale": "Canonical role, capability, skill, and runtime policies define separation. Nine separate local owner approval records bind the exact pending AgentInstance subjects. The benchmark exception permits embedding only those approval-linked envelopes in final readiness without unsupported Studio per-instance events, while preserving all boundaries.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      }
+    ],
+    "covered_role_ids": [
+      "orchestrator-tech-lead",
+      "architect",
+      "ux-ui-designer",
+      "backend-engineer",
+      "frontend-engineer",
+      "code-reviewer",
+      "build-manager",
+      "quality-engineer",
+      "independent-auditor"
+    ]
+  },
+  "trusted_capability": {
+    "decision": "applicable",
+    "rationale": "GitHub CLI authentication and exact-repository access are verified, and the repository-scoped github-project-workflow ExternalCapability is active in Studio under a digest-bound activation approval. The capability remains limited to the approved repository and operation allowlist.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-trusted-capability",
+        "locator": "docs/project/readiness/service-booking-2-foundation/trusted-capability-assessment.json",
+        "schema_version": "1.0.0",
+        "sha256": "9a3566483c1ac894cae684c9b6eb742b5ef5f3e82b9793a147de6e4289bb0899"
+      }
+    ],
+    "capability_ids": [
+      "github-project-workflow"
+    ]
+  },
+  "threat_decision": {
+    "decision": "applicable",
+    "rationale": "Authentication, personal data, sessions, simulated account flows, role boundaries, PostgreSQL, and GitHub tracking cross material trust boundaries.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-threat-decision",
+        "locator": "docs/project/readiness/service-booking-2-foundation/threat-model-decision.json",
+        "schema_version": "1.0.0",
+        "sha256": "8703430c7a1289bb75e8ef6bcb037baeba496d72623d8069bb68e2f053bdc635"
+      }
+    ],
+    "control_ids": [
+      "authenticated-ownership-enforcement",
+      "nonreversible-password-storage",
+      "session-csrf-enforcement",
+      "role-separation-enforcement",
+      "simulated-adapter-isolation",
+      "local-authority-reconciliation",
+      "least-privilege-github-access"
+    ]
+  },
+  "doctor_result": {
+    "decision": "applicable",
+    "rationale": "The current redacted Studio doctor snapshot passes all applicable configuration, runtime, journal, and projection checks.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-doctor-result",
+        "locator": "docs/project/readiness/service-booking-2-foundation/doctor-result.json",
+        "schema_version": "1.0.0",
+        "sha256": "690b7a0dcefdb880c549b11e325ca67a644c9e9a9645b51323463437f82bfb93"
+      }
+    ],
+    "redacted": true
+  },
+  "integration_test_plan": {
+    "decision": "applicable",
+    "rationale": "The cross-boundary milestone requires backend, frontend, PostgreSQL, browser, tracking, and exact-candidate gate-chain integration evidence.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-integration-test-plan",
+        "locator": "docs/project/readiness/service-booking-2-foundation/integration-test-plan.json",
+        "schema_version": "1.0.0",
+        "sha256": "7fe964eb0088d2cd50d0ab1cd59d0b26d9e74e0596d558fa89d42921f8516b9c"
+      }
+    ],
+    "integration_point_ids": [
+      "local-github-tracking",
+      "architecture-boundary-contract",
+      "responsive-bilingual-flow-contract",
+      "backend-auth-session-contract",
+      "frontend-api-language-contract",
+      "postgres-flyway-startup",
+      "simulated-account-adapters",
+      "exact-candidate-gate-chain"
+    ]
+  },
+  "rolling_progress": {
+    "decision": "applicable",
+    "rationale": "The accepted specification requires reconciliation at registration, start, block/resume, verification handoff, and human milestone decision while local state remains authoritative.",
+    "evidence_references": [
+      {
+        "artifact_id": "foundation-rolling-progress-plan",
+        "locator": "docs/project/readiness/service-booking-2-foundation/rolling-progress-plan.json",
+        "schema_version": "1.0.0",
+        "sha256": "7f956eedbe8ed1f2ea7663d3e71f60792b5a7f95bd4b394644544dbdbfeba35c"
+      }
+    ]
+  },
+  "boundary": "cross_boundary",
+  "role_applicability": [
+    {
+      "role": "orchestrator-tech-lead",
+      "decision": "applicable",
+      "rationale": "Owns governed tracking, dispatch, evidence routing, and human boundaries.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-orchestrator"
+    },
+    {
+      "role": "architect",
+      "decision": "applicable",
+      "rationale": "Owns API, data, security, privacy, interface, and threat boundaries.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-architect"
+    },
+    {
+      "role": "ux-ui-designer",
+      "decision": "applicable",
+      "rationale": "Owns responsive bilingual flows and accessible interaction states.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-ux"
+    },
+    {
+      "role": "backend-engineer",
+      "decision": "applicable",
+      "rationale": "Owns Spring Boot, PostgreSQL/Flyway, authentication, session, and simulated adapter implementation.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-backend"
+    },
+    {
+      "role": "frontend-engineer",
+      "decision": "applicable",
+      "rationale": "Owns React shell, role-bound views, bilingual resources, and frontend tests.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-frontend"
+    },
+    {
+      "role": "code-reviewer",
+      "decision": "applicable",
+      "rationale": "Independently reviews the exact foundation candidate without editing it.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-code-reviewer"
+    },
+    {
+      "role": "build-manager",
+      "decision": "applicable",
+      "rationale": "Verifies locked build and PostgreSQL startup without pre-assigned remediation.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-build-manager"
+    },
+    {
+      "role": "quality-engineer",
+      "decision": "applicable",
+      "rationale": "Verifies the full first-milestone blast radius on the exact build-verified candidate.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-quality-engineer"
+    },
+    {
+      "role": "independent-auditor",
+      "decision": "applicable",
+      "rationale": "Independently audits the evidence chain and reports only to the Orchestrator.",
+      "evidence_reference": {
+        "artifact_id": "foundation-role-skill-independence",
+        "locator": "docs/project/readiness/service-booking-2-foundation/role-skill-independence.json",
+        "schema_version": "1.0.0",
+        "sha256": "15aaad95d3979fae6d5613ae9d2b5fe1e99019c81519ab2b47c8b1a0a1cefe4d"
+      },
+      "owner_instance_id": "service-booking-2-independent-auditor"
+    }
+  ],
+  "affected_roles": [
+    "orchestrator-tech-lead",
+    "architect",
+    "ux-ui-designer",
+    "backend-engineer",
+    "frontend-engineer",
+    "code-reviewer",
+    "build-manager",
+    "quality-engineer",
+    "independent-auditor"
+  ],
+  "approved_instances": [],
+  "draft_instance_references": [
+    {"artifact_id": "service-booking-2-orchestrator", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-orchestrator.json", "schema_version": "1.0.0", "sha256": "f1e6f19b08ae56bfe13e8ec931fd0b3826c1929b19fc2fff23820ac08ec6c168", "approval_subject_digest": "8a1ed0bebadba9a51e8f6b4ae3870a9c45c9b1e13b862ac65b43350ee2e96604"},
+    {"artifact_id": "service-booking-2-architect", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-architect.json", "schema_version": "1.0.0", "sha256": "b932361a0938b6f5360435e3072ee5385f76eb3f7db7b47e1aebf43662537cd2", "approval_subject_digest": "ca8e838cb4a501d930ef002788eb51f704d4519898b91a28ce776c2aabbdf4f4"},
+    {"artifact_id": "service-booking-2-ux", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-ux.json", "schema_version": "1.0.0", "sha256": "5edff8279f9973ff7ecc8cd4b03f06dfd34d68da3ec17db4871812d23b714f6b", "approval_subject_digest": "d04a9e4b663a248638df1a32a3c8491b8ebb91824d25d0730a2297ff2b7cd8be"},
+    {"artifact_id": "service-booking-2-backend", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-backend.json", "schema_version": "1.0.0", "sha256": "4bf5a2cf898f8169fc7597a1494fc97bc867d2029633823399eb8e96842706dd", "approval_subject_digest": "c1a99d6a052a563ddd009d68a221f79e72c05fe6a7351cb1edc346bc59222a30"},
+    {"artifact_id": "service-booking-2-frontend", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-frontend.json", "schema_version": "1.0.0", "sha256": "413f80ee9dfee3e171f2d92a2cf86dd912542971d33d7775f6a85e7d0f97e2c6", "approval_subject_digest": "9c83b9124aa824dbf5bbbd2aac7125103fd691302ef52e1703f021c85074e5a3"},
+    {"artifact_id": "service-booking-2-code-reviewer", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-code-reviewer.json", "schema_version": "1.0.0", "sha256": "ce9b18fad4ed8f726e74aeb59fa41c7774fda2e60aca595e94090620ba1d57fd", "approval_subject_digest": "e9ea641778c9a86cbd15f7a5933ff58a6c94cd7e911d4e5f0fb979dde7fee165"},
+    {"artifact_id": "service-booking-2-build-manager", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-build-manager.json", "schema_version": "1.0.0", "sha256": "daa4d32b9d6bd73b0ecd0045c9a49a62ed2f8e82dc6a041eaeba4af4b3acc1c6", "approval_subject_digest": "77d228fa8534f133036db89715bf13952b5aeb2d8de99e45b841c8cbee81b587"},
+    {"artifact_id": "service-booking-2-quality-engineer", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-quality-engineer.json", "schema_version": "1.0.0", "sha256": "3af00617515d904b83a9f81ca337a5de9d81ca9ebc88fbbf9e7fd65f2766e071", "approval_subject_digest": "49de54ec821b5785a484903c7ba96c125aabe0896e979e6e3e59c607079f1cb6"},
+    {"artifact_id": "service-booking-2-independent-auditor", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-independent-auditor.json", "schema_version": "1.0.0", "sha256": "3849bb3a71045dbbd807a5fe948b3bade8c4b4ab1e981c0477e8fa71ae192e5e", "approval_subject_digest": "d580824d955206dfa9f934edacdb607a6c304c1e5fe48b7e204fdde451a831fd"}
+  ],
+  "draft_instance_approval_references": [
+    {"artifact_id": "apr-service-booking-2-orchestrator-001", "subject_id": "service-booking-2-orchestrator", "subject_digest": "8a1ed0bebadba9a51e8f6b4ae3870a9c45c9b1e13b862ac65b43350ee2e96604", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-orchestrator-approval.json", "schema_version": "1.0.0", "sha256": "bc54d9889c40ba2df3979a7c08db1dd3eb9a41418f38612b2f19a96cff1f0b97"},
+    {"artifact_id": "apr-service-booking-2-architect-001", "subject_id": "service-booking-2-architect", "subject_digest": "ca8e838cb4a501d930ef002788eb51f704d4519898b91a28ce776c2aabbdf4f4", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-architect-approval.json", "schema_version": "1.0.0", "sha256": "4db5cec4c2b152dd19939ab7e74d22f75ada4aa0143796acd93ecf6a6095cd6e"},
+    {"artifact_id": "apr-service-booking-2-ux-001", "subject_id": "service-booking-2-ux", "subject_digest": "d04a9e4b663a248638df1a32a3c8491b8ebb91824d25d0730a2297ff2b7cd8be", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-ux-approval.json", "schema_version": "1.0.0", "sha256": "6421495a0f2503d1b2e5aafa6aee68b1822a8ed0aa778088505e4950262dd0e0"},
+    {"artifact_id": "apr-service-booking-2-backend-001", "subject_id": "service-booking-2-backend", "subject_digest": "c1a99d6a052a563ddd009d68a221f79e72c05fe6a7351cb1edc346bc59222a30", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-backend-approval.json", "schema_version": "1.0.0", "sha256": "ef56b201057b35ea10f73d0c2710e47c148304f94e8190cb9d709e069bc9e0a0"},
+    {"artifact_id": "apr-service-booking-2-frontend-001", "subject_id": "service-booking-2-frontend", "subject_digest": "9c83b9124aa824dbf5bbbd2aac7125103fd691302ef52e1703f021c85074e5a3", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-frontend-approval.json", "schema_version": "1.0.0", "sha256": "bd7449bdd601c55049ab592f1d71e0d7214decbcb282952c7de51eeb451ae60a"},
+    {"artifact_id": "apr-service-booking-2-code-reviewer-001", "subject_id": "service-booking-2-code-reviewer", "subject_digest": "e9ea641778c9a86cbd15f7a5933ff58a6c94cd7e911d4e5f0fb979dde7fee165", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-code-reviewer-approval.json", "schema_version": "1.0.0", "sha256": "f01663c70cf3f499ea886d74cec262a0669928cb0f809df814528378b7803c81"},
+    {"artifact_id": "apr-service-booking-2-build-manager-001", "subject_id": "service-booking-2-build-manager", "subject_digest": "77d228fa8534f133036db89715bf13952b5aeb2d8de99e45b841c8cbee81b587", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-build-manager-approval.json", "schema_version": "1.0.0", "sha256": "a0b4c699ebc2267dc3b2bd6372066de64e60b63ffb3865ea1f253690c6cb888a"},
+    {"artifact_id": "apr-service-booking-2-quality-engineer-001", "subject_id": "service-booking-2-quality-engineer", "subject_digest": "49de54ec821b5785a484903c7ba96c125aabe0896e979e6e3e59c607079f1cb6", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-quality-engineer-approval.json", "schema_version": "1.0.0", "sha256": "97914616fb6ababb0f12932ea9d966183bf40bbd8a74a82eb8e8c091f333fd3c"},
+    {"artifact_id": "apr-service-booking-2-independent-auditor-001", "subject_id": "service-booking-2-independent-auditor", "subject_digest": "d580824d955206dfa9f934edacdb607a6c304c1e5fe48b7e204fdde451a831fd", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-independent-auditor-approval.json", "schema_version": "1.0.0", "sha256": "96f7b14e22d923474ce25367a8c3526cbc889154a56ca69a0513878e36b10f57"}
+  ],
+  "governance_exception": {
+    "exception_id": "service-booking-2-benchmark-agent-instance-registration-exception",
+    "status": "owner-authorized-not-yet-exercised",
+    "scope": "service-booking-2-benchmark only; nine exact approval-linked first-milestone AgentInstance envelopes; local, non-production, non-precedential",
+    "allowed_deviation": "Embed the exact approval-linked envelopes in final readiness without unsupported Studio per-instance registration or activation events.",
+    "compensating_controls": [
+      "exact envelope and Approval digests",
+      "zero tasks",
+      "least-privilege permissions and GitHub scope",
+      "reviewer and auditor independence",
+      "no implementation authority"
+    ]
+  },
+  "acceptance_criterion_ids": [
+    "ac-fr-access-1",
+    "ac-fr-access-2",
+    "ac-fr-access-3",
+    "ac-fr-language-1",
+    "ac-fr-language-2",
+    "ac-fr-language-3",
+    "ac-fr-simulations-1",
+    "ac-fr-simulations-3",
+    "ac-nfr-boundaries-1",
+    "ac-nfr-boundaries-2",
+    "ac-nfr-boundaries-3",
+    "ac-nfr-github-tracking-1",
+    "ac-nfr-github-tracking-2",
+    "ac-nfr-github-tracking-3",
+    "ac-nfr-github-tracking-4",
+    "ac-nfr-storage-1",
+    "ac-nfr-storage-2"
+  ],
+  "facilitator": "service-booking-2-orchestrator",
+  "validated_at": "2026-09-11T16:54:47Z",
+  "unresolved_items": [
+    "The owner-authorized benchmark exception covers the missing Studio instance-registration interface, but main is unborn and cannot provide the common committed baseline required by the planned task and assurance worktrees; an explicitly authorized initial commit is required.",
+    "Supporting evidence remains intentionally unregistered until the application owner authorizes submission."
+  ],
+  "work_packages": [
+    {
+      "work_package_id": "service-booking-2-register-github-tracking",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "owned_locators": ["docs/project/tracking/github-links.json", "docs/project/tracking/sync-retry.json", "scripts/github/sync-work-items.sh", "scripts/github/sync-work-items.test.sh"],
+      "dependency_work_package_ids": [],
+      "sequence": 1,
+      "deliverable": "Register and verify redacted first-milestone GitHub counterparts while preserving local authority and retry evidence.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-define-architecture",
+      "owner_instance_id": "service-booking-2-architect",
+      "owned_locators": ["docs/architecture/phase-one.md", "docs/architecture/openapi/service-booking-two.yaml", "docs/privacy/swiss-storage-boundary.md"],
+      "dependency_work_package_ids": ["service-booking-2-register-github-tracking"],
+      "sequence": 2,
+      "deliverable": "Define the accepted first-milestone API, data, security, privacy, simulated-adapter, and non-deploying release boundaries.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-design-interactions",
+      "owner_instance_id": "service-booking-2-ux",
+      "owned_locators": ["docs/ux/phase-one-flows.md"],
+      "dependency_work_package_ids": ["service-booking-2-register-github-tracking", "service-booking-2-define-architecture"],
+      "sequence": 3,
+      "deliverable": "Specify responsive English/German anonymous, customer, provider, verified, unverified, success, and failure journeys with accessible states.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-build-backend-foundation",
+      "owner_instance_id": "service-booking-2-backend",
+      "owned_locators": ["backend", "compose.yaml"],
+      "dependency_work_package_ids": ["service-booking-2-register-github-tracking", "service-booking-2-define-architecture"],
+      "sequence": 3,
+      "deliverable": "Build the Spring Boot and PostgreSQL/Flyway foundation, authentication and session boundaries, replaceable simulated account adapters, and backend integration tests.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-build-frontend-shell",
+      "owner_instance_id": "service-booking-2-frontend",
+      "owned_locators": ["frontend"],
+      "dependency_work_package_ids": ["service-booking-2-define-architecture", "service-booking-2-design-interactions", "service-booking-2-build-backend-foundation"],
+      "sequence": 4,
+      "deliverable": "Build the React application shell, role-bound authentication views, device-local English/German selection, and frontend tests against accepted contracts.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-code-review",
+      "owner_instance_id": "service-booking-2-code-reviewer",
+      "owned_locators": ["docs/project/reviews/service-booking-2-foundation-code-review.json"],
+      "dependency_work_package_ids": ["service-booking-2-register-github-tracking", "service-booking-2-define-architecture", "service-booking-2-design-interactions", "service-booking-2-build-backend-foundation", "service-booking-2-build-frontend-shell"],
+      "sequence": 5,
+      "deliverable": "Independently review foundation contracts, security, implementation, and developer-owned tests against one exact candidate without editing it.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-build",
+      "owner_instance_id": "service-booking-2-build-manager",
+      "owned_locators": ["docs/project/reviews/service-booking-2-foundation-build-status.json"],
+      "dependency_work_package_ids": ["service-booking-2-foundation-code-review"],
+      "sequence": 6,
+      "deliverable": "Verify the code-reviewed exact candidate builds from locked inputs and starts with local PostgreSQL without modifying the candidate.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-quality",
+      "owner_instance_id": "service-booking-2-quality-engineer",
+      "owned_locators": ["docs/project/reviews/service-booking-2-foundation-quality-report.json"],
+      "dependency_work_package_ids": ["service-booking-2-foundation-build"],
+      "sequence": 7,
+      "deliverable": "Verify authentication, language, storage, boundary, responsive, and failure-path acceptance scope on the exact build-verified candidate.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    },
+    {
+      "work_package_id": "service-booking-2-foundation-audit",
+      "owner_instance_id": "service-booking-2-independent-auditor",
+      "owned_locators": ["docs/project/reviews/service-booking-2-foundation-independent-audit.json"],
+      "dependency_work_package_ids": ["service-booking-2-foundation-quality"],
+      "sequence": 8,
+      "deliverable": "Independently audit the exact-snapshot foundation evidence chain and report findings only to the Orchestrator.",
+      "integration_references": [{"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"}]
+    }
+  ],
+  "interface_decisions": [
+    {
+      "interface_id": "local-github-tracking",
+      "owner_instance_id": "service-booking-2-orchestrator",
+      "work_package_id": "service-booking-2-register-github-tracking",
+      "integration_reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "example": "A closed GitHub issue does not complete the corresponding Studio task."
+    },
+    {
+      "interface_id": "architecture-boundary-contract",
+      "owner_instance_id": "service-booking-2-architect",
+      "work_package_id": "service-booking-2-define-architecture",
+      "integration_reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "example": "Provider publication is denied until simulated verification succeeds."
+    },
+    {
+      "interface_id": "responsive-bilingual-flow-contract",
+      "owner_instance_id": "service-booking-2-ux",
+      "work_package_id": "service-booking-2-design-interactions",
+      "integration_reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "example": "Unsupported browser preference selects English and a visible switch persists only locally."
+    },
+    {
+      "interface_id": "backend-auth-session-contract",
+      "owner_instance_id": "service-booking-2-backend",
+      "work_package_id": "service-booking-2-build-backend-foundation",
+      "integration_reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "example": "An unverified customer reserve attempt returns the declared verification-required response."
+    },
+    {
+      "interface_id": "frontend-api-language-contract",
+      "owner_instance_id": "service-booking-2-frontend",
+      "work_package_id": "service-booking-2-build-frontend-shell",
+      "integration_reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "reference": {"artifact_id": "foundation-integration-contracts", "locator": "docs/project/readiness/service-booking-2-foundation/integration-contracts.json", "schema_version": "1.0.0", "sha256": "153e510843382ee5d38d3ec4832c095ad79aaf6d9f087a54d275bcc26261bdb9"},
+      "example": "German UI copy can surround provider-authored English content without rewriting it."
+    }
+  ]
+}

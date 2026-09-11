@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-instance-binding-assessment",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "plan_approval_record": {
+    "locator": "docs/project/planning/phase-one-plan-approval.json",
+    "approval_id": "apr-service-booking-2-phase-one-plan-001",
+    "subject_type": "milestone_plan",
+    "subject_id": "service-booking-2-phase-one",
+    "subject_digest": "95cea9f5f85fc7af0d0203071d1961d6068e053eeb8cb5cf9f47fe85c60626f3",
+    "approved_identity_count": 9
+  },
+  "planned_identity_bindings": [
+    {"agent_instance_id": "service-booking-2-orchestrator", "role_template_id": "orchestrator-tech-lead"},
+    {"agent_instance_id": "service-booking-2-architect", "role_template_id": "architect"},
+    {"agent_instance_id": "service-booking-2-ux", "role_template_id": "ux-ui-designer"},
+    {"agent_instance_id": "service-booking-2-backend", "role_template_id": "backend-engineer"},
+    {"agent_instance_id": "service-booking-2-frontend", "role_template_id": "frontend-engineer"},
+    {"agent_instance_id": "service-booking-2-code-reviewer", "role_template_id": "code-reviewer"},
+    {"agent_instance_id": "service-booking-2-build-manager", "role_template_id": "build-manager"},
+    {"agent_instance_id": "service-booking-2-quality-engineer", "role_template_id": "quality-engineer"},
+    {"agent_instance_id": "service-booking-2-independent-auditor", "role_template_id": "independent-auditor"}
+  ],
+  "draft_bindings_completed": [
+    "full per-instance specialization",
+    "scope and deliverable envelope",
+    "ownership and overlap boundary",
+    "minimum-necessary data and tool allowlists",
+    "isolated workspace allocation",
+    "provider and model allowlists",
+    "cost, duration, and concurrency budget",
+    "lease and handoff conditions",
+    "dependency, contract, work-package, and minimum-context references"
+  ],
+  "draft_envelopes": [
+    {"agent_instance_id": "service-booking-2-orchestrator", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-orchestrator.json", "canonical_sha256": "f1e6f19b08ae56bfe13e8ec931fd0b3826c1929b19fc2fff23820ac08ec6c168", "approval_subject_digest": "8a1ed0bebadba9a51e8f6b4ae3870a9c45c9b1e13b862ac65b43350ee2e96604"},
+    {"agent_instance_id": "service-booking-2-architect", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-architect.json", "canonical_sha256": "b932361a0938b6f5360435e3072ee5385f76eb3f7db7b47e1aebf43662537cd2", "approval_subject_digest": "ca8e838cb4a501d930ef002788eb51f704d4519898b91a28ce776c2aabbdf4f4"},
+    {"agent_instance_id": "service-booking-2-ux", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-ux.json", "canonical_sha256": "5edff8279f9973ff7ecc8cd4b03f06dfd34d68da3ec17db4871812d23b714f6b", "approval_subject_digest": "d04a9e4b663a248638df1a32a3c8491b8ebb91824d25d0730a2297ff2b7cd8be"},
+    {"agent_instance_id": "service-booking-2-backend", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-backend.json", "canonical_sha256": "4bf5a2cf898f8169fc7597a1494fc97bc867d2029633823399eb8e96842706dd", "approval_subject_digest": "c1a99d6a052a563ddd009d68a221f79e72c05fe6a7351cb1edc346bc59222a30"},
+    {"agent_instance_id": "service-booking-2-frontend", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-frontend.json", "canonical_sha256": "413f80ee9dfee3e171f2d92a2cf86dd912542971d33d7775f6a85e7d0f97e2c6", "approval_subject_digest": "9c83b9124aa824dbf5bbbd2aac7125103fd691302ef52e1703f021c85074e5a3"},
+    {"agent_instance_id": "service-booking-2-code-reviewer", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-code-reviewer.json", "canonical_sha256": "ce9b18fad4ed8f726e74aeb59fa41c7774fda2e60aca595e94090620ba1d57fd", "approval_subject_digest": "e9ea641778c9a86cbd15f7a5933ff58a6c94cd7e911d4e5f0fb979dde7fee165"},
+    {"agent_instance_id": "service-booking-2-build-manager", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-build-manager.json", "canonical_sha256": "daa4d32b9d6bd73b0ecd0045c9a49a62ed2f8e82dc6a041eaeba4af4b3acc1c6", "approval_subject_digest": "77d228fa8534f133036db89715bf13952b5aeb2d8de99e45b841c8cbee81b587"},
+    {"agent_instance_id": "service-booking-2-quality-engineer", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-quality-engineer.json", "canonical_sha256": "3af00617515d904b83a9f81ca337a5de9d81ca9ebc88fbbf9e7fd65f2766e071", "approval_subject_digest": "49de54ec821b5785a484903c7ba96c125aabe0896e979e6e3e59c607079f1cb6"},
+    {"agent_instance_id": "service-booking-2-independent-auditor", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instances/service-booking-2-independent-auditor.json", "canonical_sha256": "3849bb3a71045dbbd807a5fe948b3bade8c4b4ab1e981c0477e8fa71ae192e5e", "approval_subject_digest": "d580824d955206dfa9f934edacdb607a6c304c1e5fe48b7e204fdde451a831fd"}
+  ],
+  "review_matrix": {
+    "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-review-matrix.md",
+    "file_sha256": "f137e7bff553a11b14cb06ba3becacea399a91c14ed27e80b8896557cc55a284"
+  },
+  "approval_records": [
+    {"approval_id": "apr-service-booking-2-orchestrator-001", "subject_id": "service-booking-2-orchestrator", "subject_digest": "8a1ed0bebadba9a51e8f6b4ae3870a9c45c9b1e13b862ac65b43350ee2e96604", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-orchestrator-approval.json", "canonical_sha256": "bc54d9889c40ba2df3979a7c08db1dd3eb9a41418f38612b2f19a96cff1f0b97"},
+    {"approval_id": "apr-service-booking-2-architect-001", "subject_id": "service-booking-2-architect", "subject_digest": "ca8e838cb4a501d930ef002788eb51f704d4519898b91a28ce776c2aabbdf4f4", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-architect-approval.json", "canonical_sha256": "4db5cec4c2b152dd19939ab7e74d22f75ada4aa0143796acd93ecf6a6095cd6e"},
+    {"approval_id": "apr-service-booking-2-ux-001", "subject_id": "service-booking-2-ux", "subject_digest": "d04a9e4b663a248638df1a32a3c8491b8ebb91824d25d0730a2297ff2b7cd8be", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-ux-approval.json", "canonical_sha256": "6421495a0f2503d1b2e5aafa6aee68b1822a8ed0aa778088505e4950262dd0e0"},
+    {"approval_id": "apr-service-booking-2-backend-001", "subject_id": "service-booking-2-backend", "subject_digest": "c1a99d6a052a563ddd009d68a221f79e72c05fe6a7351cb1edc346bc59222a30", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-backend-approval.json", "canonical_sha256": "ef56b201057b35ea10f73d0c2710e47c148304f94e8190cb9d709e069bc9e0a0"},
+    {"approval_id": "apr-service-booking-2-frontend-001", "subject_id": "service-booking-2-frontend", "subject_digest": "9c83b9124aa824dbf5bbbd2aac7125103fd691302ef52e1703f021c85074e5a3", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-frontend-approval.json", "canonical_sha256": "bd7449bdd601c55049ab592f1d71e0d7214decbcb282952c7de51eeb451ae60a"},
+    {"approval_id": "apr-service-booking-2-code-reviewer-001", "subject_id": "service-booking-2-code-reviewer", "subject_digest": "e9ea641778c9a86cbd15f7a5933ff58a6c94cd7e911d4e5f0fb979dde7fee165", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-code-reviewer-approval.json", "canonical_sha256": "f01663c70cf3f499ea886d74cec262a0669928cb0f809df814528378b7803c81"},
+    {"approval_id": "apr-service-booking-2-build-manager-001", "subject_id": "service-booking-2-build-manager", "subject_digest": "77d228fa8534f133036db89715bf13952b5aeb2d8de99e45b841c8cbee81b587", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-build-manager-approval.json", "canonical_sha256": "a0b4c699ebc2267dc3b2bd6372066de64e60b63ffb3865ea1f253690c6cb888a"},
+    {"approval_id": "apr-service-booking-2-quality-engineer-001", "subject_id": "service-booking-2-quality-engineer", "subject_digest": "49de54ec821b5785a484903c7ba96c125aabe0896e979e6e3e59c607079f1cb6", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-quality-engineer-approval.json", "canonical_sha256": "97914616fb6ababb0f12932ea9d966183bf40bbd8a74a82eb8e8c091f333fd3c"},
+    {"approval_id": "apr-service-booking-2-independent-auditor-001", "subject_id": "service-booking-2-independent-auditor", "subject_digest": "d580824d955206dfa9f934edacdb607a6c304c1e5fe48b7e204fdde451a831fd", "locator": "docs/project/readiness/service-booking-2-foundation/agent-instance-approvals/service-booking-2-independent-auditor-approval.json", "canonical_sha256": "96f7b14e22d923474ce25367a8c3526cbc889154a56ca69a0513878e36b10f57"}
+  ],
+  "studio_approval_registration": {
+    "performed": false,
+    "reason": "The installed Studio CLI has no approval-only AgentInstance command. Existing approval-capable commands are coupled to milestone approval or capability trust transitions."
+  },
+  "benchmark_governance_exception": {
+    "exception_id": "service-booking-2-benchmark-agent-instance-registration-exception",
+    "status": "owner-authorized-not-yet-exercised",
+    "allowed_deviation": "Embed only these nine exact approval-linked envelopes in the final readiness candidate without unsupported Studio instance registration or activation events.",
+    "scope": "service-booking-2-benchmark only; local, non-production, non-precedential",
+    "compensating_controls": [
+      "nine exact approval-subject digests",
+      "nine separate canonical Approval records",
+      "unchanged least-privilege envelopes",
+      "zero Studio tasks",
+      "preserved reviewer and auditor independence"
+    ],
+    "not_authorized": [
+      "permission expansion",
+      "GitHub scope expansion",
+      "task creation",
+      "implementation",
+      "AI Dev Studio product changes"
+    ]
+  },
+  "remaining_required_binding": "Create the nine exact approval-linked readiness instances only after a shared committed Git baseline permits the approved isolated worktrees.",
+  "assessment": "owner-approved-exception-recorded-git-baseline-blocked",
+  "blocker": "The exception resolves the missing Studio instance-registration interface for this benchmark only, but main is unborn and cannot provide a shared clean commit baseline for the planned worktrees.",
+  "validated_at": "2026-09-11T16:54:47Z"
+}

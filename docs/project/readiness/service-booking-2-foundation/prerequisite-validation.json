@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-prerequisite-validation",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "milestone_id": "service-booking-2-foundation",
+  "result": "blocked",
+  "checks": [
+    {
+      "check_id": "accepted-specification-binding",
+      "outcome": "pass",
+      "detail": "Studio accepts service-booking-2 at docs/discovery/project-specification.json with SHA-256 04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29."
+    },
+    {
+      "check_id": "accepted-plan-binding",
+      "outcome": "pass",
+      "detail": "Studio accepts service-booking-2-phase-one at docs/project/planning/phase-one-milestone-plan.json with SHA-256 2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073."
+    },
+    {
+      "check_id": "first-milestone-only",
+      "outcome": "pass",
+      "detail": "The readiness work packages contain only the five accepted foundation tasks and four ordered foundation assurance steps; later milestone tasks are absent."
+    },
+    {
+      "check_id": "acceptance-criteria-resolution",
+      "outcome": "pass",
+      "detail": "All 17 unique acceptance criterion IDs referenced by the first milestone resolve in the accepted specification snapshot."
+    },
+    {
+      "check_id": "dependency-graph",
+      "outcome": "pass",
+      "detail": "All work-package dependencies resolve, are acyclic, and precede their consumers."
+    },
+    {
+      "check_id": "owned-locator-overlap",
+      "outcome": "pass",
+      "detail": "The nine proposed work packages have unique safe repository-relative owned locators with no equal, ancestor, or descendant conflicts."
+    },
+    {
+      "check_id": "interface-bindings",
+      "outcome": "pass",
+      "detail": "Each interface owner matches its responsible work-package owner and uses the registered integration-contract evidence identity."
+    },
+    {
+      "check_id": "doctor",
+      "outcome": "pass",
+      "detail": "studioctl doctor passed configuration, runtime-pin, control-plane-integrity, and control-plane-projection; provider reference handling was not applicable."
+    },
+    {
+      "check_id": "instance-envelope-approval",
+      "outcome": "pass_local_approval_records",
+      "detail": "Nine separate Approval records validate canonically and bind the exact owner-approved AgentInstance subject IDs and approval-subject digests. The nine envelope files remain byte-for-byte unchanged, pending, non-active, and null-approved; approved_instances remains empty because activation was not authorized."
+    },
+    {
+      "check_id": "instance-approval-studio-registration",
+      "outcome": "covered_by_owner_authorized_benchmark_exception",
+      "detail": "The installed Studio CLI exposes no approval-only AgentInstance registration command. The owner authorized embedding only the nine exact approval-linked envelopes in final readiness as a local, non-production, non-precedential benchmark exception; the exception has not yet been exercised."
+    },
+    {
+      "check_id": "github-capability-trust",
+      "outcome": "pass",
+      "detail": "GitHub CLI authentication and exact-repository access are verified for prashant7163/service-booking-2. Activation approval apr-service-booking-2-github-project-workflow-activation-001 binds the registered quarantined predecessor digest fd5bdf8aa26d8aee89df8352ba9946491139897668ca4fb1cc6a4c4c26a912c4, and Studio records the exact-scope successor capability as active at journal sequence 7."
+    },
+    {
+      "check_id": "workspace-isolation",
+      "outcome": "blocked_unborn_main",
+      "detail": "The repository is on unborn branch main and git rev-parse --verify HEAD fails with Needed a single revision. No planned task or assurance worktree can inherit a common clean baseline until main has an initial commit; orphan worktrees would create unrelated histories and do not satisfy the approved isolation contract."
+    },
+    {
+      "check_id": "supporting-evidence-registration",
+      "outcome": "blocked_by_stop_boundary",
+      "detail": "No new evidence is registered because the application owner explicitly required draft creation and validation only."
+    }
+  ],
+  "unresolved_items": [
+    "Create an explicitly authorized initial commit on main containing the approved repository baseline; then create and verify the exact isolated task and assurance worktrees from that commit.",
+    "Register the ordered supporting evidence artifacts before any readiness artifact refers to them."
+  ],
+  "validated_at": "2026-09-11T16:54:47Z"
+}

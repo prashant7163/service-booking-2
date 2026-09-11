@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "foundation-effective-standards",
+  "project_id": "service-booking-2",
+  "milestone_id": "service-booking-2-foundation",
+  "decision": "applicable",
+  "standards_profile_ids": [
+    "studio-engineering-baseline"
+  ],
+  "applicable_standard_ids": [
+    "secrets-redaction",
+    "human-approval",
+    "exact-snapshot-evidence",
+    "meaningful-tests",
+    "least-privilege"
+  ],
+  "exception_ids": [
+    "service-booking-2-benchmark-agent-instance-registration-exception"
+  ],
+  "governance_exceptions": [
+    {
+      "exception_id": "service-booking-2-benchmark-agent-instance-registration-exception",
+      "status": "owner-authorized",
+      "scope": "Only the local service-booking-2-benchmark run and only the nine exact first-milestone AgentInstance subjects already bound to separate digest-specific owner Approval records.",
+      "missing_interface": "The installed Studio CLI and control plane provide no AgentInstance registration or activation command, artifact route, lifecycle event, or authoritative per-instance state.",
+      "allowed_deviation": "A final readiness candidate may embed the nine exact approval-linked AgentInstance envelopes as approved_instances without separate Studio instance registration or activation events.",
+      "compensating_controls": [
+        "each envelope approval-subject digest is recomputed and exact",
+        "each subject has a separate owner Approval record",
+        "all permissions, tools, GitHub scope, work-package ownership, and exclusions remain unchanged",
+        "Code Reviewer and Independent Auditor identities remain independent",
+        "Studio task state remains empty until final readiness is valid",
+        "no implementation authority is created by this exception"
+      ],
+      "excluded": [
+        "AI Dev Studio product changes",
+        "permission or GitHub scope expansion",
+        "task creation or implementation",
+        "production or other-project use",
+        "precedential use in later runs"
+      ],
+      "non_precedential": true,
+      "production_use": false,
+      "owner_decision_source": "Explicit application-owner instruction in the originating Service Booking Two benchmark conversation."
+    }
+  ],
+  "source_files": [
+    {
+      "locator": "shared/standards/baseline.yaml",
+      "file_sha256": "be38e61a471273945e8070d6558cee660ce47da1b536f19876f7003b5501a0b1"
+    },
+    {
+      "locator": "shared/policies/quality-gates.yaml",
+      "file_sha256": "9a17377dddd603b69b5ae588dd74380f13b92c0c86fbaacf7c7822aff1d84f20"
+    },
+    {
+      "locator": "shared/policies/workflow.yaml",
+      "file_sha256": "76f9c9c0d52e87b6a9f748c57f66bd601b380c807fd5a67ec686d202869f7792"
+    }
+  ],
+  "application": [
+    "All persisted and outbound readiness, tracking, review, and audit material is redacted.",
+    "Only the application owner may cross the declared plan, instance, and milestone approval boundaries for an exact digest.",
+    "Implementation and assurance claims bind the exact candidate snapshot.",
+    "Changed behavior and first-milestone risk receive meaningful backend, frontend, integration, and browser evidence.",
+    "Paths, tools, network access, duration, and data access remain limited to each approved work package."
+  ],
+  "validated_at": "2026-09-11T16:54:47Z"
+}
