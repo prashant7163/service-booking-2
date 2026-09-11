@@ -27,10 +27,17 @@ class ForbiddenSurfaceTest extends AbstractPostgresIntegrationTest {
             .andExpect(jsonPath("$.verified").value(false)).andExpect(jsonPath("$.passwordHash").doesNotExist())
             .andExpect(jsonPath("$.email").doesNotExist()).andExpect(jsonPath("$.suspended").doesNotExist());
     }
-    @Test void unverifiedCustomerCannotReachAuthenticatedCustomerSurfaces() throws Exception {
+    @Test void unverifiedCustomerCanReadAuthenticatedCustomerSurfaces() throws Exception {
         var session = customer();
-        for (String path : new String[] {"/api/cart", "/api/cart/lines/1", "/api/checkout", "/api/orders",
-                "/api/orders/1", "/api/services/1/slots"}) {
+        String id = java.util.UUID.randomUUID().toString();
+        for (String path : new String[] {"/api/cart", "/api/services/" + id + "/slots",
+                "/api/customer/orders", "/api/customer/orders/" + id}) {
+            mvc.perform(get(path).cookie(session)).andExpect(status().isNotFound());
+        }
+    }
+    @Test void unverifiedCustomerCannotReserveOrCheckout() throws Exception {
+        var session = customer();
+        for (String path : new String[] {"/api/cart", "/api/checkout"}) {
             mvc.perform(post(path).cookie(session).with(csrf()).contentType("application/json").content("{}"))
                 .andExpect(status().isForbidden());
         }
