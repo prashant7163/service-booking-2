@@ -58,7 +58,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/provider/**").hasRole("PROVIDER")
                 .requestMatchers("/api/admin/**").hasRole("ADMINISTRATOR")
                 .requestMatchers("/api/cart", "/api/cart/**", "/api/checkout", "/api/orders", "/api/orders/**",
-                    "/api/services/*/slots").hasRole("CUSTOMER")
+                    "/api/services/*/slots").access((authentication, context) -> {
+                        var auth = authentication.get();
+                        return new AuthorizationDecision(auth.getPrincipal() instanceof Actor actor
+                            && actor.role() == Role.CUSTOMER && actor.verified() && !actor.suspended());
+                    })
                 .anyRequest().permitAll());
         http.addFilterAfter(new OncePerRequestFilter() {
             @Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

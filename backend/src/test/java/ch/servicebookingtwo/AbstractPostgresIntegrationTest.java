@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import ch.servicebookingtwo.simulation.VerificationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,8 +54,15 @@ public abstract class AbstractPostgresIntegrationTest {
 
     public static class DeliverySpy implements VerificationPort.Observer {
         private final ConcurrentHashMap<String, VerificationPort.Delivery> delivered = new ConcurrentHashMap<>();
-        @Override public void delivered(VerificationPort.Delivery delivery) { delivered.put(delivery.email(), delivery); }
+        private final AtomicBoolean failNext = new AtomicBoolean();
+        @Override public void delivered(VerificationPort.Delivery delivery) {
+            delivered.put(delivery.email(), delivery);
+            if (failNext.compareAndSet(true, false)) {
+                throw new IllegalStateException("simulated failure containing " + delivery.email() + " " + delivery.token());
+            }
+        }
         public VerificationPort.Delivery forEmail(String email) { return delivered.get(email); }
+        public void failNext() { failNext.set(true); }
     }
 
     protected String email() { return UUID.randomUUID() + "@example.test"; }

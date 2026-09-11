@@ -8,6 +8,8 @@ import java.time.Clock;
 import java.util.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 @Service
 public class AuthService {
+    private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
     private final AccountRepository accounts;
     private final JdbcTemplate jdbc;
     private final PasswordEncoder encoder;
@@ -79,7 +82,12 @@ public class AuthService {
             digest(token), account.getId(), kind.name(), java.sql.Timestamp.from(clock.instant()));
         Delivery event = new Delivery(kind, correlationId, account.getEmail(), token);
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override public void afterCommit() { delivery.deliver(event); }
+            @Override public void afterCommit() {
+                try { delivery.deliver(event); }
+                catch (RuntimeException failure) {
+                    LOG.warn("deliveryFailed event={} correlationId={}", event.kind(), event.correlationId());
+                }
+            }
         });
     }
     private String hash(String password) {

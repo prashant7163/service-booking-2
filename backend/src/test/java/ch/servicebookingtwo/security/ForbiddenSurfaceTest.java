@@ -27,4 +27,22 @@ class ForbiddenSurfaceTest extends AbstractPostgresIntegrationTest {
             .andExpect(jsonPath("$.verified").value(false)).andExpect(jsonPath("$.passwordHash").doesNotExist())
             .andExpect(jsonPath("$.email").doesNotExist()).andExpect(jsonPath("$.suspended").doesNotExist());
     }
+    @Test void unverifiedCustomerCannotReachAuthenticatedCustomerSurfaces() throws Exception {
+        var session = customer();
+        for (String path : new String[] {"/api/cart", "/api/cart/lines/1", "/api/checkout", "/api/orders",
+                "/api/orders/1", "/api/services/1/slots"}) {
+            mvc.perform(post(path).cookie(session).with(csrf()).contentType("application/json").content("{}"))
+                .andExpect(status().isForbidden());
+        }
+    }
+    @Test void verifiedCustomerPassesCustomerAuthorizationBoundary() throws Exception {
+        String email = email();
+        mvc.perform(registration("/api/auth/customers", email)).andExpect(status().isCreated());
+        String token = deliveries.forEmail(email).token();
+        var session = postJson("/api/auth/customers/verification", "{\"token\":\"" + token + "\"}")
+            .andExpect(status().isOk()).andReturn().getResponse().getCookie("JSESSIONID");
+
+        mvc.perform(post("/api/cart").cookie(session).with(csrf()).contentType("application/json").content("{}"))
+            .andExpect(status().isNotFound());
+    }
 }

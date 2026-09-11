@@ -5,6 +5,9 @@ public record ApiError(String code, String messageKey, List<FieldError> fieldErr
     public static ApiError of(String code) {
         return new ApiError(code, "error." + code.toLowerCase(Locale.ROOT), List.of(), UUID.randomUUID());
     }
+    public static ApiError validation(List<FieldError> fieldErrors) {
+        return new ApiError("VALIDATION_FAILED", "error.validation_failed", List.copyOf(fieldErrors), UUID.randomUUID());
+    }
     public static final class Failure extends RuntimeException {
         private final int status;
         private final String code;

@@ -115,4 +115,54 @@ class AuthIntegrationTest extends AbstractPostgresIntegrationTest {
         postJson("/api/auth/customers", "{\"email\":\"invalid\",\"password\":\"\",\"displayName\":\"\"}")
             .andExpect(status().isUnprocessableEntity());
     }
+    @Test void beanValidationReturnsContractFieldErrorsWithoutRejectedValues() throws Exception {
+        String rejectedEmail = "private-invalid-address";
+        postJson("/api/auth/customers", "{\"email\":\"" + rejectedEmail
+            + "\",\"password\":\"private-password\",\"displayName\":\"\"}")
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.code").value("VALIDATION_FAILED"))
+            .andExpect(jsonPath("$.messageKey").value("error.validation_failed"))
+            .andExpect(jsonPath("$.fieldErrors.length()").value(2))
+            .andExpect(jsonPath("$.fieldErrors[?(@.field == 'email')].messageKey")
+                .value(org.hamcrest.Matchers.contains("validation.email")))
+            .andExpect(jsonPath("$.fieldErrors[?(@.field == 'displayName')].messageKey")
+                .value(org.hamcrest.Matchers.contains("validation.notBlank")))
+            .andExpect(jsonPath("$.correlationId").isString())
+            .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString(rejectedEmail))))
+            .andExpect(jsonPath("$.fieldErrors[0].rejectedValue").doesNotExist());
+    }
+    @Test void malformedJsonRemainsGenericInvalidInput() throws Exception {
+        postJson("/api/auth/customers", "{\"email\":")
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.code").value("INVALID_INPUT"))
+            .andExpect(jsonPath("$.messageKey").value("error.invalid_input"))
+            .andExpect(jsonPath("$.fieldErrors").isEmpty())
+            .andExpect(jsonPath("$.correlationId").isString());
+    }
+    @Test void registrationSucceedsWhenPostCommitDeliveryFails(CapturedOutput logs) throws Exception {
+        String email = email();
+        deliveries.failNext();
+
+        mvc.perform(registration("/api/auth/customers", email)).andExpect(status().isCreated());
+
+        var delivery = deliveries.forEmail(email);
+        assertThat(jdbc.queryForObject("select count(*) from account where email = ?", Integer.class, email)).isOne();
+        assertThat(logs.getAll()).contains("event=" + delivery.kind(), "correlationId=" + delivery.correlationId())
+            .doesNotContain(email, delivery.token());
+    }
+    @Test void resetRequestSucceedsWhenPostCommitDeliveryFails(CapturedOutput logs) throws Exception {
+        String email = email();
+        mvc.perform(registration("/api/auth/customers", email)).andExpect(status().isCreated());
+        deliveries.failNext();
+
+        postJson("/api/auth/password-reset-requests", "{\"email\":\"" + email + "\"}")
+            .andExpect(status().isAccepted());
+
+        var delivery = deliveries.forEmail(email);
+        assertThat(delivery.kind()).isEqualTo(ch.servicebookingtwo.simulation.VerificationPort.Kind.PASSWORD_RESET);
+        assertThat(jdbc.queryForObject("select count(*) from verification_credential where account_id = "
+            + "(select id from account where email = ?) and kind = 'PASSWORD_RESET'", Integer.class, email)).isOne();
+        assertThat(logs.getAll()).contains("event=" + delivery.kind(), "correlationId=" + delivery.correlationId())
+            .doesNotContain(email, delivery.token());
+    }
 }
