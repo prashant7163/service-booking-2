@@ -154,12 +154,22 @@ if ! "$STUDIO_ROOT/studioctl" status >"$STATUS_FILE"; then
   false
 fi
 
+HISTORY_FILE="$WORK_DIR/studio-history.json"
+if ! "$STUDIO_ROOT/studioctl" history --run-id "$RUN_ID" --limit 20 >"$HISTORY_FILE"; then
+  ERROR_CLASS="studio_history_failure"
+  false
+fi
+
 if ! jq -e \
   --arg project_id "$PROJECT_ID" \
   --arg run_id "$RUN_ID" \
   '.code == "ok" and .state.project_id == $project_id and .state.run_id == $run_id and .state.capability_states["github-project-workflow"] == "active"' \
   "$STATUS_FILE" >/dev/null; then
   ERROR_CLASS="studio_binding_mismatch"
+  false
+fi
+if ! jq -e '.code == "ok" and (.details.events | type == "array")' "$HISTORY_FILE" >/dev/null; then
+  ERROR_CLASS="studio_history_mismatch"
   false
 fi
 EVENT_SEQUENCE=$(jq -r '.state.last_event_sequence' "$STATUS_FILE")
@@ -186,6 +196,73 @@ if ! jq -e \
   false
 fi
 
+GIT_REVISION=$(git -C "$ROOT_DIR" rev-parse HEAD)
+RUN_PHASE=$(jq -r '.state.phase' "$STATUS_FILE")
+ACTIVE_TASK_ID=$(jq -r '.state.active_task_id // "none"' "$STATUS_FILE")
+ACTIVE_TASK_STATE=$(jq -r --arg task_id "$ACTIVE_TASK_ID" '.state.task_states[$task_id] // "planned"' "$STATUS_FILE")
+ACTIVE_ATTEMPT=$(jq -r '.state.active_attempt_number // "none"' "$STATUS_FILE")
+BLOCKER_COUNT=$(jq -r '.state.blockers | length' "$STATUS_FILE")
+LATEST_EVENT_TYPE=$(jq -r '.details.events | last | .event_type // "none"' "$HISTORY_FILE")
+LATEST_EVENT_STATE=$(jq -r '.details.events | last | .payload.state // "none"' "$HISTORY_FILE")
+HUMAN_DECISION=$(jq -r \
+  'if .state.phase == "approved" then "approved" else "not-recorded" end' \
+  "$STATUS_FILE")
+
+checkpoint_name() {
+  if [[ $OPERATION == register ]]; then
+    printf '%s' registration
+    return
+  fi
+  if [[ $RUN_PHASE == approved ]]; then
+    printf '%s' human-milestone-decision
+    return
+  fi
+  case "$LATEST_EVENT_TYPE:$LATEST_EVENT_STATE" in
+    run.approved:*)
+      printf '%s' human-milestone-decision
+      ;;
+    task.started:*)
+      printf '%s' work-start
+      ;;
+    task.blocked:*|readiness.blocked:*)
+      printf '%s' blocked
+      ;;
+    run.resumed:*|task.retry_scheduled:*)
+      printf '%s' resumed
+      ;;
+    task.transition:implementation_complete|task.transition:code_review|task.transition:build_verification|task.transition:quality_review|task.transition:independent_audit|task.transition:audit_triage|task.transition:awaiting_user_approval|task.transition:revision_required|task.transition:complete|checkpoint.created:*)
+      printf '%s' verification-ready-handoff
+      ;;
+    *)
+      printf '%s' checkpoint
+      ;;
+  esac
+}
+
+approved_evidence_links() {
+  local kind digest locator
+  while IFS=$'\t' read -r kind digest locator; do
+    [[ $locator == docs/* && $locator != *..* && $locator =~ ^[A-Za-z0-9._/-]+$ ]] || continue
+    git -C "$ROOT_DIR" cat-file -e "$GIT_REVISION:$locator" 2>/dev/null || continue
+    printf -- '- [%s](%s/blob/%s/%s) `%s`\n' \
+      "$kind" "$APPROVED_REPOSITORY_WEB" "$GIT_REVISION" "$locator" "$digest"
+  done < <(jq -r \
+    '.state.artifacts | unique_by(.kind,.sha256,.source_locator) | sort_by(.kind,.source_locator)[] | [.kind,.sha256,.source_locator] | @tsv' \
+    "$STATUS_FILE")
+}
+
+CHECKPOINT=$(checkpoint_name)
+EVIDENCE_LINKS=$(approved_evidence_links)
+if [[ -z $EVIDENCE_LINKS ]]; then
+  EVIDENCE_LINKS='- None approved for outbound projection.'
+fi
+
+progress_projection() {
+  printf 'Checkpoint: `%s`\nLocal event sequence: `%s`\nRun phase: `%s`\nActive Studio task: `%s`\nActive task state: `%s`\nActive attempt: `%s`\nBlocker count: `%s`\nHuman milestone decision: `%s`\n\nEvidence links:\n%s' \
+    "$CHECKPOINT" "$EVENT_SEQUENCE" "$RUN_PHASE" "$ACTIVE_TASK_ID" "$ACTIVE_TASK_STATE" \
+    "$ACTIVE_ATTEMPT" "$BLOCKER_COUNT" "$HUMAN_DECISION" "$EVIDENCE_LINKS"
+}
+
 milestone_marker() {
   printf '[service-booking-local-id:%s]' "$1"
 }
@@ -201,8 +278,8 @@ milestone_title() {
 
 milestone_description() {
   local milestone_id=$1
-  printf '%s\n\nProject ID: `%s`\nMilestone ID: `%s`\n\nThis GitHub milestone is a redacted tracking counterpart. Authoritative state, validation, and approval remain in local Studio records.' \
-    "$(milestone_marker "$milestone_id")" "$PROJECT_ID" "$milestone_id"
+  printf '%s\n\nProject ID: `%s`\nMilestone ID: `%s`\n\n%s\n\nThis GitHub milestone is a redacted tracking counterpart. Authoritative state, validation, and approval remain in local Studio records.' \
+    "$(milestone_marker "$milestone_id")" "$PROJECT_ID" "$milestone_id" "$(progress_projection)"
 }
 
 issue_title() {
@@ -212,26 +289,30 @@ issue_title() {
 
 issue_body() {
   local task_id=$1 milestone_id=$2 requirement_ids=$3 acceptance_ids=$4
-  printf '%s\n\nProject ID: `%s`\nTask ID: `%s`\nMilestone ID: `%s`\nRequirement IDs: %s\nAcceptance criterion IDs: %s\n\nThis issue is a redacted tracking counterpart. Authoritative task state, evidence, validation, and approval remain in local Studio records.' \
-    "$(task_marker "$task_id")" "$PROJECT_ID" "$task_id" "$milestone_id" "$requirement_ids" "$acceptance_ids"
+  local task_state
+  task_state=$(jq -r --arg task_id "$task_id" '.state.task_states[$task_id] // "planned"' "$STATUS_FILE")
+  printf '%s\n\nProject ID: `%s`\nTask ID: `%s`\nMilestone ID: `%s`\nRequirement IDs: %s\nAcceptance criterion IDs: %s\nIssue task state: `%s`\n\n%s\n\nThis issue is a redacted tracking counterpart. Authoritative task state, evidence, validation, and approval remain in local Studio records.' \
+    "$(task_marker "$task_id")" "$PROJECT_ID" "$task_id" "$milestone_id" "$requirement_ids" "$acceptance_ids" "$task_state" "$(progress_projection)"
 }
 
 validate_milestone_response() {
   local response=$1 milestone_id=$2
   jq -e \
     --arg marker "$(milestone_marker "$milestone_id")" \
+    --arg description "$(milestone_description "$milestone_id")" \
     --arg prefix "$APPROVED_REPOSITORY_WEB/milestone/" \
-    '(.number | type == "number") and (.html_url | startswith($prefix)) and (.description | contains($marker))' \
+    '(.number | type == "number") and (.html_url | startswith($prefix)) and (.description == $description) and (.description | contains($marker))' \
     <<<"$response" >/dev/null
 }
 
 validate_issue_response() {
-  local response=$1 task_id=$2 milestone_number=$3
+  local response=$1 task_id=$2 milestone_number=$3 expected_body=$4
   jq -e \
     --arg marker "$(task_marker "$task_id")" \
+    --arg expected_body "$expected_body" \
     --arg prefix "$APPROVED_REPOSITORY_WEB/issues/" \
     --argjson milestone_number "$milestone_number" \
-    '(.number | type == "number") and (.html_url | startswith($prefix)) and (.body | contains($marker)) and .milestone.number == $milestone_number' \
+    '(.number | type == "number") and (.html_url | startswith($prefix)) and (.body == $expected_body) and (.body | contains($marker)) and .milestone.number == $milestone_number' \
     <<<"$response" >/dev/null
 }
 
@@ -288,7 +369,7 @@ sync_counterparts() {
       response=$(mutate_gh "repos/$REPOSITORY_SLUG/issues/$number" -X PATCH -f "title=$title" -f "body=$body" -f "milestone=$milestone_number")
       remote_issues=$(jq --argjson number "$number" --argjson response "$response" 'map(if .number == $number then $response else . end)' <<<"$remote_issues")
     fi
-    validate_issue_response "$response" "$task_id" "$milestone_number"
+    validate_issue_response "$response" "$task_id" "$milestone_number" "$body"
     number=$(jq -r '.number' <<<"$response")
     url=$(jq -r '.html_url' <<<"$response")
     task_links=$(jq \
@@ -326,26 +407,35 @@ verify_counterparts() {
   remote_milestones=$(run_gh api "repos/$REPOSITORY_SLUG/milestones?state=all&per_page=100" --paginate)
   remote_issues=$(run_gh api "repos/$REPOSITORY_SLUG/issues?state=all&per_page=100" --paginate)
 
-  while IFS=$'\t' read -r milestone_id number url; do
+  while IFS=$'\t' read -r milestone_id; do
+    local number url description
+    number=$(jq -r --arg id "$milestone_id" '.milestones[$id].number' "$LINKS_FILE")
+    url=$(jq -r --arg id "$milestone_id" '.milestones[$id].url' "$LINKS_FILE")
+    description=$(milestone_description "$milestone_id")
     jq -e \
       --arg marker "$(milestone_marker "$milestone_id")" \
+      --arg description "$description" \
       --argjson number "$number" \
       --arg url "$url" \
-      '[.[] | select(.number == $number and .html_url == $url and ((.description // "") | contains($marker)))] | length == 1' \
+      '[.[] | select(.number == $number and .html_url == $url and .description == $description and ((.description // "") | contains($marker)))] | length == 1' \
       <<<"$remote_milestones" >/dev/null
-  done < <(jq -r '.milestones | to_entries[] | [.key,(.value.number|tostring),.value.url] | @tsv' "$LINKS_FILE")
+  done < <(jq -r '.milestones | sort_by(.ordinal)[] | .milestone_id' "$PLAN_FILE")
 
-  while IFS=$'\t' read -r task_id number url milestone_id; do
-    local milestone_number
+  while IFS=$'\t' read -r task_id milestone_id requirement_ids acceptance_ids; do
+    local number url milestone_number body
+    number=$(jq -r --arg id "$task_id" '.tasks[$id].number' "$LINKS_FILE")
+    url=$(jq -r --arg id "$task_id" '.tasks[$id].url' "$LINKS_FILE")
     milestone_number=$(jq -r --arg id "$milestone_id" '.milestones[$id].number' "$LINKS_FILE")
+    body=$(issue_body "$task_id" "$milestone_id" "$requirement_ids" "$acceptance_ids")
     jq -e \
       --arg marker "$(task_marker "$task_id")" \
+      --arg body "$body" \
       --argjson number "$number" \
       --arg url "$url" \
       --argjson milestone_number "$milestone_number" \
-      '[.[] | select(has("pull_request") | not) | select(.number == $number and .html_url == $url and .milestone.number == $milestone_number and ((.body // "") | contains($marker)))] | length == 1' \
+      '[.[] | select(has("pull_request") | not) | select(.number == $number and .html_url == $url and .milestone.number == $milestone_number and .body == $body and ((.body // "") | contains($marker)))] | length == 1' \
       <<<"$remote_issues" >/dev/null
-  done < <(jq -r '.tasks | to_entries[] | [.key,(.value.number|tostring),.value.url,.value.milestone_id] | @tsv' "$LINKS_FILE")
+  done < <(jq -r '.milestones[] as $milestone | $milestone.tasks[] | select(.kind == "implementation") | [.task_id,$milestone.milestone_id,(.requirement_ids|join(", ")),( .acceptance_criterion_ids|join(", "))] | @tsv' "$PLAN_FILE")
 }
 
 case "$OPERATION" in

@@ -6,6 +6,7 @@ SYNC_SCRIPT="$ROOT_DIR/scripts/github/sync-work-items.sh"
 LINKS_FILE="$ROOT_DIR/docs/project/tracking/github-links.json"
 RETRY_FILE="$ROOT_DIR/docs/project/tracking/sync-retry.json"
 APPROVED_REPOSITORY="https://github.com/prashant7163/service-booking-2.git"
+APPROVED_REPOSITORY_WEB="https://github.com/prashant7163/service-booking-2"
 
 TEST_DIR=$(mktemp -d)
 cp "$LINKS_FILE" "$TEST_DIR/github-links.before.json"
@@ -210,4 +211,227 @@ unset FAKE_GH_FAIL_UPDATES
 run_sync checkpoint
 run_sync verify
 
-printf '%s\n' '4 synchronization scenarios passed'
+# Scenario 5: every governed lifecycle checkpoint replaces the redacted projection in place.
+PROJECTION_ROOT="$TEST_DIR/projection-repo"
+PROJECTION_PLAN_SNAPSHOT=".studio/runs/service-booking-2-benchmark/artifacts/2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073.json"
+mkdir -p \
+  "$PROJECTION_ROOT/scripts/github" \
+  "$PROJECTION_ROOT/docs/project/tracking" \
+  "$PROJECTION_ROOT/docs/discovery" \
+  "$PROJECTION_ROOT/docs/project/planning" \
+  "$PROJECTION_ROOT/docs/project/readiness/service-booking-2-foundation" \
+  "$PROJECTION_ROOT/docs/project/reviews" \
+  "$PROJECTION_ROOT/$(dirname "$PROJECTION_PLAN_SNAPSHOT")"
+cp "$SYNC_SCRIPT" "$PROJECTION_ROOT/scripts/github/sync-work-items.sh"
+cp "$LINKS_FILE" "$PROJECTION_ROOT/docs/project/tracking/github-links.json"
+cp "$RETRY_FILE" "$PROJECTION_ROOT/docs/project/tracking/sync-retry.json"
+cp "$ROOT_DIR/docs/discovery/project-specification.json" "$PROJECTION_ROOT/docs/discovery/project-specification.json"
+cp "$ROOT_DIR/docs/project/planning/phase-one-milestone-plan.json" "$PROJECTION_ROOT/docs/project/planning/phase-one-milestone-plan.json"
+cp "$ROOT_DIR/docs/project/readiness/service-booking-2-foundation/rolling-progress-plan.json" \
+  "$PROJECTION_ROOT/docs/project/readiness/service-booking-2-foundation/rolling-progress-plan.json"
+printf '%s\n' '{"review_id":"foundation-milestone-review"}' >"$PROJECTION_ROOT/docs/project/reviews/foundation-milestone-review.json"
+cp "$ROOT_DIR/docs/project/planning/phase-one-milestone-plan.json" "$PROJECTION_ROOT/$PROJECTION_PLAN_SNAPSHOT"
+
+cat >"$PROJECTION_ROOT/studioctl" <<'FAKE_STUDIOCTL'
+#!/usr/bin/env bash
+set -euo pipefail
+
+scenario=${FAKE_STUDIO_SCENARIO:-registration}
+case "$scenario" in
+  registration)
+    sequence=21 phase=ready task_state=planned event_type=readiness.passed event_state=ready resume_classification=null blocker='[]'
+    ;;
+  work-start)
+    sequence=22 phase=running task_state=running event_type=task.started event_state=running resume_classification=null blocker='[]'
+    ;;
+  blocked)
+    sequence=23 phase=running task_state=blocked event_type=task.blocked event_state=blocked resume_classification=null blocker='["token=local-only-secret"]'
+    ;;
+  resumed)
+    sequence=24 phase=running task_state=running event_type=run.resumed event_state=running resume_classification=exact blocker='[]'
+    ;;
+  verification-ready)
+    sequence=25 phase=running task_state=implementation_complete event_type=task.transition event_state=implementation_complete resume_classification=exact blocker='[]'
+    ;;
+  human-decision)
+    sequence=40 phase=approved task_state=complete event_type=checkpoint.created event_state=approved resume_classification=exact blocker='[]'
+    ;;
+  *) exit 64 ;;
+esac
+
+if [[ ${1:-} == status ]]; then
+  jq -n \
+    --arg phase "$phase" \
+    --arg task_state "$task_state" \
+    --arg resume_classification "$resume_classification" \
+    --argjson sequence "$sequence" \
+    --argjson blockers "$blocker" \
+    '{
+      code:"ok",
+      state:{
+        project_id:"service-booking-2",
+        run_id:"service-booking-2-benchmark",
+        phase:$phase,
+        active_milestone_id:"service-booking-2-foundation",
+        active_task_id:"service-booking-2-design-interactions",
+        active_attempt_number:1,
+        task_states:{"service-booking-2-design-interactions":$task_state},
+        blockers:$blockers,
+        latest_resume_classification:(if $resume_classification == "null" then null else $resume_classification end),
+        current_action:"credential=local-only-secret",
+        next_action:"send token local-only-secret",
+        capability_states:{"github-project-workflow":"active"},
+        last_event_sequence:$sequence,
+        artifacts:[
+          {
+            kind:"specification",
+            subject_id:"service-booking-2",
+            sha256:"04350ae40cd031b0368e4b4508ffced35f3ed37df563a27c6138426d1ac96d29",
+            snapshot_locator:".studio/runs/service-booking-2-benchmark/artifacts/specification.json",
+            source_locator:"docs/discovery/project-specification.json"
+          },
+          {
+            kind:"plan",
+            subject_id:"service-booking-2-phase-one",
+            sha256:"2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073",
+            snapshot_locator:".studio/runs/service-booking-2-benchmark/artifacts/2c877de39821812f3b1014e83e968511f1474780f65bcc7d21e76433cd627073.json",
+            source_locator:"docs/project/planning/phase-one-milestone-plan.json"
+          },
+          {
+            kind:"supporting_evidence",
+            subject_id:null,
+            sha256:"7f956eedbe8ed1f2ea7663d3e71f60792b5a7f95bd4b394644544dbdbfeba35c",
+            snapshot_locator:".studio/runs/service-booking-2-benchmark/artifacts/progress.json",
+            source_locator:"docs/project/readiness/service-booking-2-foundation/rolling-progress-plan.json"
+          },
+          {
+            kind:"gate",
+            subject_id:"foundation-milestone-review",
+            sha256:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            snapshot_locator:".studio/runs/service-booking-2-benchmark/artifacts/review.json",
+            source_locator:"docs/project/reviews/foundation-milestone-review.json"
+          },
+          {
+            kind:"supporting_evidence",
+            subject_id:"token-local-only-secret",
+            sha256:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            snapshot_locator:".studio/runs/service-booking-2-benchmark/artifacts/secret.json",
+            source_locator:"../credential-local-only-secret.json"
+          }
+        ]
+      }
+    }'
+elif [[ ${1:-} == history ]]; then
+  jq -n \
+    --arg event_type "$event_type" \
+    --arg event_state "$event_state" \
+    --argjson sequence "$sequence" \
+    '{
+      code:"ok",
+      details:{events:[{
+        sequence:$sequence,
+        event_type:$event_type,
+        milestone_id:"service-booking-2-foundation",
+        task_id:"service-booking-2-design-interactions",
+        payload:{
+          state:$event_state,
+          approval:{
+            decision:"approved",
+            decided_by:"private-owner@example.com",
+            comment:"credential=local-only-secret"
+          }
+        }
+      }]}
+    }'
+else
+  exit 64
+fi
+FAKE_STUDIOCTL
+chmod +x "$PROJECTION_ROOT/studioctl"
+git -C "$PROJECTION_ROOT" init -q
+git -C "$PROJECTION_ROOT" config user.email test@example.invalid
+git -C "$PROJECTION_ROOT" config user.name 'Synchronization Contract Test'
+git -C "$PROJECTION_ROOT" remote add origin "$APPROVED_REPOSITORY"
+git -C "$PROJECTION_ROOT" add .
+git -C "$PROJECTION_ROOT" commit -qm 'test fixture'
+PROJECTION_COMMIT=$(git -C "$PROJECTION_ROOT" rev-parse HEAD)
+PROJECTION_SYNC_SCRIPT="$PROJECTION_ROOT/scripts/github/sync-work-items.sh"
+PROJECTION_LINKS_FILE="$PROJECTION_ROOT/docs/project/tracking/github-links.json"
+
+run_projection_sync() {
+  SERVICE_BOOKING_GITHUB_REPOSITORY="$APPROVED_REPOSITORY" "$PROJECTION_SYNC_SCRIPT" "$@"
+}
+
+assert_projection() {
+  local checkpoint=$1 phase=$2 active_state=$3 blocker_count=$4 body description
+  body=$(jq -r '.issues[0].body' "$FAKE_GH_STATE")
+  description=$(jq -r '.milestones[0].description' "$FAKE_GH_STATE")
+  for rendered in "$body" "$description"; do
+    [[ $rendered == *"Checkpoint: \`$checkpoint\`"* ]] || {
+      printf 'FAIL: %s projection missing checkpoint\n' "$checkpoint" >&2
+      exit 1
+    }
+    [[ $rendered == *"Run phase: \`$phase\`"* ]] || {
+      printf 'FAIL: %s projection missing phase\n' "$checkpoint" >&2
+      exit 1
+    }
+    [[ $rendered == *"Active task state: \`$active_state\`"* ]] || {
+      printf 'FAIL: %s projection missing active task state\n' "$checkpoint" >&2
+      exit 1
+    }
+    [[ $rendered == *"Blocker count: \`$blocker_count\`"* ]] || {
+      printf 'FAIL: %s projection missing blocker count\n' "$checkpoint" >&2
+      exit 1
+    }
+    [[ $rendered == *"$APPROVED_REPOSITORY_WEB/blob/$PROJECTION_COMMIT/docs/discovery/project-specification.json"* ]] || {
+      printf 'FAIL: %s projection missing approved evidence link\n' "$checkpoint" >&2
+      exit 1
+    }
+  done
+  assert_eq 5 "$(jq '.milestones | length' "$FAKE_GH_STATE")" "$checkpoint does not duplicate milestones"
+  assert_eq 11 "$(jq '.issues | length' "$FAKE_GH_STATE")" "$checkpoint does not duplicate issues"
+  if jq -e '.. | strings | select(test("local-only-secret|private-owner@|credential|token"; "i"))' "$FAKE_GH_STATE" >/dev/null; then
+    printf 'FAIL: %s projection leaked sensitive Studio state\n' "$checkpoint" >&2
+    exit 1
+  fi
+}
+
+: >"$FAKE_GH_LOG"
+printf '%s\n' '{"milestones":[],"issues":[]}' >"$FAKE_GH_STATE"
+
+export FAKE_STUDIO_SCENARIO=registration
+run_projection_sync register
+assert_projection registration ready planned 0
+
+export FAKE_STUDIO_SCENARIO=work-start
+run_projection_sync checkpoint
+assert_projection work-start running running 0
+
+export FAKE_STUDIO_SCENARIO=blocked
+run_projection_sync checkpoint
+assert_projection blocked running blocked 1
+
+export FAKE_STUDIO_SCENARIO=resumed
+run_projection_sync checkpoint
+assert_projection resumed running running 0
+
+export FAKE_STUDIO_SCENARIO=verification-ready
+run_projection_sync checkpoint
+assert_projection verification-ready-handoff running implementation_complete 0
+
+export FAKE_STUDIO_SCENARIO=human-decision
+run_projection_sync checkpoint
+assert_projection human-milestone-decision approved complete 0
+jq '(.issues[0].body) |= sub("Checkpoint: `human-milestone-decision`"; "Checkpoint: `stale`")' \
+  "$FAKE_GH_STATE" >"$FAKE_GH_STATE.tmp"
+mv "$FAKE_GH_STATE.tmp" "$FAKE_GH_STATE"
+if run_projection_sync verify >/dev/null 2>&1; then
+  printf '%s\n' 'FAIL: verify accepted a stale checkpoint projection' >&2
+  exit 1
+fi
+run_projection_sync checkpoint
+run_projection_sync verify
+
+assert_eq 16 "$(awk '$1 == "POST" {count++} END {print count+0}' "$FAKE_GH_LOG")" 'checkpoint projection creates each counterpart once'
+
+printf '%s\n' '5 synchronization scenarios passed'
