@@ -1,0 +1,1030 @@
+openapi: 3.0.3
+info:
+  title: Service Booking Two API
+  version: 1.0.0
+  description: |
+    Normative phase-one contract for approved specification digest
+    227a4f029b576930530c4c5b388d2836963d9f7356913b5faf5f9dcc180c4c9b.
+    One same-origin API; JSON request/response records use UUID IDs, UTC-compatible
+    RFC 3339 instants and decimal-string CHF money. No persistence entity is serialized.
+    All browser mutations require a session-bound X-CSRF-TOKEN, including anonymous
+    registration/login/reset. GET /api/auth/csrf establishes the anonymous session.
+    Refresh CSRF after session rotation. Authentication and personal responses use
+    Cache-Control: no-store. JSESSIONID is HttpOnly, SameSite=Lax, Path=/ and Secure
+    outside local/e2e HTTP. No cross-origin credential access is enabled.
+    401 means missing/invalid session or invalid sign-in credentials; 403 means wrong
+    role/owner, required verification absent, suspended provider or invalid CSRF;
+    404 means missing or non-discoverable resource; 409 means a domain/concurrency
+    conflict; 422 means invalid input or incorrect code. Errors never echo secrets.
+    Wrong-owner mutations return generic 403; collections are always owner-filtered.
+    Unknown operations have no handler (404/405). No administrator self-registration.
+servers:
+  - url: /
+    description: Same-origin application; hosted deployment is not selected.
+security:
+  - session: []
+x-error-responses: &errors
+  '401': { $ref: '#/components/responses/Unauthorized' }
+  '403': { $ref: '#/components/responses/Forbidden' }
+  '404': { $ref: '#/components/responses/NotFound' }
+  '409': { $ref: '#/components/responses/Conflict' }
+  '422': { $ref: '#/components/responses/Invalid' }
+paths:
+  /api/auth/csrf:
+    get:
+      operationId: getCsrf
+      security: []
+      description: Establish anonymous session if needed and return its CSRF token; never log it.
+      responses:
+        '200':
+          description: Current session-bound token.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CsrfView' } }
+  /api/auth/customers:
+    post:
+      operationId: registerCustomer
+      security: [{ csrf: [] }]
+      description: Register CUSTOMER and rotate session; initially unverified. Deliver verification through simulated port.
+      requestBody: { $ref: '#/components/requestBodies/Registration' }
+      responses:
+        <<: *errors
+        '201':
+          description: Registered customer session. Duplicate normalized email is 409 EMAIL_IN_USE.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SessionView' } }
+  /api/auth/providers:
+    post:
+      operationId: registerProvider
+      security: [{ csrf: [] }]
+      description: Register solo PROVIDER without administrator approval; simulated verification required before publication.
+      requestBody: { $ref: '#/components/requestBodies/Registration' }
+      responses:
+        <<: *errors
+        '201':
+          description: Verification pending; duplicate email, including a customer email, is 409 EMAIL_IN_USE.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/VerificationPendingView' } }
+  /api/auth/customers/verification:
+    post:
+      operationId: verifyCustomer
+      security: [{ csrf: [] }]
+      description: Consume the customer verification credential and rotate to a verified customer session.
+      requestBody: { $ref: '#/components/requestBodies/Token' }
+      responses:
+        <<: *errors
+        '200':
+          description: Verified customer session. Invalid or consumed token is generic 422 INVALID_TOKEN.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SessionView' } }
+  /api/auth/providers/verification:
+    post:
+      operationId: verifyProvider
+      security: [{ csrf: [] }]
+      description: Consume provider verification credential, reject suspended account and rotate to provider session.
+      requestBody: { $ref: '#/components/requestBodies/Token' }
+      responses:
+        <<: *errors
+        '200':
+          description: Verified provider session. Invalid or consumed token is generic 422 INVALID_TOKEN.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SessionView' } }
+  /api/auth/session:
+    get:
+      operationId: getSession
+      responses:
+        <<: *errors
+        '200':
+          description: Current non-suspended actor; no credentials or suspension internals.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SessionView' } }
+    post:
+      operationId: signIn
+      security: [{ csrf: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/SignInCommand' } }
+      responses:
+        <<: *errors
+        '200':
+          description: Rotated authenticated session; invalid credentials 401, suspended provider 403.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SessionView' } }
+    delete:
+      operationId: signOut
+      security: [{ session: [], csrf: [] }]
+      description: Invalidate session and clear cookie; persistent cart remains.
+      responses:
+        <<: *errors
+        '204': { description: Signed out; no response body. }
+  /api/auth/password-reset-requests:
+    post:
+      operationId: requestPasswordReset
+      security: [{ csrf: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/EmailCommand' } }
+      responses:
+        <<: *errors
+        '202':
+          description: Same acknowledgment whether email exists; delivery is simulated with no token in response.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/Acknowledgment' } }
+  /api/auth/password-resets:
+    post:
+      operationId: resetPassword
+      security: [{ csrf: [] }]
+      description: Consume reset token, store BCrypt replacement and invalidate prior account sessions.
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/ResetPasswordCommand' } }
+      responses:
+        <<: *errors
+        '204': { description: Password changed; invalid or consumed token is generic 422 INVALID_TOKEN. }
+  /api/provider/shop:
+    get:
+      operationId: getOwnShop
+      description: PROVIDER only; own shop or 404.
+      responses:
+        <<: *errors
+        '200':
+          description: Owned shop.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ShopView' } }
+    post:
+      operationId: createShop
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER only; one shop per provider, duplicate names across providers allowed.
+      requestBody: { $ref: '#/components/requestBodies/Shop' }
+      responses:
+        <<: *errors
+        '201':
+          description: Shop created; second shop is 409 ONE_SHOP_ONLY.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ShopView' } }
+    put:
+      operationId: updateShop
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER only; replace own shop details, with valid Swiss address required for published offerings.
+      requestBody: { $ref: '#/components/requestBodies/Shop' }
+      responses:
+        <<: *errors
+        '200':
+          description: Updated owned shop.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ShopView' } }
+  /api/provider/images:
+    post:
+      operationId: uploadImage
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER only; decode safe JPEG/PNG, strip metadata and store under generated owned ID. No remote URL fetch.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [image]
+              properties:
+                image: { type: string, format: binary }
+      responses:
+        <<: *errors
+        '201':
+          description: Owned image reference; invalid image content is 422 INVALID_IMAGE.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ImageView' } }
+  /api/images/{imageId}:
+    parameters: [{ $ref: '#/components/parameters/ImageId' }]
+    get:
+      operationId: getImage
+      security: []
+      description: Public only for a published association; an authenticated owning provider may read its draft image. Otherwise 404.
+      responses:
+        '404': { $ref: '#/components/responses/NotFound' }
+        '200':
+          description: Validated image bytes, never a filesystem path or arbitrary upstream content.
+          content:
+            image/jpeg: { schema: { type: string, format: binary } }
+            image/png: { schema: { type: string, format: binary } }
+  /api/provider/offerings:
+    get:
+      operationId: listOwnOfferings
+      description: PROVIDER only; own drafts and published offerings.
+      parameters: [{ $ref: '#/components/parameters/Page' }]
+      responses:
+        <<: *errors
+        '200':
+          description: Fixed page size 20.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OfferingPage' } }
+    post:
+      operationId: createOffering
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER only; create draft under own shop, in-person at that shop.
+      requestBody: { $ref: '#/components/requestBodies/Offering' }
+      responses:
+        <<: *errors
+        '201':
+          description: Draft offering.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OfferingView' } }
+  /api/provider/offerings/{offeringId}:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }]
+    get:
+      operationId: getOwnOffering
+      description: PROVIDER owner only.
+      responses:
+        <<: *errors
+        '200':
+          description: Owned offering.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OfferingView' } }
+    put:
+      operationId: updateOffering
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER owner only; replace supplied draft fields or valid published content/price. Price edit reprices carts, never accepted attempts/history.
+      requestBody: { $ref: '#/components/requestBodies/Offering' }
+      responses:
+        <<: *errors
+        '200':
+          description: Updated offering; published preconditions must remain satisfied.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OfferingView' } }
+  /api/provider/offerings/{offeringId}/slots:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }]
+    get:
+      operationId: listOwnSlots
+      description: PROVIDER owner only; includes draft and historical slots.
+      parameters: [{ $ref: '#/components/parameters/Page' }]
+      responses:
+        <<: *errors
+        '200':
+          description: Fixed page size 20.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SlotPage' } }
+    post:
+      operationId: bulkSaveSlots
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER owner only; atomic explicit nonrecurring bulk entry including two or more rows. Draft overlap allowed; published rows enforce exclusion.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              items: { $ref: '#/components/schemas/SaveSlotCommand' }
+      responses:
+        <<: *errors
+        '201':
+          description: Every created row has a distinct SKU UUID; no partial creation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/SlotView' }
+  /api/provider/offerings/{offeringId}/slots/{slotId}:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }, { $ref: '#/components/parameters/SlotId' }]
+    put:
+      operationId: updateSlot
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER owner only; start/end immutable after reservation/purchase. Capacity must cover reserved plus purchased units. Published overlaps conflict.
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/SaveSlotCommand' } }
+      responses:
+        <<: *errors
+        '200':
+          description: Updated slot; 409 SLOT_TIME_IMMUTABLE, CAPACITY_COMMITTED or SLOT_OVERLAP on conflicting edit.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SlotView' } }
+  /api/provider/offerings/{offeringId}/publish:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }]
+    post:
+      operationId: publishOffering
+      security: [{ session: [], csrf: [] }]
+      description: |
+        Verified non-suspended PROVIDER owner only. Require shop Swiss postal address,
+        name/description/image, fixed category, positive CHF price and positive future
+        availability. Missing preconditions are 422 PUBLICATION_INVALID; unverified is
+        403; provider-wide published [start,end) overlap is 409 SLOT_OVERLAP.
+      responses:
+        <<: *errors
+        '200':
+          description: Published offering, including an already-published valid offering.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OfferingView' } }
+  /api/provider/offerings/{offeringId}/unpublish:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }]
+    post:
+      operationId: unpublishOffering
+      security: [{ session: [], csrf: [] }]
+      description: PROVIDER owner only; atomically return to draft and remove all affected cart quantities/reservations. Purchased bookings remain valid/redeemable.
+      responses:
+        <<: *errors
+        '200':
+          description: Draft offering; repeated unpublication leaves it draft.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OfferingView' } }
+  /api/services:
+    get:
+      operationId: searchServices
+      security: []
+      description: |
+        Published non-suspended services including exhausted offerings. Empty q lists all.
+        Search offering/category name/description and shop name across case/accent/umlaut
+        variants with typo tolerance; quoted phrases are exact contiguous normalized
+        matches without fuzzy matching. No stemming. Relevance ranks exact/containment
+        above fuzzy, ties by ID. Public projection always omits slot times, including
+        for signed-in callers. Only the declared filters/sorts are supported.
+      parameters:
+        - { name: q, in: query, schema: { type: string, default: '' } }
+        - { name: category, in: query, schema: { $ref: '#/components/schemas/Category' } }
+        - { name: minPrice, in: query, schema: { $ref: '#/components/schemas/PositiveAmount' } }
+        - { name: maxPrice, in: query, schema: { $ref: '#/components/schemas/PositiveAmount' } }
+        - { name: sort, in: query, schema: { type: string, enum: [relevance, price_asc, price_desc], default: relevance } }
+        - { $ref: '#/components/parameters/Page' }
+      responses:
+        '422': { $ref: '#/components/responses/Invalid' }
+        '200':
+          description: Fixed page size 20; minPrice must not exceed maxPrice. No size/date/location parameters.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ServicePage' } }
+  /api/services/{offeringId}:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }]
+    get:
+      operationId: getService
+      security: []
+      responses:
+        '404': { $ref: '#/components/responses/NotFound' }
+        '200':
+          description: Published public detail without slot IDs/times; unpublished/suspended offering is 404.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ServiceSummaryView' } }
+  /api/services/{offeringId}/slots:
+    parameters: [{ $ref: '#/components/parameters/OfferingId' }]
+    get:
+      operationId: listCustomerSlots
+      description: Authenticated CUSTOMER only; published/non-suspended offering. Slots have startAt strictly after injected Clock; reservation additionally requires verification.
+      parameters: [{ $ref: '#/components/parameters/Page' }]
+      responses:
+        <<: *errors
+        '200':
+          description: Future slots with exact times/capacity/availability, fixed page size 20; exhausted rows cannot be reserved.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SlotPage' } }
+  /api/cart:
+    get:
+      operationId: getCart
+      description: CUSTOMER own persistent cart; current offering prices, including retained started-slot rows. No timer.
+      responses:
+        <<: *errors
+        '200':
+          description: Current cart, possibly empty.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CartView' } }
+    post:
+      operationId: changeQuantity
+      security: [{ session: [], csrf: [] }]
+      description: |
+        Verified CUSTOMER only. Set absolute quantity for a slot in own cart, applying
+        only the inventory delta atomically. Zero removes it. Positive additions/increases
+        require published, active, future slot inventory. 409 INVENTORY_UNAVAILABLE or
+        SLOT_STARTED leaves prior allocation unchanged; reductions/removal of retained
+        started rows remain possible. Anonymous is 401; wrong role/unverified is 403.
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/ChangeQuantityCommand' } }
+      responses:
+        <<: *errors
+        '200':
+          description: Updated own cart; no paid booking is created.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CartView' } }
+  /api/cart/lines/{cartLineId}:
+    parameters: [{ $ref: '#/components/parameters/CartLineId' }]
+    delete:
+      operationId: removeCartLine
+      security: [{ session: [], csrf: [] }]
+      description: CUSTOMER owner only; explicitly release exactly the selected line quantity.
+      responses:
+        <<: *errors
+        '200':
+          description: Remaining own cart.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CartView' } }
+  /api/checkout:
+    post:
+      operationId: checkout
+      security: [{ session: [], csrf: [] }]
+      description: |
+        Verified CUSTOMER only. Checkout selected owned lines atomically into one
+        marketplace order; preserve unselected lines. Idempotency-Key maps to internal
+        CheckoutCommand.idempotencyKey and is scoped to customer plus request fingerprint.
+        Reject empty/duplicate selection (422), any non-owned line (403), unavailable line
+        or now >= slot start (409), without confirming any selected booking.
+        Recompute current total before payment: mismatch is 409 PRICE_ACCEPTANCE_REQUIRED;
+        no attempt begins, cart remains, client refreshes GET /api/cart and explicitly
+        accepts the new total. Snapshot accepted prices before deterministic payment.
+        Later price edits cannot change that attempt or successful history.
+        SUCCESS transfers all selected reservations to purchases without restoring
+        availability. FAILURE records the failed attempt, creates no order and retains
+        every reservation; a new payment attempt uses a new key. Replays return the same
+        terminal result, checking the key before removed cart rows. Different payload
+        under a used key is 409 IDEMPOTENCY_KEY_REUSED. Pre-payment rejection does not
+        consume the key. Failed attempts never appear in customer order history.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/CheckoutCommand' } }
+      responses:
+        <<: *errors
+        '200':
+          description: Terminal simulated payment outcome, including replay. FAILURE is a visible retryable payment result with no orderId.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CheckoutResult' } }
+  /api/customer/orders:
+    get:
+      operationId: listCustomerOrders
+      description: CUSTOMER only; successful own orders with immutable prices and customer-display codes. No failed attempts.
+      parameters: [{ $ref: '#/components/parameters/Page' }]
+      responses:
+        <<: *errors
+        '200':
+          description: Fixed page size 20; newest first, ID tie-breaker.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/OrderPage' } }
+  /api/customer/orders/{orderId}:
+    parameters: [{ $ref: '#/components/parameters/OrderId' }]
+    get:
+      operationId: getCustomerOrder
+      description: CUSTOMER owner only; no foreign order or provider-only data.
+      responses:
+        <<: *errors
+        '200':
+          description: Owned marketplace order; response must not be cached or logged.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/CustomerOrderView' } }
+  /api/provider/bookings:
+    get:
+      operationId: listProviderBookings
+      description: Active PROVIDER only; owned booking lines plus customer name/email, never usable codes or other providers' lines. Suspended-provider exception is deferred.
+      parameters: [{ $ref: '#/components/parameters/Page' }]
+      responses:
+        <<: *errors
+        '200':
+          description: Fixed page size 20, startAt then ID ordering.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ProviderBookingPage' } }
+  /api/provider/bookings/{bookingLineId}/redeem:
+    parameters: [{ $ref: '#/components/parameters/BookingLineId' }]
+    post:
+      operationId: redeemBooking
+      security: [{ session: [], csrf: [] }]
+      description: |
+        Active owning PROVIDER selects this line before code comparison. Valid four-digit
+        code delivers all covered units together, even before start. Wrong owner 403;
+        wrong code 422 INVALID_CODE; second redemption 409 BOOKING_ALREADY_DELIVERED;
+        now >= end or expired line 409 BOOKING_EXPIRED. End-time check is under locks,
+        independent of scheduler timing. No temporary per-booking attempt block/history.
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/RedeemCommand' } }
+      responses:
+        <<: *errors
+        '200':
+          description: Delivered owned line, no code in response; post-commit customer notification.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ProviderBookingLineView' } }
+  /api/admin/providers/{providerId}/suspension:
+    parameters: [{ $ref: '#/components/parameters/ProviderId' }]
+    post:
+      operationId: suspendProvider
+      security: [{ session: [], csrf: [] }]
+      description: ADMINISTRATOR only; block sign-in/existing provider access, remove listings and affected carts atomically, preserve purchases. No access exception or reinstatement operation.
+      responses:
+        <<: *errors
+        '200':
+          description: Suspension result; repeating it is harmless and releases no already-removed rows.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/SuspensionResult' } }
+  /api/admin/reservations/{cartLineId}/release:
+    parameters: [{ $ref: '#/components/parameters/CartLineId' }]
+    post:
+      operationId: releaseReservation
+      security: [{ session: [], csrf: [] }]
+      description: ADMINISTRATOR only; remove precisely the selected cart line and release its quantity, preserving other lines.
+      responses:
+        <<: *errors
+        '200':
+          description: Released reservation; missing/already-removed line is 404.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ReleaseResult' } }
+  /api/admin/bookings/{bookingLineId}/delivery:
+    parameters: [{ $ref: '#/components/parameters/BookingLineId' }]
+    post:
+      operationId: deliverExpiredBooking
+      security: [{ session: [], csrf: [] }]
+      description: ADMINISTRATOR only; EXPIRED to DELIVERED, no code input/validation/reactivation. Recalculate aggregate; any other source state is 409 OVERRIDE_REQUIRES_EXPIRED.
+      responses:
+        <<: *errors
+        '200':
+          description: Status-only booking record; does not disclose customer code or contact.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/BookingLineView' } }
+  /api/testing/clock:
+    x-server-profile: e2e
+    get:
+      operationId: readE2eClock
+      x-server-profile: e2e
+      security: [{ testControl: [] }]
+      description: Registered ONLY under e2e profile on loopback/test network; absent (404) in normal/local/release profiles.
+      responses:
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '200':
+          description: Injected clock instant.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ClockView' } }
+    post:
+      operationId: advanceE2eClock
+      x-server-profile: e2e
+      security: [{ testControl: [] }]
+      description: Registered ONLY under e2e on loopback/test network. Advance nonnegatively, process due expiry, then return; never remove cart reservations.
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: '#/components/schemas/AdvanceClockCommand' } }
+      responses:
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/Invalid' }
+        '200':
+          description: Advanced instant and due-line count after processing.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/ClockView' } }
+components:
+  securitySchemes:
+    session: { type: apiKey, in: cookie, name: JSESSIONID, description: Server-side session; HttpOnly, SameSite=Lax, Path=/, Secure outside local/e2e HTTP. }
+    csrf: { type: apiKey, in: header, name: X-CSRF-TOKEN, description: Session-bound token returned by GET /api/auth/csrf; required for all browser mutations. }
+    testControl: { type: apiKey, in: header, name: X-Test-Control, description: Environment-only test secret; e2e profile and isolated test network only. }
+  parameters:
+    Page: { name: page, in: query, schema: { type: integer, minimum: 0, default: 0 }, description: Zero-based page; fixed page size 20. }
+    OfferingId: { name: offeringId, in: path, required: true, schema: { type: string, format: uuid } }
+    SlotId: { name: slotId, in: path, required: true, schema: { type: string, format: uuid } }
+    ImageId: { name: imageId, in: path, required: true, schema: { type: string, format: uuid } }
+    CartLineId: { name: cartLineId, in: path, required: true, schema: { type: string, format: uuid } }
+    OrderId: { name: orderId, in: path, required: true, schema: { type: string, format: uuid } }
+    BookingLineId: { name: bookingLineId, in: path, required: true, schema: { type: string, format: uuid } }
+    ProviderId: { name: providerId, in: path, required: true, schema: { type: string, format: uuid } }
+  requestBodies:
+    Registration:
+      required: true
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/RegistrationCommand' } }
+    Token:
+      required: true
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/TokenCommand' } }
+    Shop:
+      required: true
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/SaveShopCommand' } }
+    Offering:
+      required: true
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/SaveOfferingCommand' } }
+  responses:
+    Unauthorized:
+      description: 401 AUTHENTICATION_REQUIRED or INVALID_CREDENTIALS; no valid actor.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/ApiError' } }
+    Forbidden:
+      description: 403 FORBIDDEN, VERIFICATION_REQUIRED, PROVIDER_SUSPENDED or CSRF_INVALID; no owner or secret detail.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/ApiError' } }
+    NotFound:
+      description: 404 NOT_FOUND; missing or non-discoverable resource, including disabled e2e routes.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/ApiError' } }
+    Conflict:
+      description: 409 domain or concurrency conflict; operation descriptions name stable codes. Price conflict requires cart refresh and explicit acceptance before retry.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/ApiError' } }
+    Invalid:
+      description: 422 VALIDATION_FAILED or operation-specific validation code; fieldErrors contains field paths and translation keys, never rejected values.
+      content:
+        application/json: { schema: { $ref: '#/components/schemas/ApiError' } }
+  schemas:
+    ApiError:
+      type: object
+      additionalProperties: false
+      required: [code, messageKey, fieldErrors, correlationId]
+      properties:
+        code: { type: string }
+        messageKey: { type: string }
+        fieldErrors:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [field, messageKey]
+            properties:
+              field: { type: string }
+              messageKey: { type: string }
+        correlationId: { type: string, format: uuid }
+    CsrfView:
+      type: object
+      additionalProperties: false
+      required: [token]
+      properties:
+        token: { type: string }
+    RegistrationCommand:
+      type: object
+      additionalProperties: false
+      required: [email, password, displayName]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, format: password, minLength: 1, writeOnly: true }
+        displayName: { type: string, minLength: 1 }
+    SignInCommand:
+      type: object
+      additionalProperties: false
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, format: password, minLength: 1, writeOnly: true }
+    SessionView:
+      type: object
+      additionalProperties: false
+      required: [accountId, role, verified]
+      properties:
+        accountId: { type: string, format: uuid }
+        role: { type: string, enum: [CUSTOMER, PROVIDER, ADMINISTRATOR] }
+        verified: { type: boolean }
+    VerificationPendingView:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status: { type: string, enum: [VERIFICATION_PENDING] }
+    TokenCommand:
+      type: object
+      additionalProperties: false
+      required: [token]
+      properties:
+        token: { type: string, minLength: 1, writeOnly: true }
+    EmailCommand:
+      type: object
+      additionalProperties: false
+      required: [email]
+      properties:
+        email: { type: string, format: email }
+    ResetPasswordCommand:
+      type: object
+      additionalProperties: false
+      required: [token, password]
+      properties:
+        token: { type: string, minLength: 1, writeOnly: true }
+        password: { type: string, format: password, minLength: 1, writeOnly: true }
+    Acknowledgment:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status: { type: string, enum: [ACCEPTED] }
+    Category: { type: string, enum: [TUTOR_LESSON, BEAUTY_WELLNESS] }
+    PositiveAmount:
+      type: string
+      pattern: '^(?:0\.(?:0[1-9]|[1-9][0-9])|[1-9][0-9]{0,9}\.[0-9]{2})$'
+      description: Positive NUMERIC(12,2) CHF decimal string; no free service or exponent notation.
+      example: '20.00'
+    Money:
+      type: object
+      additionalProperties: false
+      required: [amount, currency]
+      properties:
+        amount: { type: string, pattern: '^(?:0|[1-9][0-9]{0,9})\.[0-9]{2}$', example: '70.00' }
+        currency: { type: string, enum: [CHF] }
+      description: Exact decimal CHF amount, nonnegative; all totals must fit NUMERIC(12,2) or fail 422 before payment.
+    PositiveMoney:
+      type: object
+      additionalProperties: false
+      required: [amount, currency]
+      properties:
+        amount: { $ref: '#/components/schemas/PositiveAmount' }
+        currency: { type: string, enum: [CHF] }
+    LocalizedText:
+      type: object
+      additionalProperties: false
+      required: [submittedLanguage]
+      anyOf: [{ required: [en] }, { required: [de] }]
+      properties:
+        submittedLanguage: { type: string, enum: [en, de] }
+        en: { type: string, minLength: 1 }
+        de: { type: string, minLength: 1 }
+      description: At least one value; the submittedLanguage value must exist. Each field is independent. No automatic translation or UI-language-based version selection.
+    SwissAddress:
+      type: object
+      additionalProperties: false
+      required: [street, postalCode, city, country]
+      properties:
+        street: { type: string, minLength: 1 }
+        postalCode: { type: string, pattern: '^[0-9]{4}$' }
+        city: { type: string, minLength: 1 }
+        country: { type: string, enum: [CH] }
+    ImageView:
+      type: object
+      additionalProperties: false
+      required: [imageId, url]
+      properties:
+        imageId: { type: string, format: uuid }
+        url: { type: string, pattern: '^/api/images/[0-9a-fA-F-]+$', description: Same-origin generated image route. }
+    SaveShopCommand:
+      type: object
+      additionalProperties: false
+      required: [name, imageIds]
+      properties:
+        name: { type: string, minLength: 1 }
+        address: { $ref: '#/components/schemas/SwissAddress' }
+        imageIds: { type: array, uniqueItems: true, items: { type: string, format: uuid } }
+      description: Address may be absent before publishing; image references must be owned by actor.
+    ShopView:
+      type: object
+      additionalProperties: false
+      required: [shopId, name, images]
+      properties:
+        shopId: { type: string, format: uuid }
+        name: { type: string }
+        address: { $ref: '#/components/schemas/SwissAddress' }
+        images: { type: array, items: { $ref: '#/components/schemas/ImageView' } }
+    SaveOfferingCommand:
+      type: object
+      additionalProperties: false
+      required: [name, imageIds]
+      properties:
+        name: { $ref: '#/components/schemas/LocalizedText' }
+        description: { $ref: '#/components/schemas/LocalizedText' }
+        category: { $ref: '#/components/schemas/Category' }
+        unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
+        imageIds: { type: array, uniqueItems: true, items: { type: string, format: uuid } }
+      description: Draft may omit description/category/price; publication requires all plus at least one owned image. No publication state or owner can be supplied.
+    OfferingView:
+      type: object
+      additionalProperties: false
+      required: [offeringId, shopId, name, images, state]
+      properties:
+        offeringId: { type: string, format: uuid }
+        shopId: { type: string, format: uuid }
+        name: { $ref: '#/components/schemas/LocalizedText' }
+        description: { $ref: '#/components/schemas/LocalizedText' }
+        category: { $ref: '#/components/schemas/Category' }
+        unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
+        images: { type: array, items: { $ref: '#/components/schemas/ImageView' } }
+        state: { type: string, enum: [DRAFT, PUBLISHED] }
+    SaveSlotCommand:
+      type: object
+      additionalProperties: false
+      required: [startAt, endAt, capacity]
+      properties:
+        startAt: { type: string, format: date-time }
+        endAt: { type: string, format: date-time }
+        capacity: { type: integer, minimum: 1 }
+      description: Explicit instants with startAt < endAt, no recurring schedule.
+    SlotView:
+      type: object
+      additionalProperties: false
+      required: [slotId, offeringId, startAt, endAt, capacity, availableQuantity]
+      properties:
+        slotId: { type: string, format: uuid }
+        offeringId: { type: string, format: uuid }
+        startAt: { type: string, format: date-time }
+        endAt: { type: string, format: date-time }
+        capacity: { type: integer, minimum: 1 }
+        availableQuantity: { type: integer, minimum: 0 }
+    ServiceSummaryView:
+      type: object
+      additionalProperties: false
+      required: [offeringId, name, description, category, categoryName, categoryDescription, shopName, shopAddress, images, unitPrice, availableQuantity]
+      properties:
+        offeringId: { type: string, format: uuid }
+        name: { $ref: '#/components/schemas/LocalizedText' }
+        description: { $ref: '#/components/schemas/LocalizedText' }
+        category: { $ref: '#/components/schemas/Category' }
+        categoryName: { $ref: '#/components/schemas/LocalizedText' }
+        categoryDescription: { $ref: '#/components/schemas/LocalizedText' }
+        shopName: { type: string }
+        shopAddress: { $ref: '#/components/schemas/SwissAddress' }
+        images: { type: array, items: { $ref: '#/components/schemas/ImageView' } }
+        unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
+        availableQuantity: { type: integer, minimum: 0, description: Sum over slots whose startAt is strictly after injected Clock; never include times. }
+    ChangeQuantityCommand:
+      type: object
+      additionalProperties: false
+      required: [slotId, quantity]
+      properties:
+        slotId: { type: string, format: uuid }
+        quantity: { type: integer, minimum: 0, description: Absolute quantity; zero explicitly removes existing line. }
+    CartLineView:
+      type: object
+      additionalProperties: false
+      required: [cartLineId, slotId, offeringId, offeringName, shopName, startAt, endAt, quantity, unitPrice, total]
+      properties:
+        cartLineId: { type: string, format: uuid }
+        slotId: { type: string, format: uuid }
+        offeringId: { type: string, format: uuid }
+        offeringName: { $ref: '#/components/schemas/LocalizedText' }
+        shopName: { type: string }
+        startAt: { type: string, format: date-time }
+        endAt: { type: string, format: date-time }
+        quantity: { type: integer, minimum: 1 }
+        unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
+        total: { $ref: '#/components/schemas/Money' }
+    CartView:
+      type: object
+      additionalProperties: false
+      required: [cartId, lines, total]
+      properties:
+        cartId: { type: string, format: uuid }
+        lines: { type: array, items: { $ref: '#/components/schemas/CartLineView' } }
+        total: { $ref: '#/components/schemas/Money' }
+      description: Complete own cart; total sums all current line prices with no fees/discounts/additional taxes.
+    CheckoutCommand:
+      type: object
+      additionalProperties: false
+      required: [selectedCartLineIds, acceptedTotal, simulateOutcome]
+      properties:
+        selectedCartLineIds:
+          type: array
+          minItems: 1
+          maxItems: 10000
+          uniqueItems: true
+          items: { type: string, format: uuid }
+          description: Four-digit distinct-code space permits at most 10000 different purchased slot lines in one order.
+        acceptedTotal: { $ref: '#/components/schemas/PositiveMoney' }
+        simulateOutcome: { type: string, enum: [SUCCESS, FAILURE] }
+    CheckoutResult:
+      oneOf:
+        - type: object
+          additionalProperties: false
+          required: [outcome, orderId, acceptedTotal]
+          properties:
+            outcome: { type: string, enum: [SUCCESS] }
+            orderId: { type: string, format: uuid }
+            acceptedTotal: { $ref: '#/components/schemas/PositiveMoney' }
+        - type: object
+          additionalProperties: false
+          required: [outcome, acceptedTotal, messageKey]
+          properties:
+            outcome: { type: string, enum: [FAILURE] }
+            acceptedTotal: { $ref: '#/components/schemas/PositiveMoney' }
+            messageKey: { type: string, enum: [payment.simulatedFailure] }
+    BookingStatus: { type: string, enum: [AWAITING_FULFILLMENT, DELIVERED, EXPIRED] }
+    OrderStatus: { type: string, enum: [AWAITING_FULFILLMENT, COMPLETED] }
+    CustomerBookingLineView:
+      type: object
+      additionalProperties: false
+      required: [bookingLineId, slotId, offeringId, offeringName, shopName, startAt, endAt, quantity, unitPrice, total, status, redemptionCode]
+      properties:
+        bookingLineId: { type: string, format: uuid }
+        slotId: { type: string, format: uuid }
+        offeringId: { type: string, format: uuid }
+        offeringName: { $ref: '#/components/schemas/LocalizedText' }
+        shopName: { type: string }
+        startAt: { type: string, format: date-time }
+        endAt: { type: string, format: date-time }
+        quantity: { type: integer, minimum: 1 }
+        unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
+        total: { $ref: '#/components/schemas/Money' }
+        status: { $ref: '#/components/schemas/BookingStatus' }
+        redemptionCode: { type: string, pattern: '^[0-9]{4}$', readOnly: true, description: Owning customer only; re-derived, never logged. Resolved-line code remains unusable. }
+    CustomerOrderView:
+      type: object
+      additionalProperties: false
+      required: [orderId, createdAt, total, status, lines]
+      properties:
+        orderId: { type: string, format: uuid }
+        createdAt: { type: string, format: date-time }
+        total: { $ref: '#/components/schemas/Money' }
+        status: { $ref: '#/components/schemas/OrderStatus' }
+        lines: { type: array, minItems: 1, items: { $ref: '#/components/schemas/CustomerBookingLineView' } }
+      description: Successful immutable price/quantity history; Completed iff all lines Delivered or Expired, including mixed/all-expired.
+    ProviderBookingLineView:
+      type: object
+      additionalProperties: false
+      required: [bookingLineId, orderId, slotId, offeringId, offeringName, startAt, endAt, quantity, unitPrice, total, status, customerName, customerEmail]
+      properties:
+        bookingLineId: { type: string, format: uuid }
+        orderId: { type: string, format: uuid }
+        slotId: { type: string, format: uuid }
+        offeringId: { type: string, format: uuid }
+        offeringName: { $ref: '#/components/schemas/LocalizedText' }
+        startAt: { type: string, format: date-time }
+        endAt: { type: string, format: date-time }
+        quantity: { type: integer, minimum: 1 }
+        unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
+        total: { $ref: '#/components/schemas/Money' }
+        status: { $ref: '#/components/schemas/BookingStatus' }
+        customerName: { type: string }
+        customerEmail: { type: string, format: email }
+      description: Only provider-owned line; no code, full marketplace total, or foreign-provider lines.
+    RedeemCommand:
+      type: object
+      additionalProperties: false
+      required: [fourDigitCode]
+      properties:
+        fourDigitCode: { type: string, pattern: '^[0-9]{4}$', writeOnly: true }
+    BookingLineView:
+      type: object
+      additionalProperties: false
+      required: [bookingLineId, orderId, quantity, status, orderStatus]
+      properties:
+        bookingLineId: { type: string, format: uuid }
+        orderId: { type: string, format: uuid }
+        quantity: { type: integer, minimum: 1 }
+        status: { $ref: '#/components/schemas/BookingStatus' }
+        orderStatus: { $ref: '#/components/schemas/OrderStatus' }
+    SuspensionResult:
+      type: object
+      additionalProperties: false
+      required: [providerId, suspended, releasedCartLineCount]
+      properties:
+        providerId: { type: string, format: uuid }
+        suspended: { type: boolean, enum: [true] }
+        releasedCartLineCount: { type: integer, minimum: 0 }
+    ReleaseResult:
+      type: object
+      additionalProperties: false
+      required: [cartLineId, releasedQuantity]
+      properties:
+        cartLineId: { type: string, format: uuid }
+        releasedQuantity: { type: integer, minimum: 1 }
+    AdvanceClockCommand:
+      type: object
+      additionalProperties: false
+      required: [seconds]
+      properties:
+        seconds: { type: integer, format: int64, minimum: 0 }
+    ClockView:
+      type: object
+      additionalProperties: false
+      required: [now, expiredLineCount]
+      properties:
+        now: { type: string, format: date-time }
+        expiredLineCount: { type: integer, minimum: 0, description: Lines expired by this advance; read returns zero without mutation. }
+    ServicePage:
+      type: object
+      additionalProperties: false
+      required: [items, page, size, totalElements]
+      properties:
+        items: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/ServiceSummaryView' } }
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, enum: [20] }
+        totalElements: { type: integer, minimum: 0 }
+    OfferingPage:
+      type: object
+      additionalProperties: false
+      required: [items, page, size, totalElements]
+      properties:
+        items: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/OfferingView' } }
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, enum: [20] }
+        totalElements: { type: integer, minimum: 0 }
+    SlotPage:
+      type: object
+      additionalProperties: false
+      required: [items, page, size, totalElements]
+      properties:
+        items: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/SlotView' } }
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, enum: [20] }
+        totalElements: { type: integer, minimum: 0 }
+    OrderPage:
+      type: object
+      additionalProperties: false
+      required: [items, page, size, totalElements]
+      properties:
+        items: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/CustomerOrderView' } }
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, enum: [20] }
+        totalElements: { type: integer, minimum: 0 }
+    ProviderBookingPage:
+      type: object
+      additionalProperties: false
+      required: [items, page, size, totalElements]
+      properties:
+        items: { type: array, maxItems: 20, items: { $ref: '#/components/schemas/ProviderBookingLineView' } }
+        page: { type: integer, minimum: 0 }
+        size: { type: integer, enum: [20] }
+        totalElements: { type: integer, minimum: 0 }
