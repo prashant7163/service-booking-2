@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "service-booking-2",
+  "run_id": "service-booking-2-benchmark",
+  "repository": "https://github.com/prashant7163/service-booking-2.git",
+  "last_local_event_sequence": 22,
+  "milestones": {
+    "service-booking-2-foundation": {
+      "number": 1,
+      "url": "https://github.com/prashant7163/service-booking-2/milestone/1"
+    },
+    "service-booking-2-publish-discover": {
+      "number": 2,
+      "url": "https://github.com/prashant7163/service-booking-2/milestone/2"
+    },
+    "service-booking-2-reserve-purchase": {
+      "number": 3,
+      "url": "https://github.com/prashant7163/service-booking-2/milestone/3"
+    },
+    "service-booking-2-fulfill-administer": {
+      "number": 4,
+      "url": "https://github.com/prashant7163/service-booking-2/milestone/4"
+    },
+    "service-booking-2-validate-release": {
+      "number": 5,
+      "url": "https://github.com/prashant7163/service-booking-2/milestone/5"
+    }
+  },
+  "tasks": {
+    "service-booking-2-design-interactions": {
+      "number": 1,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/1",
+      "milestone_id": "service-booking-2-foundation"
+    },
+    "service-booking-2-build-backend-foundation": {
+      "number": 2,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/2",
+      "milestone_id": "service-booking-2-foundation"
+    },
+    "service-booking-2-build-frontend-shell": {
+      "number": 3,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/3",
+      "milestone_id": "service-booking-2-foundation"
+    },
+    "service-booking-2-build-catalog-api": {
+      "number": 4,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/4",
+      "milestone_id": "service-booking-2-publish-discover"
+    },
+    "service-booking-2-build-catalog-ui": {
+      "number": 5,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/5",
+      "milestone_id": "service-booking-2-publish-discover"
+    },
+    "service-booking-2-build-commerce-api": {
+      "number": 6,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/6",
+      "milestone_id": "service-booking-2-reserve-purchase"
+    },
+    "service-booking-2-build-commerce-ui": {
+      "number": 7,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/7",
+      "milestone_id": "service-booking-2-reserve-purchase"
+    },
+    "service-booking-2-build-fulfillment-admin-api": {
+      "number": 8,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/8",
+      "milestone_id": "service-booking-2-fulfill-administer"
+    },
+    "service-booking-2-build-fulfillment-admin-ui": {
+      "number": 9,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/9",
+      "milestone_id": "service-booking-2-fulfill-administer"
+    },
+    "service-booking-2-prove-acceptance": {
+      "number": 10,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/10",
+      "milestone_id": "service-booking-2-validate-release"
+    },
+    "service-booking-2-build-ci-release": {
+      "number": 11,
+      "url": "https://github.com/prashant7163/service-booking-2/issues/11",
+      "milestone_id": "service-booking-2-validate-release"
+    }
+  }
+}
