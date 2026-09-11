@@ -7,3 +7,13 @@ conformance.md
 worktrees/
 .worktrees/
 .superpowers/
+.env
+.env.*
+!.env.example
+backend/target/
+node_modules/
+dist/
+playwright-report/
+test-results/
+*.log
+postgres-data/
