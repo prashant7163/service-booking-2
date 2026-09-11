@@ -576,7 +576,7 @@ paths:
             application/json: { schema: { $ref: '#/components/schemas/ClockView' } }
 components:
   securitySchemes:
-    session: { type: apiKey, in: cookie, name: JSESSIONID, description: Server-side session; HttpOnly, SameSite=Lax, Path=/, Secure outside local/e2e HTTP. }
+    session: { type: apiKey, in: cookie, name: JSESSIONID, description: 'Server-side session; HttpOnly, SameSite=Lax, Path=/, Secure outside local/e2e HTTP.' }
     csrf: { type: apiKey, in: header, name: X-CSRF-TOKEN, description: Session-bound token returned by GET /api/auth/csrf; required for all browser mutations. }
     testControl: { type: apiKey, in: header, name: X-Test-Control, description: Environment-only test secret; e2e profile and isolated test network only. }
   parameters:
@@ -908,7 +908,7 @@ components:
         unitPrice: { $ref: '#/components/schemas/PositiveMoney' }
         total: { $ref: '#/components/schemas/Money' }
         status: { $ref: '#/components/schemas/BookingStatus' }
-        redemptionCode: { type: string, pattern: '^[0-9]{4}$', readOnly: true, description: Owning customer only; re-derived, never logged. Resolved-line code remains unusable. }
+        redemptionCode: { type: string, pattern: '^[0-9]{4}$', readOnly: true, description: 'Owning customer only; re-derived, never logged. Resolved-line code remains unusable.' }
     CustomerOrderView:
       type: object
       additionalProperties: false
