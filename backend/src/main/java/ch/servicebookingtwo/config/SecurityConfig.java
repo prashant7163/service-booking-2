@@ -41,7 +41,7 @@ public class SecurityConfig {
             .formLogin(form -> form.disable()).httpBasic(basic -> basic.disable()).logout(logout -> logout.disable())
             .requestCache(cache -> cache.disable())
             .exceptionHandling(errors -> errors
-                .authenticationEntryPoint((request, response, failure) -> write(mapper, response, 401, "UNAUTHORIZED"))
+                .authenticationEntryPoint((request, response, failure) -> write(mapper, response, 401, "AUTHENTICATION_REQUIRED"))
                 .accessDeniedHandler((request, response, failure) -> write(mapper, response, 403, "FORBIDDEN")))
             .headers(headers -> headers
                 .contentSecurityPolicy(policy -> policy.policyDirectives("default-src 'self'; frame-ancestors 'none'; object-src 'none'"))
@@ -77,9 +77,9 @@ public class SecurityConfig {
                             || account.get().getSessionVersion() != version) {
                         SecurityContextHolder.clearContext();
                         if (request.getSession(false) != null) request.getSession(false).invalidate();
-                        write(mapper, response, 401, "UNAUTHORIZED"); return;
+                        write(mapper, response, 401, "AUTHENTICATION_REQUIRED"); return;
                     }
-                    if (account.get().isSuspended()) { write(mapper, response, 403, "FORBIDDEN"); return; }
+                    if (account.get().isSuspended()) { write(mapper, response, 403, "PROVIDER_SUSPENDED"); return; }
                     var refreshed = AuthService.actor(account.get());
                     var authentication = UsernamePasswordAuthenticationToken.authenticated(refreshed, null,
                         List.of(new SimpleGrantedAuthority("ROLE_" + refreshed.role())));

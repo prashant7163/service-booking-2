@@ -45,7 +45,7 @@ public class AuthService {
     public Account signIn(AuthDtos.SignInCommand command) {
         var account = accounts.findByEmail(normalize(command.email()));
         boolean matches = encoder.matches(command.password(), account.map(Account::getPasswordHash).orElse(dummyHash));
-        if (account.isEmpty() || !matches) throw new Failure(401, "UNAUTHORIZED");
+        if (account.isEmpty() || !matches) throw new Failure(401, "INVALID_CREDENTIALS");
         active(account.get());
         return account.get();
     }
@@ -100,7 +100,7 @@ public class AuthService {
         catch (NoSuchAlgorithmException impossible) { throw new IllegalStateException("SHA-256 unavailable"); }
     }
     public static void active(Account account) {
-        if (account.isSuspended()) throw new Failure(403, "FORBIDDEN");
+        if (account.isSuspended()) throw new Failure(403, "PROVIDER_SUSPENDED");
     }
     public static AuthDtos.Actor actor(Account account) {
         return new AuthDtos.Actor(account.getId(), account.getRole(), account.isVerified(), account.isSuspended());

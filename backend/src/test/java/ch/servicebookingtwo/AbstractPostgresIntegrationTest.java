@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.postgresql.PostgreSQLContainer;
+import org.testcontainers.utility.DockerImageName;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -29,7 +30,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc(print = org.springframework.boot.webmvc.test.autoconfigure.MockMvcPrint.NONE)
 @ActiveProfiles("local")
 public abstract class AbstractPostgresIntegrationTest {
-    static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:17");
+    static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer(DockerImageName.parse(
+        "postgres:17.11@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675")
+        .asCompatibleSubstituteFor("postgres"));
     static { POSTGRES.start(); }
 
     @DynamicPropertySource
