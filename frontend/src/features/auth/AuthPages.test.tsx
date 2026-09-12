@@ -107,9 +107,18 @@ describe('authenticated bilingual shell', () => {
 
     expect(await screen.findByRole('heading', { name: 'Local services, made simpler.' })).toBeVisible();
     expect(screen.getByRole('link', { name: 'Service Booking Two' })).toHaveAttribute('href', '/home');
-    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/home');
-    expect(screen.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/');
+    const homeLink = screen.getByRole('link', { name: 'Home' });
+    const servicesLink = screen.getByRole('link', { name: 'Services' });
+    expect(homeLink).toHaveAttribute('href', '/home');
+    expect(servicesLink).toHaveAttribute('href', '/');
+    expect(homeLink).toAppearBefore(servicesLink);
+    expect(
+      screen.getByText('Use the public navigation to choose a language or open the customer and provider account flows.'),
+    ).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Why use Service Booking Two?' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Navigate the foundation' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Choose your language' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Use role-specific entry points' })).toBeVisible();
     expect(screen.getByRole('link', { name: 'Browse services' })).toHaveAttribute('href', '/');
     expect(screen.getByRole('link', { name: 'Create customer account' })).toHaveAttribute(
       'href',
@@ -119,6 +128,10 @@ describe('authenticated bilingual shell', () => {
       'href',
       '/register/provider',
     );
+
+    await userEvent.click(servicesLink);
+    expect(await screen.findByRole('heading', { name: 'Discover services' })).toBeVisible();
+    expect(router.state.location.pathname).toBe('/');
   });
 
   it('localizes the home page benefits in German', async () => {
@@ -131,6 +144,9 @@ describe('authenticated bilingual shell', () => {
     expect(screen.getByRole('link', { name: 'Startseite' })).toHaveAttribute('href', '/home');
     expect(screen.getByRole('heading', { name: 'Lokale Dienstleistungen, einfacher gemacht.' })).toBeVisible();
     expect(screen.getByRole('heading', { name: 'Warum Service Booking Two?' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Die aktuelle Grundlage nutzen' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Sprache auswählen' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Rollenspezifisch beginnen' })).toBeVisible();
     expect(screen.getByRole('link', { name: 'Dienstleistungen entdecken' })).toHaveAttribute('href', '/');
   });
 
