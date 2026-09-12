@@ -141,11 +141,14 @@ describe('authenticated bilingual shell', () => {
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveFocus();
   });
 
-  it('preserves a protected destination when redirecting to sign in', async () => {
+  it('maps AUTHENTICATION_REQUIRED to the bilingual sign-in UI and preserves the destination', async () => {
     await router.navigate('/cart');
     render(<App />);
     expect(await screen.findByRole('heading', { name: 'Sign in' })).toBeVisible();
+    await userEvent.click(screen.getByRole('button', { name: 'Deutsch' }));
+    expect(screen.getByRole('heading', { name: 'Anmelden' })).toBeVisible();
     expect(router.state.location.state).toEqual({ from: '/cart' });
+    expect(document.body).not.toHaveTextContent(/AUTHENTICATION_REQUIRED|error\.authentication_required|1de4aec9/);
   });
 
   it('rejects a saved customer destination after provider sign-in', async () => {
@@ -233,6 +236,44 @@ describe('authenticated bilingual shell', () => {
     await expect(request('https://attacker.example/api/session')).rejects.toThrow('same-origin');
   });
 
+  it('refreshes CSRF after a rejected mutation', async () => {
+    let csrfCount = 0;
+    let mutationCount = 0;
+    vi.mocked(fetch).mockImplementation(async (input) => {
+      const path = String(input);
+      if (path === '/api/auth/csrf') return jsonResponse({ token: `csrf-recovery-${++csrfCount}` });
+      if (path === '/api/auth/session') {
+        mutationCount += 1;
+        if (mutationCount === 1) {
+          return jsonResponse(
+            {
+              code: 'INVALID_CREDENTIALS',
+              messageKey: 'error.invalid_credentials',
+              fieldErrors: [],
+              correlationId: 'bf5234ea-60ad-410a-a23b-27a85533f806',
+            },
+            401,
+          );
+        }
+        return jsonResponse(signedInSession('CUSTOMER'));
+      }
+      return anonymousResponse();
+    });
+
+    await expect(
+      request('/api/auth/session', { method: 'POST', body: JSON.stringify({ email: 'a@example.test', password: 'wrong' }) }),
+    ).rejects.toMatchObject({ detail: { code: 'INVALID_CREDENTIALS' } });
+    await request('/api/auth/session', {
+      method: 'POST',
+      body: JSON.stringify({ email: 'a@example.test', password: 'correct horse battery staple' }),
+    });
+
+    const mutationCalls = vi.mocked(fetch).mock.calls.filter(([input]) => String(input) === '/api/auth/session');
+    expect(csrfCount).toBe(2);
+    expect(new Headers(mutationCalls[0]?.[1]?.headers).get('X-CSRF-TOKEN')).toBe('csrf-recovery-1');
+    expect(new Headers(mutationCalls[1]?.[1]?.headers).get('X-CSRF-TOKEN')).toBe('csrf-recovery-2');
+  });
+
   it('signs out through a credentialed CSRF mutation and clears the shell session', async () => {
     vi.mocked(fetch).mockImplementation(async (input, init) => {
       const path = String(input);
@@ -306,7 +347,15 @@ describe('authenticated bilingual shell', () => {
       if (path === '/api/auth/session' && (!init?.method || init.method === 'GET')) return anonymousResponse();
       if (path === '/api/auth/csrf') return jsonResponse({ token: 'csrf-failed-sign-in' });
       if (path === '/api/auth/session' && init?.method === 'POST') {
-        return jsonResponse({ code: 'INVALID_CREDENTIALS', message: 'password=server-secret', fieldErrors: [] }, 401);
+        return jsonResponse(
+          {
+            code: 'INVALID_CREDENTIALS',
+            messageKey: 'error.invalid_credentials',
+            fieldErrors: [],
+            correlationId: 'b1de2ebf-85e0-449e-bc62-f4d638817575',
+          },
+          401,
+        );
       }
       return anonymousResponse();
     });
@@ -315,7 +364,38 @@ describe('authenticated bilingual shell', () => {
     await completeSignIn();
     expect(await screen.findByRole('heading', { name: 'Email or password is incorrect.' })).toBeVisible();
     expect(screen.getByLabelText('Password')).toHaveValue('');
-    expect(document.body).not.toHaveTextContent('server-secret');
+    expect(document.body).not.toHaveTextContent(/INVALID_CREDENTIALS|error\.invalid_credentials|b1de2ebf/);
+  });
+
+  it('maps PROVIDER_SUSPENDED to the safe German sign-in error', async () => {
+    vi.mocked(fetch).mockImplementation(async (input, init) => {
+      const path = String(input);
+      if (path === '/api/auth/session' && (!init?.method || init.method === 'GET')) return anonymousResponse();
+      if (path === '/api/auth/csrf') return jsonResponse({ token: 'csrf-suspended-provider' });
+      if (path === '/api/auth/session' && init?.method === 'POST') {
+        return jsonResponse(
+          {
+            code: 'PROVIDER_SUSPENDED',
+            messageKey: 'error.provider_suspended',
+            fieldErrors: [],
+            correlationId: 'a252b229-09a2-4648-b834-a2b207175a88',
+          },
+          403,
+        );
+      }
+      return anonymousResponse();
+    });
+    await router.navigate('/sign-in');
+    render(<App />);
+    await screen.findByRole('heading', { name: 'Sign in' });
+    await userEvent.click(screen.getByRole('button', { name: 'Deutsch' }));
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText('E-Mail-Adresse'), 'provider@example.test');
+    await user.type(screen.getByLabelText('Passwort'), 'correct horse battery staple');
+    await user.click(screen.getByRole('button', { name: 'Anmelden' }));
+    expect(await screen.findByRole('heading', { name: 'Der Anbieterzugang ist gesperrt.' })).toBeVisible();
+    expect(screen.getByLabelText('Passwort')).toHaveValue('');
+    expect(document.body).not.toHaveTextContent(/PROVIDER_SUSPENDED|error\.provider_suspended|a252b229/);
   });
 
   it('resumes customer verification from an unverified session after reload', async () => {

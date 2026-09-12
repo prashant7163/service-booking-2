@@ -124,10 +124,10 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   if (mutation) headers.set('X-CSRF-TOKEN', csrfToken ?? (await getCsrfToken()));
 
   const response = await fetch(path, { ...options, method, headers, credentials: 'same-origin' });
+  if (mutation) csrfToken = undefined;
   const body = await responseBody(response);
 
   if (!response.ok) throw new ApiRequestError(publicError(body, response.status));
-  if (mutation) csrfToken = undefined;
   return body as T;
 }
 
