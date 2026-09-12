@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState, type FormEvent, type ReactNode, type RefObject } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ApiRequestError, api, type Role, type SafeApiError, type SessionView } from '../../api/client';
-import { useAuth } from '../../auth/AuthContext';
+import { destinationForRole, roleHome, useAuth } from '../../auth/AuthContext';
 import { FormField } from '../../components/FormField';
 import { useI18n } from '../../i18n';
 
@@ -10,13 +10,24 @@ type FieldErrors = Partial<Record<FieldName, string>>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function FocusHeading({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLHeadingElement>(null);
-  useEffect(() => ref.current?.focus(), []);
+function FocusHeading({ children, focusRef }: { children: ReactNode; focusRef?: RefObject<HTMLHeadingElement | null> }) {
+  const internalRef = useRef<HTMLHeadingElement>(null);
+  const ref = focusRef ?? internalRef;
+  useEffect(() => ref.current?.focus(), [ref]);
   return (
     <h1 ref={ref} tabIndex={-1}>
       {children}
     </h1>
+  );
+}
+
+function StatusHeading({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  useEffect(() => ref.current?.focus(), []);
+  return (
+    <div role="status">
+      <h3 ref={ref} tabIndex={-1}>{children}</h3>
+    </div>
   );
 }
 
@@ -97,7 +108,7 @@ interface RegistrationProps {
 
 function Registration({ role }: RegistrationProps) {
   const { t } = useI18n();
-  const { setSession } = useAuth();
+  const { session, loading, setSession } = useAuth();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -108,6 +119,7 @@ function Registration({ role }: RegistrationProps) {
   const [verified, setVerified] = useState(false);
 
   const heading = role === 'CUSTOMER' ? t('auth.registerCustomer') : t('auth.registerProvider');
+  const resumableSession = session?.role === role && !session.verified;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -142,6 +154,14 @@ function Registration({ role }: RegistrationProps) {
     }
   }
 
+  if (loading) {
+    return <p aria-busy="true">{t('common.loading')}</p>;
+  }
+
+  if (!verified && session && !resumableSession) {
+    return <Navigate to={roleHome(session.role)} replace />;
+  }
+
   if (verified) {
     return (
       <section className="auth-card">
@@ -151,7 +171,7 @@ function Registration({ role }: RegistrationProps) {
     );
   }
 
-  if (verificationPending) {
+  if (verificationPending || resumableSession) {
     return <Verification role={role} onVerified={() => setVerified(true)} />;
   }
 
@@ -166,6 +186,11 @@ function Registration({ role }: RegistrationProps) {
         <FormField id="password" label={t('field.password')} type="password" value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} autoComplete="new-password" />
         <button type="submit" disabled={pending}>{pending ? t('common.loading') : heading}</button>
       </form>
+      {role === 'PROVIDER' ? (
+        <button className="text-button" type="button" onClick={() => setVerificationPending(true)}>
+          {t('auth.resumeVerification')}
+        </button>
+      ) : null}
     </section>
   );
 }
@@ -235,7 +260,13 @@ export function SignInPage() {
   const [requestError, setRequestError] = useState<string>();
   const [pending, setPending] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
+  const [resetComplete, setResetComplete] = useState(false);
   const resetEmail = useRef<HTMLInputElement>(null);
+  const signInHeading = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (resetComplete) signInHeading.current?.focus();
+  }, [resetComplete]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -245,6 +276,7 @@ export function SignInPage() {
     if (!password) nextErrors.password = t('field.required');
     setErrors(nextErrors);
     setRequestError(undefined);
+    setResetComplete(false);
     if (Object.keys(nextErrors).length) return;
     setPending(true);
     try {
@@ -255,8 +287,7 @@ export function SignInPage() {
       setPassword('');
       setSession(nextSession);
       const requested = (location.state as { from?: string } | null)?.from;
-      const fallback = nextSession.role === 'PROVIDER' ? '/provider/shop' : nextSession.role === 'ADMINISTRATOR' ? '/admin' : '/';
-      navigate(requested ?? fallback, { replace: true });
+      navigate(destinationForRole(nextSession.role, requested), { replace: true });
     } catch (failure) {
       setPassword('');
       if (failure instanceof ApiRequestError) setRequestError(errorMessage(failure.detail, t));
@@ -270,7 +301,8 @@ export function SignInPage() {
 
   return (
     <section className="auth-card" aria-busy={pending}>
-      <FocusHeading>{t('auth.signIn')}</FocusHeading>
+      <FocusHeading focusRef={signInHeading}>{t('auth.signIn')}</FocusHeading>
+      {resetComplete ? <p role="status">{t('auth.resetComplete')}</p> : null}
       <ValidationSummary errors={errors} />
       <RequestError message={requestError} />
       <form noValidate onSubmit={submit}>
@@ -285,17 +317,26 @@ export function SignInPage() {
         aria-controls="password-reset"
         onClick={() => {
           setResetOpen((open) => !open);
+          setResetComplete(false);
           queueMicrotask(() => resetEmail.current?.focus());
         }}
       >
         {t('auth.reset')}
       </button>
-      {resetOpen ? <PasswordReset ref={resetEmail} /> : null}
+      {resetOpen ? (
+        <PasswordReset
+          emailRef={resetEmail}
+          onComplete={() => {
+            setResetOpen(false);
+            setResetComplete(true);
+          }}
+        />
+      ) : null}
     </section>
   );
 }
 
-const PasswordReset = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
+const PasswordReset = ({ emailRef, onComplete }: { emailRef: RefObject<HTMLInputElement | null>; onComplete: () => void }) => {
   const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
@@ -308,6 +349,8 @@ const PasswordReset = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
 
   async function requestReset(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setMessage(undefined);
+    setRequestError(undefined);
     const emailError = validateEmail(email, t('field.required'), t('field.emailInvalid'));
     if (emailError) {
       setErrors({ email: emailError });
@@ -317,9 +360,11 @@ const PasswordReset = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
     setPending(true);
     try {
       await api.request<{ status: 'ACCEPTED' }>('/api/auth/password-reset-requests', { method: 'POST', body: JSON.stringify({ email: email.trim() }) });
+      setRequestError(undefined);
       setMessage(t('auth.resetRequested'));
       setStage('complete');
     } catch {
+      setMessage(undefined);
       setRequestError(t('common.requestFailed'));
     } finally {
       setPending(false);
@@ -328,6 +373,8 @@ const PasswordReset = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
 
   async function completeReset(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setMessage(undefined);
+    setRequestError(undefined);
     const nextErrors: FieldErrors = {};
     if (!token.trim()) nextErrors.token = t('field.required');
     if (!password) nextErrors.password = t('field.required');
@@ -338,11 +385,11 @@ const PasswordReset = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
       await api.request<void>('/api/auth/password-resets', { method: 'POST', body: JSON.stringify({ token, password }) });
       setToken('');
       setPassword('');
-      setMessage(t('auth.resetComplete'));
-      setStage('request');
+      onComplete();
     } catch (failure) {
       setToken('');
       setPassword('');
+      setMessage(undefined);
       if (failure instanceof ApiRequestError) setRequestError(errorMessage(failure.detail, t));
       else setRequestError(t('common.requestFailed'));
     } finally {
@@ -353,12 +400,12 @@ const PasswordReset = ({ ref }: { ref: React.Ref<HTMLInputElement> }) => {
   return (
     <section id="password-reset" className="reset-panel" aria-busy={pending}>
       <h2>{t('auth.reset')}</h2>
-      {message ? <p role="status">{message}</p> : null}
+      {message ? <StatusHeading>{message}</StatusHeading> : null}
       <ValidationSummary errors={errors} fieldIds={{ email: 'reset-email', token: 'reset-token', password: 'reset-password' }} />
       <RequestError message={requestError} />
       {stage === 'request' ? (
         <form noValidate onSubmit={requestReset}>
-          <FormField ref={ref} id="reset-email" label={t('field.email')} type="email" value={email} onChange={(event) => setEmail(event.target.value)} error={errors.email} autoComplete="email" />
+          <FormField ref={emailRef} id="reset-email" label={t('field.email')} type="email" value={email} onChange={(event) => setEmail(event.target.value)} error={errors.email} autoComplete="email" />
           <button type="submit" disabled={pending}>{pending ? t('common.loading') : t('action.requestReset')}</button>
         </form>
       ) : (

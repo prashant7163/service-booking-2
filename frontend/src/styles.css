@@ -71,6 +71,16 @@ nav {
 }
 
 .language-switch {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.language-switch legend {
+  margin-bottom: 0.25rem;
+}
+
+.language-actions {
   display: flex;
   gap: 0.3rem;
 }

@@ -16,16 +16,19 @@ export function Layout() {
           <NavLink className="brand" to="/">
             Service Booking Two
           </NavLink>
-          <div className="language-switch" aria-label="Interface language">
-            <button type="button" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>
-              English
-            </button>
-            <button type="button" aria-pressed={language === 'de'} onClick={() => setLanguage('de')}>
-              Deutsch
-            </button>
-          </div>
+          <fieldset className="language-switch">
+            <legend>{t('common.language')}</legend>
+            <div className="language-actions">
+              <button type="button" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>
+                English
+              </button>
+              <button type="button" aria-pressed={language === 'de'} onClick={() => setLanguage('de')}>
+                Deutsch
+              </button>
+            </div>
+          </fieldset>
         </div>
-        <nav aria-label="Primary">
+        <nav aria-label={t('nav.primary')}>
           <NavLink to="/">{t('nav.services')}</NavLink>
           {hasRole(session, 'CUSTOMER') ? <NavLink to="/cart">{t('nav.cart')}</NavLink> : null}
           {hasRole(session, 'CUSTOMER') ? <NavLink to="/orders">{t('nav.orders')}</NavLink> : null}

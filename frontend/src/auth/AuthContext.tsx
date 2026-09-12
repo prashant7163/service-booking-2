@@ -78,3 +78,26 @@ export function useAuth(): AuthValue {
 export function hasRole(session: SessionView | null, ...roles: Role[]): boolean {
   return session !== null && roles.includes(session.role);
 }
+
+const routeRoles: Readonly<Record<string, readonly Role[]>> = {
+  '/cart': ['CUSTOMER'],
+  '/orders': ['CUSTOMER'],
+  '/provider/shop': ['PROVIDER'],
+  '/provider/bookings': ['PROVIDER'],
+  '/admin': ['ADMINISTRATOR'],
+};
+
+export function rolesForPath(pathname: string): readonly Role[] | undefined {
+  return routeRoles[pathname];
+}
+
+export function roleHome(role: Role): string {
+  return role === 'PROVIDER' ? '/provider/shop' : role === 'ADMINISTRATOR' ? '/admin' : '/';
+}
+
+export function destinationForRole(role: Role, requested?: string): string {
+  if (!requested || !requested.startsWith('/') || requested.startsWith('//')) return roleHome(role);
+  const destination = new URL(requested, 'https://service-booking.invalid');
+  const allowed = destination.pathname === '/' || rolesForPath(destination.pathname)?.includes(role);
+  return allowed ? `${destination.pathname}${destination.search}${destination.hash}` : roleHome(role);
+}
