@@ -13,7 +13,7 @@ export function Layout() {
       </a>
       <header>
         <div className="header-row">
-          <NavLink className="brand" to="/">
+          <NavLink className="brand" to="/home">
             Service Booking Two
           </NavLink>
           <fieldset className="language-switch">
@@ -29,6 +29,7 @@ export function Layout() {
           </fieldset>
         </div>
         <nav aria-label={t('nav.primary')}>
+          <NavLink to="/home">{t('nav.home')}</NavLink>
           <NavLink to="/">{t('nav.services')}</NavLink>
           {hasRole(session, 'CUSTOMER') ? <NavLink to="/cart">{t('nav.cart')}</NavLink> : null}
           {hasRole(session, 'CUSTOMER') ? <NavLink to="/orders">{t('nav.orders')}</NavLink> : null}

@@ -101,6 +101,39 @@ describe('authenticated bilingual shell', () => {
     expect(screen.getByRole('group', { name: 'Sprache der Benutzeroberfläche' })).toBeVisible();
   });
 
+  it('offers a dedicated home page while services remain at the root route', async () => {
+    await router.navigate('/home');
+    render(<App />);
+
+    expect(await screen.findByRole('heading', { name: 'Local services, made simpler.' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Service Booking Two' })).toHaveAttribute('href', '/home');
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/home');
+    expect(screen.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('heading', { name: 'Why use Service Booking Two?' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Browse services' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: 'Create customer account' })).toHaveAttribute(
+      'href',
+      '/register/customer',
+    );
+    expect(screen.getByRole('link', { name: 'Create provider account' })).toHaveAttribute(
+      'href',
+      '/register/provider',
+    );
+  });
+
+  it('localizes the home page benefits in German', async () => {
+    await router.navigate('/home');
+    render(<App />);
+    await screen.findByRole('heading', { name: 'Local services, made simpler.' });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Deutsch' }));
+
+    expect(screen.getByRole('link', { name: 'Startseite' })).toHaveAttribute('href', '/home');
+    expect(screen.getByRole('heading', { name: 'Lokale Dienstleistungen, einfacher gemacht.' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Warum Service Booking Two?' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Dienstleistungen entdecken' })).toHaveAttribute('href', '/');
+  });
+
   it('labels email and links its API error', async () => {
     render(<CustomerRegistration />);
     const email = screen.getByLabelText('Email');
