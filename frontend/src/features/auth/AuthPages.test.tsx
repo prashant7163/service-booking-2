@@ -101,6 +101,55 @@ describe('authenticated bilingual shell', () => {
     expect(screen.getByRole('group', { name: 'Sprache der Benutzeroberfläche' })).toBeVisible();
   });
 
+  it('offers a dedicated home page while services remain at the root route', async () => {
+    await router.navigate('/home');
+    render(<App />);
+
+    expect(await screen.findByRole('heading', { name: 'Local services, made simpler.' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Service Booking Two' })).toHaveAttribute('href', '/home');
+    const homeLink = screen.getByRole('link', { name: 'Home' });
+    const servicesLink = screen.getByRole('link', { name: 'Services' });
+    expect(homeLink).toHaveAttribute('href', '/home');
+    expect(servicesLink).toHaveAttribute('href', '/');
+    expect(homeLink).toAppearBefore(servicesLink);
+    expect(
+      screen.getByText('Use the public navigation to choose a language or open the customer and provider account flows.'),
+    ).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Why use Service Booking Two?' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Navigate the foundation' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Choose your language' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Use role-specific entry points' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Browse services' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: 'Create customer account' })).toHaveAttribute(
+      'href',
+      '/register/customer',
+    );
+    expect(screen.getByRole('link', { name: 'Create provider account' })).toHaveAttribute(
+      'href',
+      '/register/provider',
+    );
+
+    await userEvent.click(servicesLink);
+    expect(await screen.findByRole('heading', { name: 'Discover services' })).toBeVisible();
+    expect(router.state.location.pathname).toBe('/');
+  });
+
+  it('localizes the home page benefits in German', async () => {
+    await router.navigate('/home');
+    render(<App />);
+    await screen.findByRole('heading', { name: 'Local services, made simpler.' });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Deutsch' }));
+
+    expect(screen.getByRole('link', { name: 'Startseite' })).toHaveAttribute('href', '/home');
+    expect(screen.getByRole('heading', { name: 'Lokale Dienstleistungen, einfacher gemacht.' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Warum Service Booking Two?' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Die aktuelle Grundlage nutzen' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Sprache auswählen' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Rollenspezifisch beginnen' })).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Dienstleistungen entdecken' })).toHaveAttribute('href', '/');
+  });
+
   it('labels email and links its API error', async () => {
     render(<CustomerRegistration />);
     const email = screen.getByLabelText('Email');

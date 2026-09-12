@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { Navigate, createBrowserRouter, useLocation } from 'react-router-dom';
+import { NavLink, Navigate, createBrowserRouter, useLocation } from 'react-router-dom';
 import { rolesForPath, useAuth } from '../auth/AuthContext';
 import { Layout } from '../components/Layout';
 import { useI18n } from '../i18n';
@@ -18,6 +18,41 @@ function PageHeading({ children }: { children: ReactNode }) {
 function ServicesPage() {
   const { t } = useI18n();
   return <PageHeading>{t('catalog.title')}</PageHeading>;
+}
+
+function HomePage() {
+  const { t } = useI18n();
+  return (
+    <div className="home-page">
+      <section className="home-hero">
+        <p className="home-kicker">{t('home.kicker')}</p>
+        <PageHeading>{t('home.title')}</PageHeading>
+        <p className="home-intro">{t('home.intro')}</p>
+        <div className="home-actions">
+          <NavLink className="primary-link" to="/">{t('home.browse')}</NavLink>
+          <NavLink to="/register/customer">{t('auth.registerCustomer')}</NavLink>
+          <NavLink to="/register/provider">{t('auth.registerProvider')}</NavLink>
+        </div>
+      </section>
+      <section aria-labelledby="home-benefits-title">
+        <h2 id="home-benefits-title">{t('home.benefits.title')}</h2>
+        <div className="benefit-grid">
+          <article className="benefit-card">
+            <h3>{t('home.benefits.discovery.title')}</h3>
+            <p>{t('home.benefits.discovery.text')}</p>
+          </article>
+          <article className="benefit-card">
+            <h3>{t('home.benefits.journey.title')}</h3>
+            <p>{t('home.benefits.journey.text')}</p>
+          </article>
+          <article className="benefit-card">
+            <h3>{t('home.benefits.roles.title')}</h3>
+            <p>{t('home.benefits.roles.text')}</p>
+          </article>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -42,6 +77,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <ServicesPage /> },
+      { path: 'home', element: <HomePage /> },
       { path: 'sign-in', element: <SignInPage /> },
       { path: 'sign-out', element: <SignOutPage /> },
       { path: 'register/customer', element: <CustomerRegistration /> },
