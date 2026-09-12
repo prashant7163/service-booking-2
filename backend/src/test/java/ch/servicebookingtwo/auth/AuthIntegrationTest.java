@@ -33,7 +33,8 @@ class AuthIntegrationTest extends AbstractPostgresIntegrationTest {
         String token = deliveries.forEmail(email).token();
         String reset = "{\"token\":\"" + token + "\",\"password\":\"replacement-password\"}";
         postJson("/api/auth/password-resets", reset).andExpect(status().isNoContent());
-        mvc.perform(get("/api/auth/session").cookie(session)).andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/auth/session").cookie(session)).andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.code").value("AUTHENTICATION_REQUIRED"));
         postJson("/api/auth/session", "{\"email\":\"" + email + "\",\"password\":\"test-password\"}")
             .andExpect(status().isUnauthorized());
         postJson("/api/auth/session", "{\"email\":\"" + email + "\",\"password\":\"replacement-password\"}")
@@ -60,7 +61,8 @@ class AuthIntegrationTest extends AbstractPostgresIntegrationTest {
         mvc.perform(delete("/api/auth/session").cookie(session).header("X-CSRF-TOKEN", freshToken)).andExpect(status().isNoContent());
     }
     @Test void anonymousCannotCreateCart() throws Exception {
-        postJson("/api/cart", "{}").andExpect(status().isUnauthorized());
+        postJson("/api/cart", "{}").andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.code").value("AUTHENTICATION_REQUIRED"));
     }
     @Test void unverifiedProviderCannotPublish() throws Exception {
         mvc.perform(post("/api/provider/offerings/1/publish").cookie(provider(email())).with(csrf()))
@@ -97,20 +99,25 @@ class AuthIntegrationTest extends AbstractPostgresIntegrationTest {
     @Test void suspensionBlocksSignInAndExistingSession() throws Exception {
         String email = email();
         var session = provider(email);
+        String token = deliveries.forEmail(email).token();
         jdbc.update("update account set suspended = true where email = ?", email);
-        mvc.perform(get("/api/auth/session").cookie(session)).andExpect(status().isForbidden());
+        mvc.perform(get("/api/auth/session").cookie(session)).andExpect(status().isForbidden())
+            .andExpect(jsonPath("$.code").value("PROVIDER_SUSPENDED"));
         postJson("/api/auth/session", "{\"email\":\"" + email + "\",\"password\":\"test-password\"}")
-            .andExpect(status().isForbidden());
+            .andExpect(status().isForbidden()).andExpect(jsonPath("$.code").value("PROVIDER_SUSPENDED"));
+        postJson("/api/auth/providers/verification", "{\"token\":\"" + token + "\"}")
+            .andExpect(status().isForbidden()).andExpect(jsonPath("$.code").value("PROVIDER_SUSPENDED"));
     }
     @Test void signOutInvalidatesSession() throws Exception {
         var session = customer();
         mvc.perform(delete("/api/auth/session").cookie(session).with(csrf())).andExpect(status().isNoContent())
             .andExpect(cookie().maxAge("JSESSIONID", 0));
-        mvc.perform(get("/api/auth/session").cookie(session)).andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/auth/session").cookie(session)).andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.code").value("AUTHENTICATION_REQUIRED"));
     }
     @Test void invalidCredentialsAndMalformedInputAreRedacted() throws Exception {
         postJson("/api/auth/session", "{\"email\":\"missing@example.test\",\"password\":\"private-input\"}")
-            .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("UNAUTHORIZED"))
+            .andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("INVALID_CREDENTIALS"))
             .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("private-input"))));
         postJson("/api/auth/customers", "{\"email\":\"invalid\",\"password\":\"\",\"displayName\":\"\"}")
             .andExpect(status().isUnprocessableEntity());
