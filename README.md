@@ -22,7 +22,8 @@ Use synthetic accounts and a locally generated database password and HMAC secret
 Set optional `DB_PORT` if port 5432 is occupied (`0` selects a free local port).
 Set optional `WEB_PORT` if port 3000 is occupied. In a private terminal, run
 `make verification-receiver` before registration or reset; this out-of-band
-simulated delivery boundary displays synthetic credentials without storing them.
+simulated delivery boundary binds only to `127.0.0.1`, displays one synthetic
+credential without storing it, and exits. Run it again for each delivery.
 With that listener already running, set `SIMULATED_VERIFICATION_ENABLED=true` and
 run `make up`. The adapter is otherwise disabled. Compose starts PostgreSQL, the API
 on localhost port 8080, and the same-origin web client on

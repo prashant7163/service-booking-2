@@ -17,7 +17,8 @@ import tools.jackson.databind.ObjectMapper;
 @Profile({"local", "e2e"})
 @ConditionalOnProperty(name = "booking.simulation.verification-enabled", havingValue = "true")
 final class LocalVerificationDelivery implements VerificationPort.Observer {
-    private static final Set<String> ALLOWED_HOSTS = Set.of("localhost", "127.0.0.1", "::1", "host.docker.internal");
+    private static final Set<String> ALLOWED_HOSTS = Set.of(
+        "localhost", "127.0.0.1", "::1", "[::1]", "host.docker.internal");
     private final URI endpoint;
     private final ObjectMapper mapper;
     private final HttpClient client;
